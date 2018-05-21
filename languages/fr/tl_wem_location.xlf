@@ -182,6 +182,10 @@
 			<source>Export locations of this map</source>
 			<target>Export les emplacements de cette carte</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_location.importExampleTitle">
+			<source>Your Excel file should looks like this :</source>
+			<target>Votre ficher Excel devrait ressembler à cela :</target>
+		</trans-unit>
 
 		<trans-unit id="tl_wem_location.createdConfirmation">
 			<source>%s locations have been created</source>

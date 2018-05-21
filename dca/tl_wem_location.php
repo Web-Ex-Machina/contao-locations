@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_wem_location']['export'],
 				'href'                => 'key=export',
-				'class'               => 'header_css_export',
+				'class'               => 'header_css_import',
 				'attributes'          => 'onclick="Backend.getScrollOffset()"'
 			),
 			'all' => array

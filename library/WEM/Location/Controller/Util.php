@@ -17,7 +17,25 @@ use Contao\Controller;
  */
 class Util extends Controller
 {
-	/*
+	/**
+	 * Try to find an ISO Code from the Country fullname
+	 */
+	public static function getCountryISOCodeFromFullname($strFullname)
+	{
+		$arrCountries = \System::getCountries();
+
+		foreach($arrCountries as $strIsoCode => $strName)
+		{	
+			// Use Generate Alias to handle little imperfections
+			if(\StringUtil::generateAlias($strName) == \StringUtil::generateAlias($strFullname))
+				return $strIsoCode;
+		}
+
+		// If nothing, send an exception, because the name is wrong
+		throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['countryNotFound'], $strFullname));
+	}
+
+	/**
 	 * Map a two-letter continent code onto the name of the continent.
 	 */
 	public static function getContinents()
@@ -287,6 +305,6 @@ class Util extends Controller
 			"ZW" => "AF"
 		);
 
-		return $COUNTRY_CONTINENTS[$strCountry];
+		return $COUNTRY_CONTINENTS[strtoupper($strCountry)];
 	}
 }

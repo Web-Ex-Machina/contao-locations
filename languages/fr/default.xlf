@@ -46,6 +46,15 @@
 			<source>Back</source>
 			<target>Retour</target>
 		</trans-unit>
+		
+		<trans-unit id="WEM.LOCATIONS.ERROR.noLocationsFound">
+			<source>No locations found for this map !</source>
+			<target>Aucun emplacement trouvé pour cette carte !</target>
+		</trans-unit>
+		<trans-unit id="WEM.LOCATIONS.ERROR.countryNotFound">
+			<source>The country %s doesn't match a known ISO Code. Maybe there is a typo ?</source>
+			<target>Le pays %s ne correspond à aucun ISO code connu. Peut-être qu'il y a une faute ?</target>
+		</trans-unit>
     </body>
   </file>
 </xliff>

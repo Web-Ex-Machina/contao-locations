@@ -2,3 +2,12 @@
     background: url(icon_map_16.png) 3px 0px no-repeat;
     background-size:13px auto;
 }
+
+.wem_locations_import_table{
+	margin-top: 8px;
+	width: 100%;
+}
+.wem_locations_import_table th, .wem_locations_import_table td{
+	border:1px solid grey;
+	padding:8px;
+}
