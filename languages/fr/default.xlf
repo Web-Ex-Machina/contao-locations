@@ -47,6 +47,11 @@
 			<target>Retour</target>
 		</trans-unit>
 		
+		<trans-unit id="WEM.LOCATIONS.CONFIRM.locationSaved">
+			<source>Location %s saved !</source>
+			<target>Emplacement %s sauvegardé !</target>
+		</trans-unit>
+
 		<trans-unit id="WEM.LOCATIONS.ERROR.noLocationsFound">
 			<source>No locations found for this map !</source>
 			<target>Aucun emplacement trouvé pour cette carte !</target>
@@ -54,6 +59,14 @@
 		<trans-unit id="WEM.LOCATIONS.ERROR.countryNotFound">
 			<source>The country %s doesn't match a known ISO Code. Maybe there is a typo ?</source>
 			<target>Le pays %s ne correspond à aucun ISO code connu. Peut-être qu'il y a une faute ?</target>
+		</trans-unit>
+		<trans-unit id="WEM.LOCATIONS.ERROR.missingConfigForGeocoding">
+			<source>Config is missing for geocoding !</source>
+			<target>Absence de configuration pour le geocoding !</target>
+		</trans-unit>
+		<trans-unit id="WEM.LOCATIONS.ERROR.errorWhenSavingTheLocation">
+			<source>An error happened when saving the location. Please try again.</source>
+			<target>Une erreur est survenue lors de la sauvegarde de l'emplacement. Veuillez réessayer.</target>
 		</trans-unit>
     </body>
   </file>

@@ -16,6 +16,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use WEM\Location\Controller\Util;
+use WEM\Location\Controller\GoogleMaps;
 use WEM\Location\Model\Map;
 use WEM\Location\Model\Location;
 
@@ -24,12 +25,46 @@ use WEM\Location\Model\Location;
  */
 class Callback extends Backend
 {
+	public function geocode(\DataContainer $objDc){
+		if (\Input::get('key') != 'geocode')
+			return '';
+
+		try{
+			$objLocation = Location::findByPk($objDc->id);
+			$objMap = Map::findByPk($objLocation->pid);
+
+			if(!$objMap->geocodingProvider)
+				throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['missingConfigForGeocoding']);
+
+			switch($objMap->geocodingProvider){
+				case 'gmaps':
+					$arrComponents = GoogleMaps::geocoder($objLocation, $objMap);
+				break;
+				default:
+					throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['missingConfigForGeocoding']);
+			}
+
+			$objLocation->lat = $arrComponents['geometry']['location']['lat'];
+			$objLocation->lng = $arrComponents['geometry']['location']['lng'];
+
+			if(!$objLocation->save())
+				throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['errorWhenSavingTheLocation']);
+
+			\Message::addConfirmation(sprintf($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['CONFIRM']['locationSaved'], $objLocation->title));
+		}
+		catch(\Exception $e){
+			\Message::addError($e->getMessage());
+		}
+		
+		$strRedirect = str_replace(["&key=geocode", "id=".$objLocation->id], ["", "id=".$objMap->id], \Environment::get('request'));
+		$this->redirect(ampersand($strRedirect));
+	}
+
 	/**
 	 * Return a form to choose a CSV file and import it
 	 * @return string
 	 */
-	public function importLocations()
-	{
+	public function importLocations(){
 		if (\Input::get('key') != 'import')
 			return '';
 
@@ -142,45 +177,45 @@ class Callback extends Backend
 
 		// Return form
 		return '
-<div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=import', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
-</div>
-'.\Message::generate().'
-<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_wem_locations_import" class="tl_form" method="post" enctype="multipart/form-data">
-<div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="tl_wem_locations_import">
-<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
-<input type="hidden" name="MAX_FILE_SIZE" value="'.\Config::get('maxFileSize').'">
+		<div id="tl_buttons">
+		<a href="'.ampersand(str_replace('&key=import', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+		</div>
+		'.\Message::generate().'
+		<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_wem_locations_import" class="tl_form" method="post" enctype="multipart/form-data">
+		<div class="tl_formbody_edit">
+		<input type="hidden" name="FORM_SUBMIT" value="tl_wem_locations_import">
+		<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
+		<input type="hidden" name="MAX_FILE_SIZE" value="'.\Config::get('maxFileSize').'">
 
-<fieldset class="tl_tbox nolegend">
-	<div class="widget">
-	  <h3>'.$GLOBALS['TL_LANG']['tl_wem_location']['source'][0].'</h3>'.$objUploader->generateMarkup().(isset($GLOBALS['TL_LANG']['tl_wem_location']['source'][1]) ? '
-	  <p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['tl_wem_location']['source'][1].'</p>' : '').'
-	</div>
-</div>
-</fieldset>
+		<fieldset class="tl_tbox nolegend">
+			<div class="widget">
+			  <h3>'.$GLOBALS['TL_LANG']['tl_wem_location']['source'][0].'</h3>'.$objUploader->generateMarkup().(isset($GLOBALS['TL_LANG']['tl_wem_location']['source'][1]) ? '
+			  <p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['tl_wem_location']['source'][1].'</p>' : '').'
+			</div>
+		</div>
+		</fieldset>
 
-<div class="tl_tbox nolegend">
-	<div class="widget">
-	<h3>'.$GLOBALS['TL_LANG']['tl_wem_location']['importExampleTitle'].'</h3>
-	<table class="wem_locations_import_table">
-		<thead>
-			<tr>'.implode('', $arrTh).'</tr>
-		</thead>
-		<tbody>
-			<tr>'.implode('', $arrTd).'</tr>
-			<tr>'.implode('', $arrTd).'</tr>
-		</tbody>
-	</table>
-	</div>
-</div>
+		<div class="tl_tbox nolegend">
+			<div class="widget">
+			<h3>'.$GLOBALS['TL_LANG']['tl_wem_location']['importExampleTitle'].'</h3>
+			<table class="wem_locations_import_table">
+				<thead>
+					<tr>'.implode('', $arrTh).'</tr>
+				</thead>
+				<tbody>
+					<tr>'.implode('', $arrTd).'</tr>
+					<tr>'.implode('', $arrTd).'</tr>
+				</tbody>
+			</table>
+			</div>
+		</div>
 
-<div class="tl_formbody_submit">
-<div class="tl_submit_container">
-  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_wem_location']['import'][0]).'">
-</div>
-</div>
-</form>';
+		<div class="tl_formbody_submit">
+		<div class="tl_submit_container">
+		  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_wem_location']['import'][0]).'">
+		</div>
+		</div>
+		</form>';
 	}
 
 	/**

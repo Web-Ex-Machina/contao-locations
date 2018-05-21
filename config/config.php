@@ -21,6 +21,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array
 			'tables'      => array('tl_wem_map', 'tl_wem_location'),
 			'import'	  => array('WEM\Location\Backend\Callback', "importLocations"),
 			'export'	  => array('WEM\Location\Backend\Callback', "exportLocations"),
+			'geocode'	  => array('WEM\Location\Backend\Callback', "geocode"),
 			'icon'        => 'system/modules/wem-contao-locations/assets/icon_map_16_c3.png',
 		)
 	)

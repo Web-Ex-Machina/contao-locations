@@ -104,7 +104,13 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 				'icon'                => 'visible.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
 				'button_callback'     => array('tl_wem_location', 'toggleIcon')
-			)
+			),
+			'geocode' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_wem_location']['toggle'],
+				'href'                => 'key=geocode',
+				'icon'                => 'system/modules/wem-contao-locations/assets/icon_geocode_16.png'
+			),
 		)
 	),
 
