@@ -27,7 +27,9 @@ array_insert($GLOBALS['BE_MOD'], 1, array
 	)
 ));
 
-// Load icon in Contao 4.2 backend
+/**
+ * Load icon in Contao 4.2 backend
+ */
 if ('BE' === TL_MODE){
     if (version_compare(VERSION, '4.4', '<'))
         $GLOBALS['TL_CSS'][] = 'system/modules/wem-contao-locations/assets/backend.css';
@@ -44,6 +46,14 @@ array_insert($GLOBALS['FE_MOD'], 2, array
 	(
 		'wem_display_map' 		=> 'WEM\Location\Module\DisplayMap',
 	)
+));
+
+/**
+ * Content Elements
+ */
+array_insert($GLOBALS['TL_CTE']['includes'], 0, array
+(
+	'wem_locations' => 'WEM\Location\Elements\DisplayMap',
 ));
 
 /**

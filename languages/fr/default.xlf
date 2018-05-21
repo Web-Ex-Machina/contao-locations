@@ -1,6 +1,15 @@
 <?xml version="1.0" ?><xliff version="1.1">
   <file datatype="php" original="system/modules/wem-contao-locations/languages/en/default.php" source-language="en" target-language="fr">
     <body>
+    	<trans-unit id="CTE.wem_locations.0">
+			<source>Locations</source>
+			<target>Emplacements</target>
+		</trans-unit>
+		<trans-unit id="CTE.wem_locations.1">
+			<source>Generates a map of locations.</source>
+			<target>Génère une carte d'emplacements.</target>
+		</trans-unit>
+
 		<trans-unit id="CONTINENT.AS">
 			<source>Asia</source>
 			<target>Asie</target>

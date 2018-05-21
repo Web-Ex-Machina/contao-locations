@@ -1,9 +1,1 @@
-<?= dump(json_encode($this->locations,true)) ?>
-<script>
-  var objData = <?= json_encode($this->locations,true) ?>;
-  console.log(objData);
-  // $.each(objData,function(key, item){
-    // console.log(item);
-  // });
-</script>
-<div id="mapWrapper" class="no-buttons"></div>
+<?php dump($this->locations) ?>
