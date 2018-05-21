@@ -19,7 +19,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array
 		'wem-maps' => array
 		(
 			'tables'      => array('tl_wem_map', 'tl_wem_location'),
-			'icon'        => 'system/modules/wem-contao-locations/assets/icon_map_16.png',
+			'icon'        => 'system/modules/wem-contao-locations/assets/icon_map_16_c3.png',
 		)
 	)
 ));
