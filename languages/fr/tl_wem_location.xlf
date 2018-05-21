@@ -157,6 +157,36 @@
 			<source>Show location data ID %s</source>
 			<target>Voir les informations de l'emplacement ID %s</target>
 		</trans-unit>
+
+		<trans-unit id="tl_wem_location.import.0">
+			<source>Import</source>
+			<target>Importer</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.import.1">
+			<source>Import locations in this map</source>
+			<target>Importer des emplacements dans cette carte</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.export.0">
+			<source>Export</source>
+			<target>Exporter</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.export.1">
+			<source>Export locations of this map</source>
+			<target>Export les emplacements de cette carte</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_location.createdConfirmation">
+			<source>%s locations have been created</source>
+			<target>%s emplacements ont été créés</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.updatedConfirmation">
+			<source>%s locations have been updated</source>
+			<target>%s emplacements ont été mis à jour</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.deletedConfirmation">
+			<source>%s locations have been deleted</source>
+			<target>%s emplacements ont été supprimés</target>
+		</trans-unit>
     </body>
   </file>
 </xliff>

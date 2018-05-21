@@ -62,13 +62,13 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 		),*/
 		'global_operations' => array
 		(
-			/*'import' => array
+			'import' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_agence']['import'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_wem_location']['import'],
 				'href'                => 'key=import',
 				'class'               => 'header_css_import',
 				'attributes'          => 'onclick="Backend.getScrollOffset()"'
-			),*/
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
