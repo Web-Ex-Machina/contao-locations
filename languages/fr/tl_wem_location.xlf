@@ -166,6 +166,14 @@
 			<source>Import locations in this map</source>
 			<target>Importer des emplacements dans cette carte</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_location.source.0">
+			<source>File</source>
+			<target>Fichier</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.source.1">
+			<source>Select the Excel File with your locations</source>
+			<target>Sélectionnez le fichier Excel contenant vos emplacements</target>
+		</trans-unit>
 		<trans-unit id="tl_wem_location.export.0">
 			<source>Export</source>
 			<target>Exporter</target>

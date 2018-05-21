@@ -42,8 +42,8 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 		),
 		'label' => array
 		(
-			'fields'                  => array('title'),
-			'format'                  => '%s'
+			'fields'                  => array('title', 'mapProvider'),
+			'format'                  => '%s | %s'
 		),
 		'global_operations' => array
 		(
@@ -94,7 +94,20 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{title_legend},title'
+		'__selector__'	=> array('mapProvider', 'geocodingProvider'),
+		'default'		=> '
+			{title_legend},title;
+			{import_legend},excelPattern;
+			{map_legend},mapProvider;
+			{geocoding_legend},geocodingProvider
+		'
+	),
+
+	// Subpalettes
+	'subpalettes' => array
+	(
+		'mapProvider_gmaps' => 'mapProviderGmapKey',
+		'geocodingProvider_gmaps' => 'geocodingProviderGmapKey',
 	),
 
 	// Fields
@@ -114,6 +127,56 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'excelPattern' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['excelPattern'],
+			'exclude'                 => true,
+			'inputType'               => 'keyValueWizard',
+			'load_callback'			  => array
+			(
+				array('tl_wem_map', 'generateExcelPattern'),
+			),
+			'sql'                     => "blob NULL"
+		),
+		'mapProvider' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['mapProvider'],
+			'default'				  => 'jvector',
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'				  => array('jvector', 'gmaps'),
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_wem_map']['mapProvider'],
+			'eval'                    => array('helpwizard'=>true, 'mandatory'=>true, 'submitOnChange'=>true, 'chosen'=>true),
+			'explanation'             => 'wem_locations_mapProvider',
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'mapProviderGmapKey' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['mapProviderGmapKey'],
+			'exclude'                 => true,
+			'inputType'               => 'textStore',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'geocodingProvider' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['geocodingProvider'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'				  => array('gmaps'),
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_wem_map']['geocodingProvider'],
+			'eval'                    => array('helpwizard'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'chosen'=>true),
+			'explanation'             => 'wem_locations_geocodingProvider',
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'geocodingProviderGmapKey' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['geocodingProviderGmapKey'],
+			'exclude'                 => true,
+			'inputType'               => 'textStore',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
@@ -143,5 +206,33 @@ class tl_wem_map extends Backend
 	{
 		parent::__construct();
 		$this->import('BackendUser', 'User');
+	}
+
+	/**
+	 * Generate the default Excel pattern
+	 * @param  [Array] $varValue
+	 * @return [Array]
+	 */
+	public function generateExcelPattern($varValue)
+	{
+		if(!$varValue){
+			$varValue = [
+				["key"=>"title", "value"=>"A"]
+				,["key"=>"lat", "value"=>"B"]
+				,["key"=>"lng", "value"=>"C"]
+				,["key"=>"street", "value"=>"D"]
+				,["key"=>"postal", "value"=>"E"]
+				,["key"=>"city", "value"=>"F"]
+				,["key"=>"region", "value"=>"G"]
+				,["key"=>"country", "value"=>"H"]
+				,["key"=>"phone", "value"=>"I"]
+				,["key"=>"email", "value"=>"J"]
+				,["key"=>"website", "value"=>"K"]
+			];
+
+			return $varValue;
+		}
+
+		return $varValue;
 	}
 }

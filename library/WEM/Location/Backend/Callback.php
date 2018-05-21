@@ -138,19 +138,18 @@ class Callback extends Backend
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 <input type="hidden" name="MAX_FILE_SIZE" value="'.\Config::get('maxFileSize').'">
 
-<div class="tl_tbox">
-  <h3>'.$GLOBALS['TL_LANG']['MSC']['source'][0].'</h3>'.$objUploader->generateMarkup().(isset($GLOBALS['TL_LANG']['MSC']['source'][1]) ? '
-  <p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['MSC']['source'][1].'</p>' : '').'
+<fieldset class="tl_tbox nolegend">
+	<div class="widget">
+	  <h3>'.$GLOBALS['TL_LANG']['tl_wem_location']['source'][0].'</h3>'.$objUploader->generateMarkup().(isset($GLOBALS['TL_LANG']['tl_wem_location']['source'][1]) ? '
+	  <p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['tl_wem_location']['source'][1].'</p>' : '').'
+	</div>
 </div>
-
-</div>
+</fieldset>
 
 <div class="tl_formbody_submit">
-
 <div class="tl_submit_container">
   <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_wem_location']['import'][0]).'">
 </div>
-
 </div>
 </form>';
 	}

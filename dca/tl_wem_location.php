@@ -47,19 +47,6 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 			'child_record_callback'   => array('tl_wem_location', 'listItems'),
 			'child_record_class'      => 'no_padding'
 		),
-		/*'sorting' => array
-		(
-			'mode'                    => 1,
-			'fields'                  => array('title'),
-			'flag'                    => 1,
-			'panelLayout'             => 'filter;search,limit'
-		),
-		'label' => array
-		(
-			'fields'                  => array('title', 'city', 'country'),
-			'format'                  => '%s <span style="color:#888">[%s - %s]</style>',
-			'label_callback'		  => array('tl_wem_location', 'listItems')
-		),*/
 		'global_operations' => array
 		(
 			'import' => array
@@ -67,6 +54,13 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_wem_location']['import'],
 				'href'                => 'key=import',
 				'class'               => 'header_css_import',
+				'attributes'          => 'onclick="Backend.getScrollOffset()"'
+			),
+			'export' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_wem_location']['export'],
+				'href'                => 'key=export',
+				'class'               => 'header_css_export',
 				'attributes'          => 'onclick="Backend.getScrollOffset()"'
 			),
 			'all' => array
@@ -277,7 +271,7 @@ class tl_wem_location extends Backend
 
 	public function listItems($arrRow)
 	{
-		if(!$arrRow['latitude'] || !$arrRow['longitude'])
+		if(!$arrRow['lat'] || !$arrRow['lng'])
 			$strColor = '#ff0000';
 		else
 			$strColor = '#333';
