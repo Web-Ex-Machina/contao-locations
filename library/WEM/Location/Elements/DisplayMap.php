@@ -10,18 +10,13 @@
 
 namespace WEM\Location\Elements;
 
-use Contao\Combiner;
+use Contao\ModuleModel;
 
-use Haste\Http\Response\HtmlResponse;
-use Haste\Http\Response\JsonResponse;
-use Haste\Input\Input;
-
-use WEM\Location\Controller\Util;
-use WEM\Location\Model\Map;
-use WEM\Location\Model\Location;
+use WEM\Location\Module\DisplayMap as ModuleDisplayMap;
 
 /**
- * Front end module "locations map".
+ * Content Element "locations map"
+ * This content is basically an alias to the module "wem_display_map"
  */
 class DisplayMap extends \ContentElement
 {
@@ -29,55 +24,23 @@ class DisplayMap extends \ContentElement
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'mod_wem_locations_map';
+	protected $strTemplate = 'ce_wem_locations_map';
 
 	/**
 	 * Generate the content element
 	 */
 	protected function compile()
 	{
-		try
-		{
-			$objLocations = Location::findItems(["published"=>1, "pid"=>$this->wem_location_map]);
+		$objModel = new ModuleModel();
+		$objModel->tstamp = time();
+		$objModel->type = "wem_display_map";
+		$objModel->wem_location_map = $this->wem_location_map;
+		$objModel->customTpl = $this->customTpl;
+		$objModel->protected = $this->protected;
+		$objModel->guests = $this->guests;
+		$objModel->cssID = $this->cssID;
 
-			if(!$objLocations)
-				throw new \Exception("No locations found for this map");
-
-			$arrLocations = array();
-			while($objLocations->next())
-			{
-				$strCountry = strtoupper($objLocations->country);
-				$strContinent = Util::getCountryContinent($strCountry);
-
-				$arrLocation = [
-					"name" => $objLocations->title
-					,"address" => $objLocations->street." ".$objLocations->postal." ".$objLocations->city
-					,"phone" => $objLocations->phone
-					,"email" => $objLocations->email
-					,"url" => $objLocations->website
-					,"lat" => $objLocations->lat
-					,"lng" => $objLocations->lng
-					,"country" => [
-						"code" => $strCountry
-						,"name" => $GLOBALS['TL_LANG']['CNT'][$objLocations->country]
-					]
-					,"continent" => [
-						"code" => $strContinent
-						,"name" => $GLOBALS['TL_LANG']['CONTINENT'][$strContinent]
-					]
-				];
-
-				$arrLocations[] = $arrLocation;
-			}
-
-			//dump($arrLocations);
-
-			$this->Template->locations = $arrLocations;
-		}
-		catch(\Exception $e)
-		{
-			$this->Template->blnError = true;
-			$this->Template->strError = "Une erreur est survenue : ".$e->getMessage();
-		}
+		$objModule = new ModuleDisplayMap($objModel);
+		$this->Template->buffer = $objModule->generate();
 	}
 }

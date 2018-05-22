@@ -16,6 +16,7 @@ use Haste\Http\Response\HtmlResponse;
 use Haste\Http\Response\JsonResponse;
 use Haste\Input\Input;
 
+use WEM\Location\Controller\ClassLoader;
 use WEM\Location\Controller\Util;
 use WEM\Location\Model\Map;
 use WEM\Location\Model\Location;
@@ -30,7 +31,7 @@ class DisplayMap extends \Module
 	 * @var string
 	 */
 	protected $strTemplate = 'mod_wem_locations_map';
-	
+
 	/**
 	 * Display a wildcard in the back end
 	 * @return string
@@ -50,16 +51,6 @@ class DisplayMap extends \Module
 			return $objTemplate->parse();
 		}
 
-		// Add the JVector Librairies
-		$objCombiner = new Combiner();
-		$objCombiner->add("system/modules/wem-contao-locations/assets/jquery-jvectormap/jquery-jvectormap-2.0.3.css");
-		$GLOBALS["TL_HEAD"][] = sprintf('<link rel="stylesheet" href="%s">', $objCombiner->getCombinedFile());
-
-		$objCombiner = new Combiner();
-		$objCombiner->add("system/modules/wem-contao-locations/assets/jquery-jvectormap/jquery-jvectormap-2.0.3.min.js");
-		$objCombiner->add("system/modules/wem-contao-locations/assets/jquery-jvectormap/maps/jquery-jvectormap-world-mill.js", 2);
-		$GLOBALS['TL_JAVASCRIPT'][] = $objCombiner->getCombinedFile();
-
 		return parent::generate();
 	}
 
@@ -70,10 +61,21 @@ class DisplayMap extends \Module
 	{
 		try
 		{
+			// Load the map
+			$objMap = Map::findByPk($this->wem_location_map);
+
+			if(!$objMap)
+				throw new \Exception("No map found.");
+
+			// Load the locations
 			$objLocations = Location::findItems(["published"=>1, "pid"=>$this->wem_location_map]);
 
 			if(!$objLocations)
-				throw new \Exception("No locations found for this map");
+				throw new \Exception("No locations found for this map.");
+
+			// Load the libraries
+			ClassLoader::loadLibraries($objMap->mapProvider);
+			\System::getCountries();
 
 			$arrLocations = array();
 			while($objLocations->next())
@@ -101,9 +103,7 @@ class DisplayMap extends \Module
 
 				$arrLocations[] = $arrLocation;
 			}
-
-			//dump($arrLocations);
-
+			
 			$this->Template->locations = $arrLocations;
 		}
 		catch(\Exception $e)

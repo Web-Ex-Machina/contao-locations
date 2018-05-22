@@ -23,4 +23,5 @@ TemplateLoader::addFiles(array
 (
 	// Map Templates
 	'mod_wem_locations_map'	=> 'system/modules/wem-contao-locations/templates/modules',
+	'ce_wem_locations_map' 	=> 'system/modules/wem-contao-locations/templates/elements',
 ));
