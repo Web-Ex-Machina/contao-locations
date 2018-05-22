@@ -16,7 +16,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use WEM\Location\Controller\Util;
-use WEM\Location\Controller\GoogleMaps;
+use WEM\Location\Controller\Provider\GoogleMaps;
+use WEM\Location\Controller\Provider\Nominatim;
 use WEM\Location\Model\Map;
 use WEM\Location\Model\Location;
 
@@ -38,14 +39,17 @@ class Callback extends Backend
 
 			switch($objMap->geocodingProvider){
 				case 'gmaps':
-					$arrComponents = GoogleMaps::geocoder($objLocation, $objMap);
+					$arrCoords = GoogleMaps::geocoder($objLocation, $objMap);
+				break;
+				case 'nominatim':
+					$arrCoords = Nominatim::geocoder($objLocation, $objMap);
 				break;
 				default:
 					throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['missingConfigForGeocoding']);
 			}
 
-			$objLocation->lat = $arrComponents['geometry']['location']['lat'];
-			$objLocation->lng = $arrComponents['geometry']['location']['lng'];
+			$objLocation->lat = $arrCoords['lat'];
+			$objLocation->lng = $arrCoords['lng'];
 
 			if(!$objLocation->save())
 				throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['errorWhenSavingTheLocation']);

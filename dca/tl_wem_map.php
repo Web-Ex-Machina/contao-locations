@@ -166,7 +166,7 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['geocodingProvider'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'options'				  => array('gmaps'),
+			'options'				  => array('gmaps', 'nominatim'),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_wem_map']['geocodingProvider'],
 			'eval'                    => array('helpwizard'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'chosen'=>true),
 			'explanation'             => 'wem_locations_geocodingProvider',
@@ -182,11 +182,8 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 		),
 
 		// Idées
-		// Limitation de la carte (world / continent / pays / région / département / ville)
-		// Type de carte à afficher (JVector, Googlemap, OpenStreetMap...)
-		// Programmer un service de geocoding
 		// Paramètres des marqueurs
-		// Filtres
+		// Filtres et attributs
 	)
 );
 

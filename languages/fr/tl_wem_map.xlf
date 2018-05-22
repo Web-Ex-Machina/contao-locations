@@ -72,6 +72,10 @@
 			<source>Google Maps</source>
 			<target>Google Maps</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_map.geocodingProvider.nominatim">
+			<source>Nominatim</source>
+			<target>Nominatim</target>
+		</trans-unit>
 		<trans-unit id="tl_wem_map.geocodingProviderGmapKey.0">
 			<source>API Key</source>
 			<target>Clef API</target>

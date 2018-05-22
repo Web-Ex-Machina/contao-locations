@@ -26,6 +26,14 @@
         <source>For more information about Google Maps Geocoding Service please visit &lt;a href=&quot;https://developers.google.com/maps/documentation/geocoding/intro&quot; title=&quot;Google Maps Website&quot; target=&quot;_blank&quot;&gt;https://developers.google.com/maps/documentation/geocoding/intro&lt;/a&gt;.</source>
         <target>Pour plus d'information sur le service de Geocoding Google Maps, veuillez s'il vous plaît visiter &lt;a href=&quot;https://developers.google.com/maps/documentation/geocoding/intro&quot; title=&quot;Google Maps Website&quot; target=&quot;_blank&quot;&gt;https://developers.google.com/maps/documentation/geocoding/intro&lt;/a&gt;.</target>
       </trans-unit>
+      <trans-unit id="XPL.wem_locations_geocodingProvider.1.0">
+        <source>Nominatim</source>
+        <target>Nominatim</target>
+      </trans-unit>
+      <trans-unit id="XPL.wem_locations_geocodingProvider.1.1">
+        <source>For more information about Nominatim Geocoding Service please visit &lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot; title=&quot;Nominatim Website&quot; target=&quot;_blank&quot;&gt;https://wiki.openstreetmap.org/wiki/Nominatim&lt;/a&gt;.</source>
+        <target>Pour plus d'information sur le service de Geocoding Nominatim, veuillez s'il vous plaît visiter &lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot; title=&quot;Nominatim Website&quot; target=&quot;_blank&quot;&gt;https://wiki.openstreetmap.org/wiki/Nominatim&lt;/a&gt;.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

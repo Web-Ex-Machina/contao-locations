@@ -8,22 +8,21 @@
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
 
-namespace WEM\Location\Controller;
+namespace WEM\Location\Controller\Provider;
 
 use Contao\Controller;
-use Contao\Encryption;
 
 /**
- * Provide Google Maps utilities functions to Locations Extension
+ * Provide Nominatim utilities functions to Locations Extension
  */
-class GoogleMaps extends Controller
+class Nominatim extends Controller
 {
 	/**
-	 * Google Map Geocoding URL to request (sprintf pattern)
+	 * Nominating Geocoding URL to request (sprintf pattern)
 	 * @var String
 	 */
-	protected static $strGeocodingUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s";
-	
+	protected static $strGeocodingUrl = "https://nominatim.openstreetmap.org/search%s&format=json&addressdetails=1&email=%s";
+
 	/**
 	 * Return the coords lat/lng for a given address
 	 * @param  [Mixed]   $varAddress [Address to geocode, can be a String, or a Location Model]
@@ -34,23 +33,22 @@ class GoogleMaps extends Controller
 	public static function geocoder($varAddress, $objMap, $intResults = 1)
 	{
 		// Before everything, check if we can geocode this
-		if("gmaps" != $objMap->geocodingProvider || !$objMap->geocodingProviderGmapKey)
+		if("nominatim" != $objMap->geocodingProvider)
 			throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['missingConfigForGeocoding']);
 
 		// Standardize the address to geocode
 		$strAddress = '';
-		$arrCountries = \System::getCountries();
 		if(is_object($varAddress)){
 			if($varAddress->street)
-				$strAddress .= trim(preg_replace('/\s+/', ' ', strip_tags($varAddress->street)));
+				$strAddress .= "?street=".trim(preg_replace('/\s+/', ' ', strip_tags($varAddress->street)));
 			if($varAddress->postal)
-				$strAddress.= ','.$varAddress->postal;
+				$strAddress.= "&postalcode=".$varAddress->postal;
 			if($varAddress->city)
-				$strAddress.= ','.$varAddress->city;
+				$strAddress.= "&city=".$varAddress->city;
 			if($varAddress->region)
-				$strAddress.= ','.$varAddress->region;
-			if($varAddress->region)
-				$strAddress.= '&amp;region='.$arrCountries[$varAddress->country];
+				$strAddress.= "&state=".$varAddress->region;
+			if($varAddress->country)
+				$strAddress.= "&countrycodes=".$varAddress->country;
 		}
 		else
 			$strAddress = $varAddress;
@@ -58,21 +56,28 @@ class GoogleMaps extends Controller
 		// Some String manips
 		$strAddress = str_replace(' ', '+', $strAddress);
 
+		//throw new \Exception($strAddress);
+
 		// Then, cURL it baby.
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, sprintf(static::$strGeocodingUrl, $strAddress, Encryption::decrypt($objMap->geocodingProviderGmapKey)));
+		$strUrl = sprintf(static::$strGeocodingUrl, $strAddress, $GLOBALS['TL_ADMIN_EMAIL']);
+		curl_setopt($ch, CURLOPT_URL, $strUrl);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 		$geoloc = json_decode(curl_exec($ch), true);
+		//dump(sprintf(static::$strGeocodingUrl, $strAddress)); die;
 
 		// Catch Error
-		if("OK" != $geoloc['status'])
-			throw new \Exception($geoloc['error_message']);
+		if(!$geoloc)
+			throw new \Exception("invalid request : ".$strUrl);
 
 		// And return them
 		if(1 === $intResults)
-			return $geoloc['results'][0];
-		else
-			return $geoloc['results'];
+			return ["lat"=>$geoloc[0]['lat'], "lng"=>$geoloc[0]['lon']];
+		else{
+			foreach($geoloc as $result)
+				$arrResults[] = ["lat"=>$result['lat'], "lng"=>$result['lng']];
+			return $arrResults;
+		}
 	}
 }
