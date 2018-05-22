@@ -1,1 +1,200 @@
 <?php dump($this->locations) ?>
+
+<div id="mapWrapper"
+  data-zoomOnScroll="false"
+  data-panOnDrag="false"
+  data-regionsSelectable="true"
+  data-regionsSelectableOne="true"
+  data-markersSelectable=""
+  data-markersSelectableOne=""
+  data-mapBackground=""
+  data-regionBackground=""
+  data-regionBackgroundActive=""
+  data-regionBackgroundHover=""
+  data-regionBackgroundSelected=""
+  data-regionBackgroundSelectedHover=""
+></div>
+
+<script>
+  var objMapData = <?= json_encode($this->locations,true) ?>;
+
+
+  $(function(){
+    $(window).resize(function(){
+      var mapHeight = window.innerHeight - $('#header').outerHeight();
+      if($('#header').length)
+        mapHeight -= $('#header').outerHeight();
+      if($('#footer').length)
+        mapHeight -= $('#footer').outerHeight();
+      $('#mapWrapper').outerHeight(0).outerHeight(mapHeight);
+    }).trigger('resize');
+
+    var arrCountries = [];
+    var arrCountriesAvailable = [];
+    var objContinents = {};
+    var objMarkers = {};
+    var objMap;
+    var $map = $('#mapWrapper');
+
+    // objMapData = {};
+    $.each(objMapData,function(index,location){
+      if(!Object.hasKey(objContinents, location.continent.code)){
+        objContinents[location.continent.code] = location.continent;
+        objContinents[location.continent.code].countries = {};
+      }
+      if(!Object.hasKey(objContinents[location.continent.code].countries, location.country.code)){
+        objContinents[location.continent.code].countries[location.country.code] = location.country;
+        arrCountries.push(location.country.code);
+        arrCountriesAvailable.push(location.country.code);
+      }
+      objMarkers[location.country.code+'-'+location.name.toLowerCase().replace(/\s/g,'_')]={
+        country: location.country.code,
+        continent: location.continent.code,
+        name: location.name,
+        latLng: [location.lat,location.lng]
+      };
+    });
+
+    console.log(objContinents);
+    console.log(arrCountries);
+    console.log(arrCountriesAvailable);
+    console.log(objMarkers);
+
+    // MAP INIT
+    mapConfig = {
+      map: 'world_mill',
+      container: $map,
+      backgroundColor: getMapData('mapBackground','#fff'),
+      zoomOnScroll: getMapData('zoomOnScroll',true),
+      panOnDrag: getMapData('panOnDrag',true),
+      regionsSelectable: getMapData('regionsSelectable',false),
+      regionsSelectableOne: getMapData('regionsSelectableOne',true),
+      markersSelectable: getMapData('markersSelectable',false),
+      markersSelectableOne: getMapData('markersSelectableOne',true),
+      regionStyle: {
+        initial: {
+          fill: getMapData('regionBackground','#ddd'),
+          "fill-opacity": 1,
+          stroke: 'none',
+          "stroke-width": 0,
+          "stroke-opacity": 1
+        },
+        hover: {
+          // fill: getMapData('regionBackgroundHover','#999'),
+          "fill-opacity": 1,
+          cursor: "pointer"
+        },
+        selected: {
+          fill: getMapData('regionBackgroundSelected','#666'),
+          "fill-opacity": 1,
+        },
+        selectedHover: {
+          fill: getMapData('regionBackgroundSelectedHover','#666'),
+          "fill-opacity": 1,
+        }
+      },
+      markerStyle:{
+        initial: {
+          fill: '#f66f6f',
+          stroke: '#fff',
+          "fill-opacity": 1,
+          "stroke-width": 2,
+          "stroke-opacity": 1,
+          r: 10
+        },
+        hover: {
+          fill: '#fff',
+          stroke: '#f66f6f',
+          "stroke-width": 2,
+          cursor: 'pointer'
+        },
+        selected: {
+          fill: '#fff',
+          "stroke-width": 2,
+          stroke: '#f66f6f',
+        },
+        selectedHover: {}
+      },
+      series:{
+        regions: [{
+        //   values: getMapSeries(),
+          attribute: 'fill',
+          scale:{
+            '0': getMapData('regionBackground','#ddd'),
+            '1': getMapData('regionBackgroundActive','#999')
+          },
+        }]
+      },
+      onRegionClick: function(e,code){},
+      onRegionSelected: function(e, code, selected, selectedRegions){
+        console.log(objMapData.length);
+        if(selected && objMapData.length != 0){
+          if(arrCountriesAvailable.indexOf(code) != -1){
+
+          }
+        }
+        else{
+          resetMap();
+        }
+      },
+      onRegionTipShow: function(e,tip,code){},
+      onRegionOver: function(e,code){},
+      onRegionOut: function(e,code){},
+      onMarkerClick: function(e,code){},
+      onMarkerOver: function(e,code){},
+      onMarkerOut: function(e,code){},
+      // onMarkerSelected: function(e,code){},
+    };
+    if(objMapData.length > 0){
+      mapConfig.regionStyle.hover.fill = getMapData('regionBackgroundHover','#999');
+    }
+
+    objMap = new jvm.Map(mapConfig);
+    objMap.series.regions[0].setValues(getMapSeries());
+
+
+    function getMapData(label,defaultValue){
+      label = label.toLowerCase();
+      if($map.data(label) !== undefined && $map.data(label) !== "")
+        return $map.data(label);
+      else
+        return defaultValue;
+    }
+    function getMapSeries(){
+      var result = {};
+      $.each(arrCountries,function(key,code){
+        if(arrCountriesAvailable.indexOf(code) != -1)
+          result[code] = '1';
+        else
+          result[code] = '0';
+      });
+      return result;
+    }
+
+    function resetMap(){
+      // $reset.removeClass('active');
+      // $content.removeClass('active');
+      // $content.find('.mapContent__item').removeClass('active selected hover');
+      // $dropdowns.find('.dropdown li').show();
+      // $dropdowns.find('.dropdown li:first-of-type').trigger('click',true);
+      // objMap.removeAllMarkers();
+      objMap.clearSelectedRegions();
+
+      // arrCountriesAvailable = arrCountries.slice();
+      // showCountriesAvailable();
+    }
+  });
+
+  $.fn.filterByData = function(prop, val) {
+    return this.filter(
+        function() { return $(this).data(prop)==val; }
+    );
+  }
+
+  Object.hasKey = function(obj,key){
+    if(Object.keys(obj).indexOf(key) != -1)
+      return true;
+    else
+      return false;
+  }
+</script>
