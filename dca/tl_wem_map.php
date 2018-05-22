@@ -166,7 +166,7 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['geocodingProvider'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'options'				  => array('gmaps', 'nominatim'),
+			'options'				  => array('nominatim', 'gmaps'),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_wem_map']['geocodingProvider'],
 			'eval'                    => array('helpwizard'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'chosen'=>true),
 			'explanation'             => 'wem_locations_geocodingProvider',

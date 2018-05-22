@@ -56,8 +56,6 @@ class Nominatim extends Controller
 		// Some String manips
 		$strAddress = str_replace(' ', '+', $strAddress);
 
-		//throw new \Exception($strAddress);
-
 		// Then, cURL it baby.
 		$ch = curl_init();
 		$strUrl = sprintf(static::$strGeocodingUrl, $strAddress, $GLOBALS['TL_ADMIN_EMAIL']);
@@ -65,7 +63,6 @@ class Nominatim extends Controller
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 		$geoloc = json_decode(curl_exec($ch), true);
-		//dump(sprintf(static::$strGeocodingUrl, $strAddress)); die;
 
 		// Catch Error
 		if(!$geoloc)
