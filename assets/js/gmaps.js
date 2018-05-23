@@ -1,3 +1,5 @@
+// https://developers.google.com/maps/documentation/javascript/reference/3.exp/map
+
 // ------------------------------------------------------------------------------------------------------------------------------
 // DATA SETTINGS
 var arrCountries = [];
@@ -7,6 +9,7 @@ var objCountries = {};
 var objMarkers = {};
 var objMap;
 var objMapCenter;
+var objMapBounds;
 var $map = $('.mod_wem_locations_map');
 var $reset = $map.next('.map__reset');
 var $content = $reset.next('.map__content');
@@ -40,43 +43,28 @@ $(function(){
 		  country: location.country.code,
 		  continent: location.continent.code,
 		  name: location.name,
-		  latLng: [location.lat,location.lng]
+		  latLng: new google.maps.LatLng(parseFloat(location.lat), parseFloat(location.lng))
 		};
 	});
 
-	var objMapCenter = findMapCenter();
-	objMap = new google.maps.Map($('.mod_wem_locations_map')[0], {
-	  zoom: 4,
-	  center: objMapCenter
-	});
+	objMap = new google.maps.Map($('.mod_wem_locations_map')[0]);
+
+	objMapBounds = new google.maps.LatLngBounds();
+	for(var i in objMarkers){
+		objMapBounds.extend(objMarkers[i].latLng);
+		objMarkers[i].marker = new google.maps.Marker({
+			position: objMarkers[i].latLng,
+			map: objMap
+		});
+	};
+
+	objMap.setCenter(objMapBounds.getCenter());
+	objMap.fitBounds(objMapBounds);
 
 	$map.append($reset);
 	$map.append($content);
 	$map.append($dropdowns);
-
-	for(var i in objMarkers){
-		drawMarker(objMarkers[i]);
-	};
 });
-
-function findMapCenter(){
-	var totalLat = 0;
-	var totalLng = 0;
-	var total = 0;
-	for(var i in objMarkers){
-		totalLat += parseFloat(objMarkers[i].latLng[0]);
-		totalLng += parseFloat(objMarkers[i].latLng[1]);
-		total++;
-	}
-	return {lat: totalLat / total, lng: totalLng / total};
-}
-
-function drawMarker(marker){
-	var marker = new google.maps.Marker({
-		position: {lat:parseFloat(marker.latLng[0]), lng:parseFloat(marker.latLng[1])},
-		map: objMap
-	});
-}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 // UTILITIES
