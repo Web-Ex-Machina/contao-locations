@@ -59,57 +59,49 @@ class DisplayMap extends \Module
 	 */
 	protected function compile()
 	{
-		try
+		// Load the map
+		$objMap = Map::findByPk($this->wem_location_map);
+
+		if(!$objMap)
+			throw new \Exception("No map found.");
+
+		// Load the locations
+		$objLocations = Location::findItems(["published"=>1, "pid"=>$this->wem_location_map]);
+
+		if(!$objLocations)
+			throw new \Exception("No locations found for this map.");
+
+		// Load the libraries
+		ClassLoader::loadLibraries($objMap);
+		\System::getCountries();
+
+		$arrLocations = array();
+		while($objLocations->next())
 		{
-			// Load the map
-			$objMap = Map::findByPk($this->wem_location_map);
+			$strCountry = strtoupper($objLocations->country);
+			$strContinent = Util::getCountryContinent($strCountry);
 
-			if(!$objMap)
-				throw new \Exception("No map found.");
+			$arrLocation = [
+				"name" => $objLocations->title
+				,"address" => $objLocations->street." ".$objLocations->postal." ".$objLocations->city
+				,"phone" => $objLocations->phone
+				,"email" => $objLocations->email
+				,"url" => $objLocations->website
+				,"lat" => $objLocations->lat
+				,"lng" => $objLocations->lng
+				,"country" => [
+					"code" => $strCountry
+					,"name" => $GLOBALS['TL_LANG']['CNT'][$objLocations->country]
+				]
+				,"continent" => [
+					"code" => $strContinent
+					,"name" => $GLOBALS['TL_LANG']['CONTINENT'][$strContinent]
+				]
+			];
 
-			// Load the locations
-			$objLocations = Location::findItems(["published"=>1, "pid"=>$this->wem_location_map]);
-
-			if(!$objLocations)
-				throw new \Exception("No locations found for this map.");
-
-			// Load the libraries
-			ClassLoader::loadLibraries($objMap->mapProvider);
-			\System::getCountries();
-
-			$arrLocations = array();
-			while($objLocations->next())
-			{
-				$strCountry = strtoupper($objLocations->country);
-				$strContinent = Util::getCountryContinent($strCountry);
-
-				$arrLocation = [
-					"name" => $objLocations->title
-					,"address" => $objLocations->street." ".$objLocations->postal." ".$objLocations->city
-					,"phone" => $objLocations->phone
-					,"email" => $objLocations->email
-					,"url" => $objLocations->website
-					,"lat" => $objLocations->lat
-					,"lng" => $objLocations->lng
-					,"country" => [
-						"code" => $strCountry
-						,"name" => $GLOBALS['TL_LANG']['CNT'][$objLocations->country]
-					]
-					,"continent" => [
-						"code" => $strContinent
-						,"name" => $GLOBALS['TL_LANG']['CONTINENT'][$strContinent]
-					]
-				];
-
-				$arrLocations[] = $arrLocation;
-			}
-			
-			$this->Template->locations = $arrLocations;
+			$arrLocations[] = $arrLocation;
 		}
-		catch(\Exception $e)
-		{
-			$this->Template->blnError = true;
-			$this->Template->strError = "Une erreur est survenue : ".$e->getMessage();
-		}
+		
+		$this->Template->locations = $arrLocations;
 	}
 }
