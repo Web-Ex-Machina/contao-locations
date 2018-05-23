@@ -25,7 +25,6 @@ $(function(){
   var $content = $reset.next('.map__content');
   var $dropdowns = $content.next('.map__dropdowns');
 
-  // objMapData = [];
   $.each(objMapData,function(index,location){
     if(!Object.hasKey(objContinents, location.continent.code)){
       objContinents[location.continent.code] = location.continent;
@@ -44,12 +43,6 @@ $(function(){
       latLng: [location.lat,location.lng]
     };
   });
-
-  console.log(objContinents);
-  console.log(arrCountries);
-  console.log(arrCountriesAvailable);
-  console.log(objCountries);
-  console.log(objMarkers);
 
   // ------------------------------------------------------------------------------------------------------------------------------
   // MAP CONFIG
@@ -176,9 +169,6 @@ $(function(){
   $map.find('path[fill*="'+getMapData('regionBackgroundActive','#999')+'"]').css('cursor','pointer');
 
   objMap.updateSize();
-  // objMap.setFocus({
-  //   regions: arrCountriesAvailable,
-  // });
   setMapCountriesAvailable(true,false);
 
   // ------------------------------------------------------------------------------------------------------------------------------
@@ -229,12 +219,9 @@ $(function(){
   };
 
   function resetMap(){
-    console.log('reset');
     $reset.removeClass('active');
     $content.removeClass('active');
     $content.find('.map__content__item').removeClass('active selected hover');
-    // $dropdowns.find('.dropdown li').show();
-    // $dropdowns.find('.dropdown li:first-of-type').trigger('click',true);
     objMap.removeAllMarkers();
     objMap.clearSelectedRegions();
 
