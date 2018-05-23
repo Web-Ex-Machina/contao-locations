@@ -32,9 +32,9 @@ array_insert($GLOBALS['BE_MOD'], 1, array
  */
 if ('BE' === TL_MODE){
     if (version_compare(VERSION, '4.4', '<'))
-        $GLOBALS['TL_CSS'][] = 'system/modules/wem-contao-locations/assets/backend.css';
+        $GLOBALS['TL_CSS'][] = 'system/modules/wem-contao-locations/assets/backend/backend.css';
     else
-        $GLOBALS['TL_CSS'][] = 'system/modules/wem-contao-locations/assets/backend_svg.css';
+        $GLOBALS['TL_CSS'][] = 'system/modules/wem-contao-locations/assets/backend/backend_svg.css';
 }
 
 /**

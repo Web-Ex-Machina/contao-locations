@@ -187,6 +187,19 @@
 			<target>Votre ficher Excel devrait ressembler à cela :</target>
 		</trans-unit>
 
+		<trans-unit id="tl_wem_location.geocodeAll.0">
+			<source>Geocode</source>
+			<target>Géocode</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.geocodeAll.1">
+			<source>Geocode all locations</source>
+			<target>Géocoder tous les emplacements</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.geocodeAllConfirm">
+			<source>Are you sure you want to geocode all locations ?</source>
+			<target>Êtes-vous sûr de vouloir géocoder tous les emplacements ?</target>
+		</trans-unit>
+
 		<trans-unit id="tl_wem_location.createdConfirmation">
 			<source>%s locations have been created</source>
 			<target>%s emplacements ont été créés</target>

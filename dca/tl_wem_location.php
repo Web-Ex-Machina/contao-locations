@@ -21,6 +21,10 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 		'ptable'					  => 'tl_wem_map',
 		'switchToEdit'                => true,
 		'enableVersioning'            => true,
+		'onload_callback'			  => array
+		(
+			array('tl_wem_location', 'checkIfGeocodeExists'),
+		),	
 		'onsubmit_callback'			  => array
 		(
 			//array('tl_wem_location', 'fetchCoordinates'),
@@ -49,6 +53,13 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 		),
 		'global_operations' => array
 		(
+			'geocodeAll' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_wem_location']['geocodeAll'],
+				'href'                => 'key=geocodeAll',
+				'class'               => 'header_geocodeAll',
+				'attributes'          => 'onclick="Backend.getScrollOffset()" data-confirm="'.$GLOBALS['TL_LANG']['tl_wem_location']['geocodeAllConfirm'].'"'
+			),
 			'import' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_wem_location']['import'],
@@ -258,6 +269,10 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 	)
 );
 
+// Load JS to handle backend events
+$GLOBALS["TL_JAVASCRIPT"][] = 'https://code.jquery.com/jquery-3.3.1.min.js';
+$GLOBALS["TL_JAVASCRIPT"][] = 'system/modules/wem-contao-locations/assets/backend/backend.js';
+
 /**
  * Provide miscellaneous methods that are used by the data configuration array.
  *
@@ -275,6 +290,24 @@ class tl_wem_location extends Backend
 		$this->import('BackendUser', 'User');
 	}
 
+	/**
+	 * Adjust DCA if there is no Geocoder for the map
+	 */
+	public function checkIfGeocodeExists()
+	{
+		$objMap = \WEM\Location\Model\Map::findByPk(\Input::get('id'));
+
+		if('' == $objMap->geocodingProvider){
+			unset($GLOBALS['TL_DCA']['tl_wem_location']['list']['global_operations']['geocodeAll']);
+			unset($GLOBALS['TL_DCA']['tl_wem_location']['list']['operations']['geocode']);
+		}
+	}
+
+	/**
+	 * Design each row of the DCA
+	 * @param  Array  $arrRow
+	 * @return String
+	 */
 	public function listItems($arrRow)
 	{
 		if(!$arrRow['lat'] || !$arrRow['lng'])
@@ -282,7 +315,9 @@ class tl_wem_location extends Backend
 		else
 			$strColor = '#333';
 
-		return sprintf('<span style="color:%s">%s</span> <span style="color:#888">[%s - %s]</style>', $strColor, $arrRow['title'], $arrRow['city'], $GLOBALS['TL_LANG']['CNT'][$arrRow['country']]);
+		$strRow = sprintf('<span style="color:%s">%s</span> <span style="color:#888">[%s - %s]</span>', $strColor, $arrRow['title'], $arrRow['city'], $GLOBALS['TL_LANG']['CNT'][$arrRow['country']]);
+		$strRow .= '<div class="ajax-results"></div>';
+		return $strRow;
 	}
 
 	/**

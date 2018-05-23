@@ -12,6 +12,8 @@ namespace WEM\Location\Backend;
 
 use Contao\Backend;
 
+use Haste\Http\Response\JsonResponse;
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -26,6 +28,11 @@ use WEM\Location\Model\Location;
  */
 class Callback extends Backend
 {
+	/**
+	 * Geocode a given location
+	 * @param  \DataContainer $objDc [Datacontainer to geocode]
+	 * @return JSON through AJAX request or Message with redirection
+	 */
 	public function geocode(\DataContainer $objDc){
 		if (\Input::get('key') != 'geocode')
 			return '';
@@ -54,13 +61,25 @@ class Callback extends Backend
 			if(!$objLocation->save())
 				throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['errorWhenSavingTheLocation']);
 
-			\Message::addConfirmation(sprintf($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['CONFIRM']['locationSaved'], $objLocation->title));
+			if('ajax' == \Input::get('src'))
+				$arrResponse = ["status"=>"success", "response"=>sprintf($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['CONFIRM']['locationSaved'], $objLocation->title), "data"=>$arrCoords];
+			else
+				\Message::addConfirmation(sprintf($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['CONFIRM']['locationSaved'], $objLocation->title));
+			
 		}
 		catch(\Exception $e){
-			\Message::addError($e->getMessage());
+			if('ajax' == \Input::get('src'))
+				$arrResponse = ["status"=>"error", "response"=>$e->getMessage()];
+			else
+				\Message::addError($e->getMessage());
+		}
+
+		if('ajax' == \Input::get('src')){
+			$objResponse = new JsonResponse($arrResponse);
+			$objResponse->send();
 		}
 		
-		$strRedirect = str_replace(["&key=geocode", "id=".$objLocation->id], ["", "id=".$objMap->id], \Environment::get('request'));
+		$strRedirect = str_replace(["&key=geocode", "id=".$objLocation->id, "&src=ajax"], ["", "id=".$objMap->id, ""], \Environment::get('request'));
 		$this->redirect(ampersand($strRedirect));
 	}
 
