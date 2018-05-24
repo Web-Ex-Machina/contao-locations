@@ -1,5 +1,5 @@
 .mod_wem_locations_map{padding-top: 30px; position: relative; display: -webkit-box;display: -ms-flexbox;display: flex;}
-.mod_wem_locations_map[data-zoomOnScroll="false"] div[class*="jvectormap-zoom"]{display: none;}
+.mod_wem_locations_map.no-buttons div[class*="jvectormap-zoom"]{display: none;}
 
 .mod_wem_locations_map .map__reset{position: absolute; margin: 0; top: 15px;left: 15px; display: none; ;z-index: 1;
   -webkit-box-shadow: 1px 3px 10px rgba(0,0,0,.5);box-shadow: 1px 3px 10px rgba(0,0,0,.5);

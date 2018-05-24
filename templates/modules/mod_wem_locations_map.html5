@@ -3,42 +3,25 @@
 DEFAULT DATA SETTINGS
 ---------------------
 
-data-zoomOnScroll -> true
-data-panOnDrag -> true
-data-regionsSelectable -> false
-data-regionsSelectableOne -> true
-data-markersSelectable -> false
-data-markersSelectableOne -> true
-data-mapBackground -> #fff
-data-regionBackground -> #ddd
-data-regionBackgroundActive -> #999
-data-regionBackgroundHover -> #999
-data-regionBackgroundSelected -> #666
-data-regionBackgroundSelectedHover -> #666
-data-regionLock -> true
-data-markerBackground -> #666
-data-markerBackgroundHover -> #999
-data-markerBackgroundSelected -> #999
+zoomOnScroll -> false
+panOnDrag -> false
+regionsSelectable -> true
+regionsSelectableOne -> true
+markersSelectable -> true
+markersSelectableOne -> true
+mapBackground -> #fff
+regionBackground -> #ddd
+regionBackgroundActive -> #999
+regionBackgroundHover -> #999
+regionBackgroundSelected -> #666
+regionBackgroundSelectedHover -> #666
+regionLock -> true
+markerBackground -> #666
+markerBackgroundHover -> #999
+markerBackgroundSelected -> #999
 
  -->
-<div class="mod_wem_locations_map"
-  data-zoomOnScroll="false"
-  data-panOnDrag="false"
-  data-regionsSelectable="true"
-  data-regionsSelectableOne=""
-  data-markersSelectable="true"
-  data-markersSelectableOne=""
-  data-mapBackground=""
-  data-regionBackground=""
-  data-regionBackgroundActive=""
-  data-regionBackgroundHover=""
-  data-regionBackgroundSelected=""
-  data-regionBackgroundSelectedHover=""
-  data-regionLock=""
-  data-markerBackground=""
-  data-markerBackgroundHover=""
-  data-markerBackgroundSelected=""
-></div>
+<div class="mod_wem_locations_map"></div>
 <button class="map__reset"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['BUTTON']['BACK'] ?></button>
 <div class="map__content">
   <div class="h3 map__content__title"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['TITLE']['PANEL'] ?> <span class="location"></span></div>
@@ -59,4 +42,5 @@ data-markerBackgroundSelected -> #999
 
 <script>
   var objMapData = <?= json_encode($this->locations,true) ?>;
+  var objMapConfig = <?= json_encode($this->config,true) ?>;
 </script>

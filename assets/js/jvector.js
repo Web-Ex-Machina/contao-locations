@@ -1,5 +1,4 @@
 $(function(){
-
   // ------------------------------------------------------------------------------------------------------------------------------
   // RESIZE EVENT
   $(window).resize(function(){
@@ -50,11 +49,11 @@ $(function(){
     map: 'world_mill',
     container: $map,
     backgroundColor: getMapData('mapBackground','#fff'),
-    zoomOnScroll: getMapData('zoomOnScroll',true),
-    panOnDrag: getMapData('panOnDrag',true),
-    regionsSelectable: getMapData('regionsSelectable',false),
+    zoomOnScroll: getMapData('zoomOnScroll',false),
+    panOnDrag: getMapData('panOnDrag',false),
+    regionsSelectable: getMapData('regionsSelectable',true),
     regionsSelectableOne: getMapData('regionsSelectableOne',true),
-    markersSelectable: getMapData('markersSelectable',false),
+    markersSelectable: getMapData('markersSelectable',true),
     markersSelectableOne: getMapData('markersSelectableOne',true),
     regionStyle: {
       initial: {
@@ -164,6 +163,9 @@ $(function(){
   $map.append($content);
   $map.append($dropdowns);
 
+  if(!getMapData('zoomOnScroll',false))
+    $map.addClass('no-buttons');
+
   // set the active regions and a cursor on them
   objMap.series.regions[0].setValues(getMapSeries());
   $map.find('path[fill*="'+getMapData('regionBackgroundActive','#999')+'"]').css('cursor','pointer');
@@ -174,9 +176,9 @@ $(function(){
   // ------------------------------------------------------------------------------------------------------------------------------
   // MAP FUNCTIONS
   function getMapData(label,defaultValue){
-    label = label.toLowerCase();
-    if($map.data(label) !== undefined && $map.data(label) !== "")
-      return $map.data(label);
+    // label = label.toLowerCase();
+    if(objMapConfig[label] !== undefined && objMapConfig[label] !== "")
+      return objMapConfig[label];
     else
       return defaultValue;
   }
@@ -258,8 +260,6 @@ $(function(){
       bufferWheel = 0;
     },300);
   });
-
-
 });
 
 
