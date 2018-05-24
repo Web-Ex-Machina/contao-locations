@@ -84,15 +84,15 @@ class DisplayMap extends \Module
 			,"markersSelectable" => $objMap->markersSelectable
 			,"markersSelectableOne" => $objMap->markersSelectableOne
 			,"regionLock" => $objMap->regionLock
-			,"mapBackground" => '#'.$objMap->mapBackground
-			,"regionBackground" => '#'.$objMap->regionBackground
-			,"regionBackgroundActive" => '#'.$objMap->regionBackgroundActive
-			,"regionBackgroundHover" => '#'.$objMap->regionBackgroundHover
-			,"regionBackgroundSelected" => '#'.$objMap->regionBackgroundSelected
-			,"regionBackgroundSelectedHover" => '#'.$objMap->regionBackgroundSelectedHover
-			,"markerBackground" => '#'.$objMap->markerBackground
-			,"markerBackgroundHover" => '#'.$objMap->markerBackgroundHover
-			,"markerBackgroundSelected" => '#'.$objMap->markerBackgroundSelected
+			,"mapBackground" => $objMap->mapBackground
+			,"regionBackground" => $objMap->regionBackground
+			,"regionBackgroundActive" => $objMap->regionBackgroundActive
+			,"regionBackgroundHover" => $objMap->regionBackgroundHover
+			,"regionBackgroundSelected" => $objMap->regionBackgroundSelected
+			,"regionBackgroundSelectedHover" => $objMap->regionBackgroundSelectedHover
+			,"markerBackground" => $objMap->markerBackground
+			,"markerBackgroundHover" => $objMap->markerBackgroundHover
+			,"markerBackgroundSelected" => $objMap->markerBackgroundSelected
 		];
 
 		$arrLocations = array();
