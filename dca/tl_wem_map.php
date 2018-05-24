@@ -106,6 +106,7 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 	// Subpalettes
 	'subpalettes' => array
 	(
+		'mapProvider_jvector' =>'zoomOnScroll,panOnDrag,regionsSelectable,regionsSelectableOne,markersSelectable,markersSelectableOne,mapBackground,regionBackground,regionBackgroundActive,regionBackgroundHover,regionBackgroundSelected,regionBackgroundSelectedHover,regionLock,markerBackground,markerBackgroundHover,markerBackgroundSelected',
 		'mapProvider_gmaps' => 'mapProviderGmapKey',
 		'geocodingProvider_gmaps' => 'geocodingProviderGmapKey',
 	),
@@ -181,9 +182,126 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 
-		// Idées
-		// Paramètres des marqueurs
-		// Filtres et attributs
+		// Map Config
+		'zoomOnScroll' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['zoomOnScroll'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+		'panOnDrag' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['panOnDrag'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+		'regionsSelectable' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionsSelectable'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+		'regionsSelectableOne' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionsSelectableOne'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+		'markersSelectable' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['markersSelectable'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+		'markersSelectableOne' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['markersSelectableOne'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+		'mapBackground' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['mapBackground'],
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+			'sql'                     => "varchar(64) NOT NULL default ''"
+		),
+		'regionBackground' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionBackground'],
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+			'sql'                     => "varchar(64) NOT NULL default ''"
+		),
+		'regionBackgroundActive' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionBackgroundActive'],
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+			'sql'                     => "varchar(64) NOT NULL default ''"
+		),
+		'regionBackgroundHover' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionBackgroundHover'],
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+			'sql'                     => "varchar(64) NOT NULL default ''"
+		),
+		'regionBackgroundSelected' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionBackgroundSelected'],
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+			'sql'                     => "varchar(64) NOT NULL default ''"
+		),
+		'regionBackgroundSelectedHover' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionBackgroundSelectedHover'],
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+			'sql'                     => "varchar(64) NOT NULL default ''"
+		),
+		'regionLock' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionLock'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+		'markerBackground' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['markerBackground'],
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+			'sql'                     => "varchar(64) NOT NULL default ''"
+		),
+		'markerBackgroundHover' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['markerBackgroundHover'],
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+			'sql'                     => "varchar(64) NOT NULL default ''"
+		),
+		'markerBackgroundSelected' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['markerBackgroundSelected'],
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+			'sql'                     => "varchar(64) NOT NULL default ''"
+		),
 	)
 );
 
