@@ -76,24 +76,19 @@ class DisplayMap extends \Module
 		\System::getCountries();
 
 		// Build the config
-		$arrConfig = [
-			"zoomOnScroll" => $objMap->zoomOnScroll
-			,"panOnDrag" => $objMap->panOnDrag
-			,"regionsSelectable" => $objMap->regionsSelectable
-			,"regionsSelectableOne" => $objMap->regionsSelectableOne
-			,"markersSelectable" => $objMap->markersSelectable
-			,"markersSelectableOne" => $objMap->markersSelectableOne
-			,"regionLock" => $objMap->regionLock
-			,"mapBackground" => $objMap->mapBackground
-			,"regionBackground" => $objMap->regionBackground
-			,"regionBackgroundActive" => $objMap->regionBackgroundActive
-			,"regionBackgroundHover" => $objMap->regionBackgroundHover
-			,"regionBackgroundSelected" => $objMap->regionBackgroundSelected
-			,"regionBackgroundSelectedHover" => $objMap->regionBackgroundSelectedHover
-			,"markerBackground" => $objMap->markerBackground
-			,"markerBackgroundHover" => $objMap->markerBackgroundHover
-			,"markerBackgroundSelected" => $objMap->markerBackgroundSelected
-		];
+		$arrConfig = [];
+		if($objMap->mapConfig){
+			foreach(deserialize($objMap->mapConfig) as $arrRow){
+				if($arrRow["value"] === 'true')
+					$varValue = true;
+				else if($arrRow["value"] === 'false')
+					$varValue = false;
+				else
+					$varValue = $arrRow["value"];
+
+				$arrConfig[$arrRow["key"]] = $varValue;
+			}
+		}
 
 		$arrLocations = array();
 		while($objLocations->next())

@@ -39,6 +39,14 @@
 			<source>Select the map provider</source>
 			<target>Sélectionnez le service utilisé pour la carte</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_map.mapConfig.0">
+			<source>Options</source>
+			<target>Options</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_map.mapConfig.1">
+			<source>Enter the map options</source>
+			<target>Saisissez les options de la carte</target>
+		</trans-unit>
 		<trans-unit id="tl_wem_map.mapProvider.jvector">
 			<source>JVector</source>
 			<target>JVector</target>

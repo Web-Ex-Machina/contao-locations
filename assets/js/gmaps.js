@@ -54,8 +54,13 @@ $(function(){
 		objMapBounds.extend(objMarkers[i].latLng);
 		objMarkers[i].marker = new google.maps.Marker({
 			position: objMarkers[i].latLng,
-			map: objMap
+			map: objMap,
+			title: objMarkers[i].name
 		});
+
+		objMarkers[i].marker.addListener('click', function() {
+			alert("CLIC");
+        });
 	};
 
 	objMap.setCenter(objMapBounds.getCenter());

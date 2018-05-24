@@ -106,8 +106,8 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 	// Subpalettes
 	'subpalettes' => array
 	(
-		'mapProvider_jvector' =>'zoomOnScroll,panOnDrag,regionsSelectable,regionsSelectableOne,markersSelectable,markersSelectableOne,mapBackground,regionBackground,regionBackgroundActive,regionBackgroundHover,regionBackgroundSelected,regionBackgroundSelectedHover,regionLock,markerBackground,markerBackgroundHover,markerBackgroundSelected',
-		'mapProvider_gmaps' => 'mapProviderGmapKey',
+		'mapProvider_jvector' =>'mapConfig',
+		'mapProvider_gmaps' => 'mapProviderGmapKey,mapConfig',
 		'geocodingProvider_gmaps' => 'geocodingProviderGmapKey',
 	),
 
@@ -154,6 +154,17 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 			'explanation'             => 'wem_locations_mapProvider',
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
+		'mapConfig' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['mapConfig'],
+			'exclude'                 => true,
+			'inputType'               => 'keyValueWizard',
+			'load_callback'			  => array
+			(
+				array('tl_wem_map', 'getDefaultMapConfig'),
+			),
+			'sql'                     => "blob NULL"
+		),
 		'mapProviderGmapKey' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['mapProviderGmapKey'],
@@ -181,127 +192,6 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'encrypt'=>true),
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
-
-		// Map Config
-		'zoomOnScroll' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['zoomOnScroll'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
-			'sql'                     => "char(1) NOT NULL default ''"
-		),
-		'panOnDrag' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['panOnDrag'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
-			'sql'                     => "char(1) NOT NULL default ''"
-		),
-		'regionsSelectable' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionsSelectable'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
-			'sql'                     => "char(1) NOT NULL default ''"
-		),
-		'regionsSelectableOne' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionsSelectableOne'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
-			'sql'                     => "char(1) NOT NULL default ''"
-		),
-		'markersSelectable' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['markersSelectable'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
-			'sql'                     => "char(1) NOT NULL default ''"
-		),
-		'markersSelectableOne' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['markersSelectableOne'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
-			'sql'                     => "char(1) NOT NULL default ''"
-		),
-		'mapBackground' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['mapBackground'],
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
-			'sql'                     => "varchar(64) NOT NULL default ''"
-		),
-		'regionBackground' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionBackground'],
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
-			'sql'                     => "varchar(64) NOT NULL default ''"
-		),
-		'regionBackgroundActive' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionBackgroundActive'],
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
-			'sql'                     => "varchar(64) NOT NULL default ''"
-		),
-		'regionBackgroundHover' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionBackgroundHover'],
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
-			'sql'                     => "varchar(64) NOT NULL default ''"
-		),
-		'regionBackgroundSelected' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionBackgroundSelected'],
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
-			'sql'                     => "varchar(64) NOT NULL default ''"
-		),
-		'regionBackgroundSelectedHover' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionBackgroundSelectedHover'],
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
-			'sql'                     => "varchar(64) NOT NULL default ''"
-		),
-		'regionLock' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['regionLock'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
-			'sql'                     => "char(1) NOT NULL default ''"
-		),
-		'markerBackground' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['markerBackground'],
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
-			'sql'                     => "varchar(64) NOT NULL default ''"
-		),
-		'markerBackgroundHover' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['markerBackgroundHover'],
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
-			'sql'                     => "varchar(64) NOT NULL default ''"
-		),
-		'markerBackgroundSelected' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['markerBackgroundSelected'],
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
-			'sql'                     => "varchar(64) NOT NULL default ''"
-		),
 	)
 );
 
@@ -317,10 +207,32 @@ class tl_wem_map extends Backend
 	/**
 	 * Import the back end user object
 	 */
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		$this->import('BackendUser', 'User');
+	}
+
+	/**
+	 * Generate the default map config array
+	 * @param  [Array] $varValue
+	 * @return [Array]
+	 */
+	public function getDefaultMapConfig($varValue, $objDc){
+		if(!$varValue){
+			switch($objDc->activeRecord->mapProvider){
+				case 'jvector':
+					$arrConfig = \WEM\Location\Controller\Provider\JVector::getDefaultConfig();
+				break;
+
+				default:
+					$arrConfig = [];
+			}
+
+			foreach($arrConfig as $strKey => $strValue){
+				$varValue[] = ["key"=>$strKey, "value"=>$strValue];
+			}
+		}
+		return $varValue;
 	}
 
 	/**
@@ -328,8 +240,7 @@ class tl_wem_map extends Backend
 	 * @param  [Array] $varValue
 	 * @return [Array]
 	 */
-	public function generateExcelPattern($varValue)
-	{
+	public function generateExcelPattern($varValue){
 		if(!$varValue){
 			$varValue = [
 				["key"=>"title", "value"=>"A"]
@@ -344,8 +255,6 @@ class tl_wem_map extends Backend
 				,["key"=>"email", "value"=>"J"]
 				,["key"=>"website", "value"=>"K"]
 			];
-
-			return $varValue;
 		}
 
 		return $varValue;
