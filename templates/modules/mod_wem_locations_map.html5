@@ -1,26 +1,3 @@
-<!--
-
-DEFAULT DATA SETTINGS
----------------------
-
-zoomOnScroll -> false
-panOnDrag -> false
-regionsSelectable -> true
-regionsSelectableOne -> true
-markersSelectable -> true
-markersSelectableOne -> true
-mapBackground -> #fff
-regionBackground -> #ddd
-regionBackgroundActive -> #999
-regionBackgroundHover -> #999
-regionBackgroundSelected -> #666
-regionBackgroundSelectedHover -> #666
-regionLock -> true
-markerBackground -> #666
-markerBackgroundHover -> #999
-markerBackgroundSelected -> #999
-
- -->
 <div class="mod_wem_locations_map"></div>
 <button class="map__reset"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['BUTTON']['BACK'] ?></button>
 <div class="map__content">

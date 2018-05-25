@@ -190,13 +190,36 @@ class Callback extends Backend
 			$this->reload();
 		}
 
+		// Build an Excel pattern to show
 		$arrTh = array();
 		$arrTd = array();
-		dump($arrExcelPattern);
 		foreach($arrExcelPattern as $strExcelColumn => $strDbColumn){
 			$arrTh[] = '<th>'.$strExcelColumn.'</th>';
 			$arrTd[] = '<td>'.$GLOBALS['TL_LANG']['tl_wem_location'][$strDbColumn][0].'</td>';
 		}
+
+		// Build the country array, to give the correct syntax to users
+		$arrCountries = array();
+		\System::loadLanguageFile('countries');
+		foreach($GLOBALS['TL_LANG']['CNT'] as $strIsoCode => $strName){
+			$arrCountries[$strIsoCode]["current"] = $strName;
+		}
+
+		\System::loadLanguageFile('countries', 'en');
+		foreach($GLOBALS['TL_LANG']['CNT'] as $strIsoCode => $strName){
+			$arrCountries[$strIsoCode]["en"] = $strName;
+		}
+
+		$strCountries = '';
+		foreach($arrCountries as $strIsoCode => $arrNames){
+			$strCountries .= '<tr>';
+			$strCountries .= '<td>'.$strIsoCode.'</td>';
+			$strCountries .= '<td>'.$arrNames["current"].'</td>';
+			$strCountries .= '<td>'.$arrNames["en"].'</td>';
+			$strCountries .= '</tr>';
+		}
+
+		$arrLanguages = \System::getLanguages();
 
 		// Return form
 		return '
@@ -218,7 +241,13 @@ class Callback extends Backend
 		</div>
 		</fieldset>
 
-		<div class="tl_tbox nolegend">
+		<div class="tl_formbody_submit">
+			<div class="tl_submit_container">
+			  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_wem_location']['import'][0]).'">
+			</div>
+		</div>
+
+		<fieldset class="tl_tbox nolegend">
 			<div class="widget">
 			<h3>'.$GLOBALS['TL_LANG']['tl_wem_location']['importExampleTitle'].'</h3>
 			<table class="wem_locations_import_table">
@@ -231,13 +260,22 @@ class Callback extends Backend
 				</tbody>
 			</table>
 			</div>
-		</div>
+		</fieldset>
 
-		<div class="tl_formbody_submit">
-		<div class="tl_submit_container">
-		  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_wem_location']['import'][0]).'">
-		</div>
-		</div>
+		<fieldset class="tl_tbox nolegend">
+			<div class="widget">
+			<h3>'.$GLOBALS['TL_LANG']['tl_wem_location']['importListCountriesTitle'].'</h3>
+			<table class="wem_locations_import_table">
+				<thead>
+					<tr><th>ISOCode</th><th>'.$arrLanguages[$GLOBALS['TL_LANGUAGE']].'</th><th>'.$arrLanguages["en"].'</th></tr>
+				</thead>
+				<tbody>
+					'.$strCountries.'
+				</tbody>
+			</table>
+			</div>
+		</fieldset>
+
 		</form>';
 	}
 

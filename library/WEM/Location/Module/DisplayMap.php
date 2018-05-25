@@ -84,7 +84,7 @@ class DisplayMap extends \Module
 				else if($arrRow["value"] === 'false')
 					$varValue = false;
 				else
-					$varValue = $arrRow["value"];
+					$varValue = html_entity_decode($arrRow["value"]);
 
 				$arrConfig[$arrRow["key"]] = $varValue;
 			}
@@ -116,7 +116,7 @@ class DisplayMap extends \Module
 
 			$arrLocations[] = $arrLocation;
 		}
-		
+
 		$this->Template->locations = $arrLocations;
 		$this->Template->config = $arrConfig;
 	}

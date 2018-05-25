@@ -186,6 +186,10 @@
 			<source>Your Excel file should looks like this :</source>
 			<target>Votre ficher Excel devrait ressembler à cela :</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_location.importListCountriesTitle">
+			<source>You will find the list of the countries below :</source>
+			<target>Vous trouverez la liste des pays ci-dessous :</target>
+		</trans-unit>
 
 		<trans-unit id="tl_wem_location.geocodeAll.0">
 			<source>Geocode</source>
