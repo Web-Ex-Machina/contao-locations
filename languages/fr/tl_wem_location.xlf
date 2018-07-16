@@ -157,6 +157,22 @@
 			<source>Show location data ID %s</source>
 			<target>Voir les informations de l'emplacement ID %s</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_location.toggle.0">
+			<source>Show/Hide location</source>
+			<target>Afficher/Cacher l'emplacement</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.toggle.1">
+			<source>Show/Hide location ID %s</source>
+			<target>Afficher/Cacher l'emplacement ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.geocode.0">
+			<source>Find location coordinates</source>
+			<target>Chercher les coordonnées de l'emplacement</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.geocode.1">
+			<source>Find location ID %s coordinates</source>
+			<target>Chercher les coordonnées de l'emplacement ID %s</target>
+		</trans-unit>
 
 		<trans-unit id="tl_wem_location.import.0">
 			<source>Import</source>

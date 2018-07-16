@@ -118,7 +118,7 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 			),
 			'geocode' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_wem_location']['toggle'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_wem_location']['geocode'],
 				'href'                => 'key=geocode',
 				'icon'                => 'system/modules/wem-contao-locations/assets/backend/icon_geocode_16.png'
 			),
