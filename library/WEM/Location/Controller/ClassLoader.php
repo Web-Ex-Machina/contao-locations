@@ -60,15 +60,12 @@ class ClassLoader extends Controller
 
 				$objCombiner = new Combiner();
 				$objCombiner->addMultiple([
-					,"system/modules/wem-contao-locations/assets/css/leaflet.css"
+					"system/modules/wem-contao-locations/assets/css/leaflet.css"
 				], $strVersion);
 				$GLOBALS["TL_HEAD"][] = sprintf('<link rel="stylesheet" href="%s">', $objCombiner->getCombinedFile());
-				$objCombiner = new Combiner();
-				$objCombiner->addMultiple([
-						"system/modules/wem-contao-locations/assets/js/leaflet.js|async",
-						"system/modules/wem-contao-locations/assets/js/leaflet-init.js|async
-				], $strVersion);
-				$GLOBALS['TL_JAVASCRIPT'][] = $objCombiner->getCombinedFile();
+
+				$GLOBALS['TL_JAVASCRIPT'][] =	"system/modules/wem-contao-locations/assets/js/leaflet.js|async";
+				$GLOBALS['TL_JAVASCRIPT'][] =	"system/modules/wem-contao-locations/assets/js/leaflet-init.js|async";
 
 			break;
 			default:
