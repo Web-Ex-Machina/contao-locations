@@ -51,6 +51,10 @@
 			<source>JVector</source>
 			<target>JVector</target>
 		</trans-unit>
+    <trans-unit id="tl_wem_map.mapProvider.leaflet">
+      <source>Leaflet</source>
+      <target>Leaflet</target>
+    </trans-unit>
 		<trans-unit id="tl_wem_map.mapProvider.gmaps">
 			<source>Google Maps</source>
 			<target>Google Maps</target>
