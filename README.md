@@ -8,7 +8,7 @@ Functionnalities
 -------------------
  * Configure maps as many as you want.
  * Configure location attributes, depends on your needs
- * Use different maps, as Google Maps, OpenStreetMap, JVector...
+ * Use different maps, as Google Maps, OpenStreetMap, JVector, Leaflet...
  * Import/Export your locations with Excel/CSV files
  * And as always, more in the future !
 
