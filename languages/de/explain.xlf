@@ -17,6 +17,14 @@
         <source>For more information about Google Maps please visit &lt;a href=&quot;https://developers.google.com/maps/&quot; title=&quot;Google Maps Website&quot; target=&quot;_blank&quot;&gt;https://developers.google.com/maps/&lt;/a&gt;.</source>
         <target>Für mehr Informationen über Google Maps bitte die &lt;a href=&quot;https://developers.google.com/maps/&quot; title=&quot;Google Maps Website&quot; target=&quot;_blank&quot;&gt;https://developers.google.com/maps/&lt;/a&gt; besuchen.</target>
       </trans-unit>
+      <trans-unit id="XPL.wem_locations_mapProvider.1.2">
+        <source>Leaflet</source>
+        <target>Leaflet</target>
+      </trans-unit>
+      <trans-unit id="XPL.wem_locations_mapProvider.1.2">
+        <source>For more information about Leaflet please visit &lt;a href=&quot;https://leafletjs.com&quot; title=&quot;Leaflet Website&quot; target=&quot;_blank&quot;&gt;https://leafletjs.com&lt;/a&gt;.</source>
+        <target>Für mehr Informationen über Leaflet bitte die &lt;a href=&quot;https://leafletjs.com&quot; title=&quot;Leaflet Website&quot; target=&quot;_blank&quot;&gt;https://leafletjs.com&lt;/a&gt; besuchen.</target>
+      </trans-unit>
 
       <trans-unit id="XPL.wem_locations_geocodingProvider.0.0">
         <source>Google Maps</source>

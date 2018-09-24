@@ -107,6 +107,7 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 	'subpalettes' => array
 	(
 		'mapProvider_jvector' =>'mapConfig',
+		'mapProvider_leafet' => 'mapConfig',
 		'mapProvider_gmaps' => 'mapProviderGmapKey,mapConfig',
 		'geocodingProvider_gmaps' => 'geocodingProviderGmapKey',
 	),
@@ -148,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 			'default'				  => 'jvector',
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'options'				  => array('jvector', 'gmaps'),
+			'options'				  => array('jvector', 'gmaps','leaflet'),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_wem_map']['mapProvider'],
 			'eval'                    => array('helpwizard'=>true, 'mandatory'=>true, 'submitOnChange'=>true, 'chosen'=>true),
 			'explanation'             => 'wem_locations_mapProvider',

@@ -56,6 +56,18 @@ class ClassLoader extends Controller
 				$objCombiner->add("system/modules/wem-contao-locations/assets/js/gmaps.js", $strVersion);
 				$GLOBALS['TL_JAVASCRIPT'][] = $objCombiner->getCombinedFile();
 			break;
+			case 'leaflet':
+
+				$objCombiner = new Combiner();
+				$objCombiner->addMultiple([
+					"system/modules/wem-contao-locations/assets/css/leaflet.css"
+				], $strVersion);
+				$GLOBALS["TL_HEAD"][] = sprintf('<link rel="stylesheet" href="%s">', $objCombiner->getCombinedFile());
+
+				$GLOBALS['TL_JAVASCRIPT'][] =	"system/modules/wem-contao-locations/assets/js/leaflet.js|async";
+				$GLOBALS['TL_JAVASCRIPT'][] =	"system/modules/wem-contao-locations/assets/js/leaflet-init.js|async";
+
+			break;
 			default:
 				throw new \Exception("This provider is unknown");
 		}
