@@ -96,25 +96,28 @@ class DisplayMap extends \Module
 			$strCountry = strtoupper($objLocations->country);
 			$strContinent = Util::getCountryContinent($strCountry);
 
-			$arrLocation = [
-				"name" => $objLocations->title
-				,"address" => $objLocations->street." ".$objLocations->postal." ".$objLocations->city
-				,"phone" => $objLocations->phone
-				,"email" => $objLocations->email
-				,"url" => $objLocations->website
-				,"lat" => $objLocations->lat
-				,"lng" => $objLocations->lng
-				,"country" => [
-					"code" => $strCountry
-					,"name" => $GLOBALS['TL_LANG']['CNT'][$objLocations->country]
-				]
-				,"continent" => [
-					"code" => $strContinent
-					,"name" => $GLOBALS['TL_LANG']['CONTINENT'][$strContinent]
-				]
-			];
+			if(!(empty($objLocations->lat) || empty($objLocations->lng))) {
+				$arrLocation = [
+					"aliasId" => StringUtil::generateAlias($strCountry.'-'strtolower($objLocations->title))
+					,"name" => $objLocations->title
+					,"address" => $objLocations->street." ".$objLocations->postal." ".$objLocations->city
+					,"phone" => $objLocations->phone
+					,"email" => $objLocations->email
+					,"url" => $objLocations->website
+					,"lat" =>  $objLocations->lat
+					,"lng" =>  $objLocations->lng
+					,"country" => [
+						"code" => $strCountry
+						,"name" => $GLOBALS['TL_LANG']['CNT'][$objLocations->country]
+					]
+					,"continent" => [
+						"code" => $strContinent
+						,"name" => $GLOBALS['TL_LANG']['CONTINENT'][$strContinent]
+					]
+				];
 
-			$arrLocations[] = $arrLocation;
+				$arrLocations[] = $arrLocation;
+			}
 		}
 
 		$this->Template->locations = $arrLocations;
