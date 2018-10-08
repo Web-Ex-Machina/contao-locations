@@ -59,36 +59,38 @@ class DisplayMap extends \Module
 	 */
 	protected function compile()
 	{
-		// Load the map
-		$objMap = Map::findByPk($this->wem_location_map);
+		try{
+			// Load the map
+			$objMap = Map::findByPk($this->wem_location_map);
 
-		if(!$objMap)
-			throw new \Exception("No map found.");
+			if(!$objMap)
+				throw new \Exception("No map found.");
 
-		// Load the locations
-		$objLocations = Location::findItems(["published"=>1, "pid"=>$this->wem_location_map]);
+			// Load the locations
+			$objLocations = Location::findItems(["published"=>1, "pid"=>$this->wem_location_map]);
 
-		if(!$objLocations)
-			throw new \Exception("No locations found for this map.");
+			if(!$objLocations)
+				throw new \Exception("No locations found for this map.");
 
-		// Load the libraries
-		ClassLoader::loadLibraries($objMap);
-		\System::getCountries();
+			// Load the libraries
+			ClassLoader::loadLibraries($objMap, 2);
+			\System::getCountries();
 
-		// Build the config
-		$arrConfig = [];
-		if($objMap->mapConfig){
-			foreach(deserialize($objMap->mapConfig) as $arrRow){
-				if($arrRow["value"] === 'true')
-					$varValue = true;
-				else if($arrRow["value"] === 'false')
-					$varValue = false;
-				else
-					$varValue = html_entity_decode($arrRow["value"]);
+			// Build the config
+			$arrConfig = [];
+			if($objMap->mapConfig){
+				foreach(deserialize($objMap->mapConfig) as $arrRow){
+					if($arrRow["value"] === 'true')
+						$varValue = true;
+					else if($arrRow["value"] === 'false')
+						$varValue = false;
+					else
+						$varValue = html_entity_decode($arrRow["value"]);
 
-				$arrConfig[$arrRow["key"]] = $varValue;
+					$arrConfig[$arrRow["key"]] = $varValue;
+				}
 			}
-		}
+
 
 		$arrLocations = array();
 		while($objLocations->next())
@@ -104,8 +106,9 @@ class DisplayMap extends \Module
 					,"phone" => $objLocations->phone
 					,"email" => $objLocations->email
 					,"url" => $objLocations->website
-					,"lat" =>  $objLocations->lat
-					,"lng" =>  $objLocations->lng
+					,"lat" => $objLocations->lat
+					,"lng" => $objLocations->lng
+
 					,"country" => [
 						"code" => $strCountry
 						,"name" => $GLOBALS['TL_LANG']['CNT'][$objLocations->country]
@@ -120,7 +123,13 @@ class DisplayMap extends \Module
 			}
 		}
 
-		$this->Template->locations = $arrLocations;
-		$this->Template->config = $arrConfig;
+
+			$this->Template->locations = $arrLocations;
+			$this->Template->config = $arrConfig;
+		}
+		catch(\Exception $e){
+			$this->Template->error = true;
+			$this->Template->msg = $e->getMessage();
+		}
 	}
 }

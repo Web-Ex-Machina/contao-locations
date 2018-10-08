@@ -44,7 +44,7 @@ class ClassLoader extends Controller
 			break;
 			case 'gmaps':
 				if(!$objMap->mapProviderGmapKey)
-					throw new Exception("Google Maps needs an API Key !");
+					throw new \Exception("Google Maps needs an API Key !");
 
 				$GLOBALS["TL_HEAD"][] = sprintf('<script async defer src="https://maps.googleapis.com/maps/api/js?key=%s"></script>', Encryption::decrypt($objMap->mapProviderGmapKey));
 
@@ -60,12 +60,13 @@ class ClassLoader extends Controller
 
 				$objCombiner = new Combiner();
 				$objCombiner->addMultiple([
-					"system/modules/wem-contao-locations/assets/css/leaflet.css"
+					"system/modules/wem-contao-locations/assets/vendor/leaflet/leaflet.css"
+					,"system/modules/wem-contao-locations/assets/css/leaflet.css"
 				], $strVersion);
 				$GLOBALS["TL_HEAD"][] = sprintf('<link rel="stylesheet" href="%s">', $objCombiner->getCombinedFile());
 
+				$GLOBALS['TL_JAVASCRIPT'][] =	"system/modules/wem-contao-locations/assets/vendor/leaflet/leaflet.js";
 				$GLOBALS['TL_JAVASCRIPT'][] =	"system/modules/wem-contao-locations/assets/js/leaflet.js|async";
-				$GLOBALS['TL_JAVASCRIPT'][] =	"system/modules/wem-contao-locations/assets/js/leaflet-init.js|async";
 
 			break;
 			default:

@@ -1,25 +1,26 @@
-<div class="mod_wem_locations block">
-  <div class="mod_wem_locations_map"></div>
-  <button class="map__reset"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['BUTTON']['BACK'] ?></button>
-  <div class="map__content">
-    <div class="h3 map__content__title"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['TITLE']['PANEL'] ?> <span class="location"></span></div>
-    <div class="map__content__wrapper">
-      <?php foreach ($this->locations as $key => $location): ?>
-        <div class="map__content__item" data-marker="<?= $location['country']['code'].'-'.str_replace(' ', '_', strtolower($location['name'])) ?>" data-country="<?= $location['country']['code'] ?>" data-continent="<?= $location['continent']['code'] ?>">
-          <p class="ft-b col-xs-12"><?= $location['name'] ?></p>
-          <div class="col-xs-6"><?= $location['address'] ?></div>
-          <div class="col-xs-6">
-            <?= $location['phone'] ?><br>
-            <?= $location['email'] ?>
-          </div>
+<?php if($this->error): ?>
+<div class="mod_wem_locations_map error block"><?= $this->msg ?></div>
+<?php else: ?>
+<div class="mod_wem_locations_map block"></div>
+<button class="map__reset"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['BUTTON']['BACK'] ?></button>
+<div class="map__content">
+  <div class="h3 map__content__title"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['TITLE']['PANEL'] ?> <span class="location"></span></div>
+  <div class="map__content__wrapper">
+    <?php foreach ($this->locations as $key => $location): ?>
+      <div class="map__content__item" data-marker="<?= $location['country']['code'].'-'.str_replace(' ', '_', strtolower($location['name'])) ?>" data-country="<?= $location['country']['code'] ?>" data-continent="<?= $location['continent']['code'] ?>">
+        <p class="ft-b col-xs-12"><?= $location['name'] ?></p>
+        <div class="col-xs-6"><?= $location['address'] ?></div>
+        <div class="col-xs-6">
+          <?= $location['phone'] ?><br>
+          <?= $location['email'] ?>
         </div>
-      <?php endforeach ?>
-    </div>
+      </div>
+    <?php endforeach ?>
   </div>
-
-
-  <script>
-    var objMapData = <?= json_encode($this->locations) ?>;
-    var objMapConfig = <?= json_encode($this->config) ?>;
-  </script>
 </div>
+
+<script>
+  var objMapData = <?= json_encode($this->locations) ?>;
+  var objMapConfig = <?= json_encode($this->config) ?>;
+</script>
+<?php endif; ?>
