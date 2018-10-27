@@ -22,6 +22,9 @@ if (class_exists('NamespaceClassLoader'))
 TemplateLoader::addFiles(array
 (
 	// Map Templates
-	'mod_wem_locations_map'	=> 'system/modules/wem-contao-locations/templates/modules',
-	'ce_wem_locations_map' 	=> 'system/modules/wem-contao-locations/templates/elements',
+	'mod_wem_locations_map'		=> 'system/modules/wem-contao-locations/templates/modules',
+	'ce_wem_locations_map' 		=> 'system/modules/wem-contao-locations/templates/elements',
+
+	// List Templates
+	'mod_wem_locations_list'	=> 'system/modules/wem-contao-locations/templates/modules',
 ));

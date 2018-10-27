@@ -146,12 +146,12 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 		'mapProvider' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['mapProvider'],
-			'default'				  => 'jvector',
+			'default'				  => '',
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'				  => array('jvector', 'gmaps', 'leaflet'),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_wem_map']['mapProvider'],
-			'eval'                    => array('helpwizard'=>true, 'mandatory'=>true, 'submitOnChange'=>true, 'chosen'=>true),
+			'eval'                    => array('helpwizard'=>true, 'mandatory'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'includeBlankOption'=>true),
 			'explanation'             => 'wem_locations_mapProvider',
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
@@ -223,6 +223,10 @@ class tl_wem_map extends Backend
 			switch($objDc->activeRecord->mapProvider){
 				case 'jvector':
 					$arrConfig = \WEM\Location\Controller\Provider\JVector::getDefaultConfig();
+				break;
+
+				case 'leaflet':
+					$arrConfig = \WEM\Location\Controller\Provider\Leaflet::getDefaultConfig();
 				break;
 
 				default:

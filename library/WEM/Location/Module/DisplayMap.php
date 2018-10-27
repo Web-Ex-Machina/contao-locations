@@ -27,19 +27,23 @@ use WEM\Location\Model\Location;
 class DisplayMap extends \Module
 {
 	/**
-	 * Template
+	 * Map Template
 	 * @var string
 	 */
 	protected $strTemplate = 'mod_wem_locations_map';
 
 	/**
+	 * List Template
+	 * @var string
+	 */
+	protected $strListTemplate = 'mod_wem_locations_list';
+
+	/**
 	 * Display a wildcard in the back end
 	 * @return string
 	 */
-	public function generate()
-	{
-		if (TL_MODE == 'BE')
-		{
+	public function generate(){
+		if (TL_MODE == 'BE'){
 			$objTemplate = new \BackendTemplate('be_wildcard');
 
 			$objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['wem_display_map'][0]) . ' ###';
@@ -57,8 +61,7 @@ class DisplayMap extends \Module
 	/**
 	 * Generate the module
 	 */
-	protected function compile()
-	{
+	protected function compile(){
 		try{
 			// Load the map
 			$objMap = Map::findByPk($this->wem_location_map);
@@ -87,13 +90,17 @@ class DisplayMap extends \Module
 					else
 						$varValue = html_entity_decode($arrRow["value"]);
 
-					$arrConfig[$arrRow["key"]] = $varValue;
+					if(strpos($arrRow["key"], "_") !== false){
+						$arrOption = explode("_", $arrRow["key"]);
+						$arrConfig[$arrOption[0]][$arrOption[1]] = $varValue;
+					}
+					else
+						$arrConfig["map"][$arrRow["key"]] = $varValue;
 				}
 			}
 
 			$arrLocations = array();
-			while($objLocations->next())
-			{
+			while($objLocations->next()){
 				$strCountry = strtoupper($objLocations->country);
 				$strContinent = Util::getCountryContinent($strCountry);
 
@@ -118,8 +125,16 @@ class DisplayMap extends \Module
 				$arrLocations[] = $arrLocation;
 			}
 
+			// Send the data to Map template
 			$this->Template->locations = $arrLocations;
 			$this->Template->config = $arrConfig;
+
+			// If the config says so, we will generate a template with a list of the locations
+			if(1 == 1 || $this->addList){
+				$objTemplate = new \FrontendTemplate($this->strListTemplate);
+				$objTemplate->locations = $arrLocations;
+				$this->Template->list = $objTemplate->parse();
+			}
 		}
 		catch(\Exception $e){
 			$this->Template->error = true;

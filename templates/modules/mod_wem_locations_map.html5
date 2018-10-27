@@ -19,6 +19,10 @@
   </div>
 </div>
 
+<?php if($this->list): ?>
+<?= $this->list ?>
+<?php endif; ?>
+
 <script>
   var objMapData = <?= json_encode($this->locations) ?>;
   var objMapConfig = <?= json_encode($this->config) ?>;
