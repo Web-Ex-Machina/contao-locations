@@ -1,4 +1,16 @@
-LIST :
-<pre>
-<?php print_r($this->locations); ?>
-</pre>
+<button class="map__reset"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['BUTTON']['BACK'] ?></button>
+<div class="map__content active">
+  <div class="h3 map__content__title"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['TITLE']['PANEL'] ?> <span class="location"></span></div>
+  <div class="map__content__wrapper">
+    <?php foreach ($this->locations as $key => $location): ?>
+      <div class="map__content__item" data-marker="<?= $location['country']['code'].'-'.str_replace(' ', '_', strtolower($location['name'])) ?>" data-country="<?= $location['country']['code'] ?>" data-continent="<?= $location['continent']['code'] ?>">
+        <p class="ft-b col-xs-12"><?= $location['name'] ?></p>
+        <div class="col-xs-6"><?= $location['address'] ?></div>
+        <div class="col-xs-6">
+          <?= $location['phone'] ?><br>
+          <?= $location['email'] ?>
+        </div>
+      </div>
+    <?php endforeach ?>
+  </div>
+</div>

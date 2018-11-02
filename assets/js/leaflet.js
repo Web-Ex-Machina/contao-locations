@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded',function(){
 		  alert("CLIC");
 		});
 	}
-
+	
 	objMap.setView(objMapBounds.getCenter(), objMapConfig.map.zoom);
 	L.tileLayer(objMapConfig.tileLayer.url, objMapConfig.tileLayer).addTo(objMap);
 

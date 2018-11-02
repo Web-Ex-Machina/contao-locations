@@ -57,7 +57,6 @@ class ClassLoader extends Controller
 				$GLOBALS['TL_JAVASCRIPT'][] = $objCombiner->getCombinedFile();
 			break;
 			case 'leaflet':
-
 				$objCombiner = new Combiner();
 				$objCombiner->addMultiple([
 					"system/modules/wem-contao-locations/assets/vendor/leaflet/leaflet.css"
@@ -67,7 +66,6 @@ class ClassLoader extends Controller
 
 				$GLOBALS['TL_JAVASCRIPT'][] =	"system/modules/wem-contao-locations/assets/vendor/leaflet/leaflet.js";
 				$GLOBALS['TL_JAVASCRIPT'][] =	"system/modules/wem-contao-locations/assets/js/leaflet.js|async";
-
 			break;
 			default:
 				throw new \Exception("This provider is unknown");
