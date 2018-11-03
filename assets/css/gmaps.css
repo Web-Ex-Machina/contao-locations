@@ -16,7 +16,7 @@
 .mod_wem_locations_map .map__content.active{ -webkit-transform: translate3d(-100%,0,0); transform: translate3d(-100%,0,0);}
 .mod_wem_locations_map .map__content .map__content__title{margin-top: 0;margin-bottom: 0; text-transform: uppercase; background-color: #666; color: #fff; padding: 30px;}
 .mod_wem_locations_map .map__content .map__content__wrapper{ height: 100%; overflow: auto;}
-.mod_wem_locations_map .map__content .map__content__item{overflow: hidden; cursor: pointer; padding: 15px 0;  border-bottom: 1px solid #000; display: none; clear: both;}
+.mod_wem_locations_map .map__content .map__content__item{overflow: hidden; cursor: pointer; padding: 15px 0;  border-bottom: 1px solid #000; clear: both;}
 .mod_wem_locations_map .map__content .map__content__item:last-of-type{margin-bottom: 30px;}
 .mod_wem_locations_map .map__content .map__content__item.active{display: block;}
 .mod_wem_locations_map .map__content .map__content__item.selected,

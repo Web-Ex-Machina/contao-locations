@@ -12,6 +12,7 @@ namespace WEM\Location\Elements;
 
 use Contao\ModuleModel;
 
+use WEM\Location\Model\Map;
 use WEM\Location\Module\DisplayMap as ModuleDisplayMap;
 
 /**
@@ -25,6 +26,25 @@ class DisplayMap extends \ContentElement
 	 * @var string
 	 */
 	protected $strTemplate = 'ce_wem_locations_map';
+
+	/**
+	 * Display a wildcard in the back end
+	 * @return string
+	 */
+	public function generate(){
+		if (TL_MODE == 'BE'){
+			$objTemplate = new \BackendTemplate('be_wildcard');
+			$objMap = Map::findByPk($this->wem_location_map);
+			\System::loadLanguageFile('tl_wem_map');
+
+			$objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['wem_display_map'][0]) . ' ###';
+			$objTemplate->wildcard .= '<br />'.$objMap->title.' | '.$GLOBALS['TL_LANG']['tl_wem_map']['mapProvider'][$objMap->mapProvider].' (ID: '.$objMap->id.')';
+
+			return $objTemplate->parse();
+		}
+
+		return parent::generate();
+	}
 
 	/**
 	 * Generate the content element

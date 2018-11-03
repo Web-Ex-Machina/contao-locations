@@ -40,13 +40,11 @@ class ClassLoader extends Controller
 					,"system/modules/wem-contao-locations/assets/vendor/jquery-jvectormap/maps/jquery-jvectormap-world-mill.js"
 					,"system/modules/wem-contao-locations/assets/js/jvector.js"
 				], $strVersion);
-				$GLOBALS['TL_JAVASCRIPT'][] = $objCombiner->getCombinedFile();
+				$GLOBALS["TL_JQUERY"][] = sprintf('<script src="%s"></script>', $objCombiner->getCombinedFile());
 			break;
 			case 'gmaps':
 				if(!$objMap->mapProviderGmapKey)
 					throw new \Exception("Google Maps needs an API Key !");
-
-				$GLOBALS["TL_HEAD"][] = sprintf('<script async defer src="https://maps.googleapis.com/maps/api/js?key=%s"></script>', Encryption::decrypt($objMap->mapProviderGmapKey));
 
 				$objCombiner = new Combiner();
 				$objCombiner->add("system/modules/wem-contao-locations/assets/css/gmaps.css", $strVersion);
@@ -54,7 +52,8 @@ class ClassLoader extends Controller
 
 				$objCombiner = new Combiner();
 				$objCombiner->add("system/modules/wem-contao-locations/assets/js/gmaps.js", $strVersion);
-				$GLOBALS['TL_JAVASCRIPT'][] = $objCombiner->getCombinedFile();
+				$GLOBALS["TL_JQUERY"][] = sprintf('<script src="https://maps.googleapis.com/maps/api/js?key=%s"></script>', $objMap->mapProviderGmapKey);
+				$GLOBALS['TL_JQUERY'][] = sprintf('<script src="%s"></script>', $objCombiner->getCombinedFile());
 			break;
 			case 'leaflet':
 				$objCombiner = new Combiner();
@@ -63,9 +62,8 @@ class ClassLoader extends Controller
 					,"system/modules/wem-contao-locations/assets/css/leaflet.css"
 				], $strVersion);
 				$GLOBALS["TL_HEAD"][] = sprintf('<link rel="stylesheet" href="%s">', $objCombiner->getCombinedFile());
-
-				$GLOBALS['TL_JAVASCRIPT'][] =	"system/modules/wem-contao-locations/assets/vendor/leaflet/leaflet.js";
-				$GLOBALS['TL_JAVASCRIPT'][] =	"system/modules/wem-contao-locations/assets/js/leaflet.js|async";
+				$GLOBALS["TL_JQUERY"][] = sprintf('<script src="%s"></script>', "system/modules/wem-contao-locations/assets/vendor/leaflet/leaflet.js");
+				$GLOBALS["TL_JQUERY"][] = sprintf('<script src="%s"></script>', "system/modules/wem-contao-locations/assets/js/leaflet.js");
 			break;
 			default:
 				throw new \Exception("This provider is unknown");

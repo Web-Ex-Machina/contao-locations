@@ -170,8 +170,8 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['mapProviderGmapKey'],
 			'exclude'                 => true,
-			'inputType'               => 'textStore',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'encrypt'=>true),
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'geocodingProvider' => array

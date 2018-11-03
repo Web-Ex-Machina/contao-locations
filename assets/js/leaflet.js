@@ -1,3 +1,8 @@
+var $map = $('.mod_wem_locations_map');
+var $reset = $map.next('.map__reset');
+var $content = $reset.next('.map__content');
+var $dropdowns = $content.next('.map__dropdowns');
+
 Object.hasKey = function(obj,key){
   if(Object.keys(obj).indexOf(key) != -1)
     return true;
@@ -5,7 +10,16 @@ Object.hasKey = function(obj,key){
     return false;
 }
 
-document.addEventListener('DOMContentLoaded',function(){
+$(function(){
+// RESIZE EVENT
+	$(window).resize(function(){
+	var mapHeight = window.innerHeight;
+	if($('#header').length)
+	  mapHeight -= $('#header').outerHeight();
+	if($('#footer').length)
+	  mapHeight -= $('#footer').outerHeight();
+	$('.mod_wem_locations_map').outerHeight(0).outerHeight(mapHeight);
+	}).trigger('resize');
 
 	// ------------------------------------------------------------------------------------------------------------------------------
 	// DATA SETTINGS
@@ -15,11 +29,6 @@ document.addEventListener('DOMContentLoaded',function(){
 	var objCountries = {};
 	var objMarkers = {};
 	var objMap;
-
-	var $map = document.querySelector('.mod_wem_locations_map');
-	var $reset = document.querySelector('.mod_wem_locations_map .map__reset');
-	var $content = document.querySelector('.mod_wem_locations_map .map__content');
-	var $dropdowns = document.querySelector('.mod_wem_locations_map .map__dropdowns');
 
 	objMapData.forEach(function(location,index){
 		if(!Object.hasKey(objContinents, location.continent.code)){
@@ -40,7 +49,7 @@ document.addEventListener('DOMContentLoaded',function(){
 		};
 	});
 
-	objMap = L.map(document.querySelector('.mod_wem_locations_map'));
+	objMap = L.map($('.mod_wem_locations_map')[0]);
 
 	objMapBounds = L.latLngBounds();
 	for(var i in objMarkers){
@@ -59,7 +68,9 @@ document.addEventListener('DOMContentLoaded',function(){
 
 	objMap.fitBounds(objMapBounds);
 
-	//$map.appendChild($reset);
-	//$map.appendChild($content);
-	//$map.appendChild($dropdowns);
+	objMap.zoomControl.setPosition('bottomleft');
+
+	$map.append($reset);
+	$map.append($content);
+	$map.append($dropdowns);
 });

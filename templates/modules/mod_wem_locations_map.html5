@@ -1,17 +1,14 @@
-<?php if($this->error): ?>
-<div class="mod_wem_locations_map error block"><?= $this->msg ?></div>
-<?php else: ?>
-
-<div class="mod_wem_locations_map block">
-
-<?php if($this->list): ?>
-<?= $this->list ?>
-<?php endif; ?>
-
+<div class="<?= $this->class ?> block">
+	<?php if($this->error): ?>
+	<div class="error">
+		<?= $this->msg ?>
+	</div>
+	<?php else: ?>
+	<div class="mod_wem_locations_map"></div>
+	<?php if($this->list): ?><?= $this->list ?><?php endif; ?>
+	<script>
+	  var objMapData = <?= json_encode($this->locations) ?>;
+	  var objMapConfig = <?= json_encode($this->config) ?>;
+	</script>
+	<?php endif; ?>
 </div>
-
-<script>
-  var objMapData = <?= json_encode($this->locations) ?>;
-  var objMapConfig = <?= json_encode($this->config) ?>;
-</script>
-<?php endif; ?>
