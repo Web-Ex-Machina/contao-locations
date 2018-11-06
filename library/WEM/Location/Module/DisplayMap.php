@@ -76,7 +76,7 @@ class DisplayMap extends \Module
 				throw new \Exception("No locations found for this map.");
 
 			// Load the libraries
-			ClassLoader::loadLibraries($objMap, 2);
+			ClassLoader::loadLibraries($objMap, 3);
 			\System::getCountries();
 
 			// Build the config
