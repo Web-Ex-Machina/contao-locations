@@ -1,9 +1,8 @@
-<button class="map__reset"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['BUTTON']['BACK'] ?></button>
-<div class="map__content active">
-  <div class="h3 map__content__title"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['TITLE']['PANEL'] ?> <span class="location"></span></div>
-  <div class="map__content__wrapper">
+<div class="map__list active">
+  <div class="h3 map__list__title"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['TITLE']['PANEL'] ?> <span class="location"></span></div>
+  <div class="map__list__wrapper">
     <?php foreach ($this->locations as $key => $location): ?>
-      <div class="map__content__item" data-marker="<?= $location['country']['code'].'-'.str_replace(' ', '_', strtolower($location['name'])) ?>" data-country="<?= $location['country']['code'] ?>" data-continent="<?= $location['continent']['code'] ?>">
+      <div class="map__list__item" data-marker="<?= $location['country']['code'].'-'.str_replace(' ', '_', strtolower($location['name'])) ?>" data-country="<?= $location['country']['code'] ?>" data-continent="<?= $location['continent']['code'] ?>">
         <p class="ft-b col-xs-12"><?= $location['name'] ?></p>
         <div class="col-xs-6"><?= $location['address'] ?></div>
         <div class="col-xs-6">
@@ -14,3 +13,5 @@
     <?php endforeach ?>
   </div>
 </div>
+<button class="map__reset"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['BUTTON']['BACK'] ?></button>
+<button class="map__toggleList active"><span>&#x2192;</span></button>

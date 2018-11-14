@@ -4,7 +4,7 @@
 		<?= $this->msg ?>
 	</div>
 	<?php else: ?>
-	<div class="mod_wem_locations_map"></div>
+	<div class="map__container"></div>
 	<?php if($this->list): ?><?= $this->list ?><?php endif; ?>
 	<script>
 	  var objMapData = <?= json_encode($this->locations) ?>;

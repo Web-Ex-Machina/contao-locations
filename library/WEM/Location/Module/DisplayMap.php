@@ -105,7 +105,8 @@ class DisplayMap extends \Module
 				$strContinent = Util::getCountryContinent($strCountry);
 
 				$arrLocation = [
-					"name" => $objLocations->title
+					"id" => $objLocations->id
+					,"name" => $objLocations->title
 					,"address" => $objLocations->street." ".$objLocations->postal." ".$objLocations->city
 					,"phone" => $objLocations->phone
 					,"email" => $objLocations->email

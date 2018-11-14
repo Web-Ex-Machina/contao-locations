@@ -1,15 +1,6 @@
 $(function(){
+  objMarkers = {};
   $.each(objMapData,function(index,location){
-    if(!Object.hasKey(objContinents, location.continent.code)){
-      objContinents[location.continent.code] = location.continent;
-      objContinents[location.continent.code].countries = {};
-    }
-    if(!Object.hasKey(objContinents[location.continent.code].countries, location.country.code)){
-      objContinents[location.continent.code].countries[location.country.code] = location.country;
-      objCountries[location.country.code] = location.country;
-      arrCountries.push(location.country.code);
-      arrCountriesAvailable.push(location.country.code);
-    }
     objMarkers[location.country.code+'-'+location.name.toLowerCase().replace(/\s/g,'_')]={
       country: location.country.code,
       continent: location.continent.code,
@@ -92,7 +83,7 @@ $(function(){
           });
 
           $reset.addClass('active');
-          $content.find('.map__content__title .location').html(objCountries[code].name);
+          $list.find('.map__list__title .location').html(objCountries[code].name);
           setMapMarkers([code]);
         }
         else{
@@ -113,14 +104,14 @@ $(function(){
     onRegionOut: function(e,code){},
     onMarkerClick: function(e,code){},
     onMarkerOver: function(e,code){
-      $content.find('.map__content__item').filterByData('marker',code).addClass('hover');
+      $list.find('.map__list__item').filterByData('marker',code).addClass('hover');
     },
     onMarkerOut: function(e,code){
-      $content.find('.map__content__item').filterByData('marker',code).removeClass('hover');
+      $list.find('.map__list__item').filterByData('marker',code).removeClass('hover');
     },
     onMarkerSelected: function(e,code){
-      $content.find('.map__content__item').removeClass('selected');
-      $content.find('.map__content__item').filterByData('marker',code).addClass('selected');
+      $list.find('.map__list__item').removeClass('selected');
+      $list.find('.map__list__item').filterByData('marker',code).addClass('selected');
     },
   };
 
@@ -134,9 +125,6 @@ $(function(){
 
   // init the map
   objMap = new jvm.Map(mapConfig);
-  $map.append($reset);
-  $map.append($content);
-  $map.append($dropdowns);
 
   if(!getMapData('zoomOnScroll',false))
     $map.addClass('no-buttons');
@@ -174,11 +162,11 @@ $(function(){
         objMap.addMarker(key,marker);
     });
 
-    $content.find('.map__content__item').removeClass('active selected hover');
+    $list.find('.map__list__item').removeClass('active selected hover');
     $.each(arrCodes,function(index,code){
-      $content.find('.map__content__item').filterByData('country',code).addClass('active');
+      $list.find('.map__list__item').filterByData('country',code).addClass('active');
     });
-    $content.addClass('active');
+    $list.addClass('active');
   };
 
   function setMapCountriesAvailable(){
@@ -197,8 +185,8 @@ $(function(){
 
   function resetMap(){
     $reset.removeClass('active');
-    $content.removeClass('active');
-    $content.find('.map__content__item').removeClass('active selected hover');
+    $list.removeClass('active');
+    $list.find('.map__list__item').removeClass('active selected hover');
     objMap.removeAllMarkers();
     objMap.clearSelectedRegions();
 
@@ -212,7 +200,7 @@ $(function(){
     resetMap();
   });
 
-  $content.find('.map__content__item').on('click',function(e){
+  $list.find('.map__list__item').on('click',function(e){
     objMap.clearSelectedMarkers();
     objMap.setSelectedMarkers($(this).data('marker'));
   }).on('mouseenter',function(e){

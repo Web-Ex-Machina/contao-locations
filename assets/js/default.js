@@ -8,10 +8,11 @@ var objMarkers = {};
 var objMap;
 var objMapCenter;
 var objMapBounds;
-var $map = $('.mod_wem_locations_map');
-var $reset = $map.next('.map__reset');
-var $content = $reset.next('.map__content');
-var $dropdowns = $content.next('.map__dropdowns');
+var $map = $('.map__container');
+var $list = $map.next('.map__list');
+var $reset = $list.next('.map__reset');
+var $toggleList = $reset.next('.map__toggleList');
+//var $dropdowns = $list.next('.map__dropdowns');
 
 $(function(){
 	// ------------------------------------------------------------------------------------------------------------------------------
@@ -22,12 +23,32 @@ $(function(){
 			mapHeight -= $('#header').outerHeight();
 		if($('#footer').length)
 			mapHeight -= $('#footer').outerHeight();
-		$map.outerHeight(0).outerHeight(mapHeight);
+		$map.parent().outerHeight(0).outerHeight(mapHeight);
 	}).trigger('resize');
 
-	$map.append($reset);
-	$map.append($content);
-	$map.append($dropdowns);
+	$toggleList.bind('click', function(){
+		$(this).toggleClass('active');
+		$list.toggleClass('active');
+		$map.toggleClass('full');
+	});
+
+	$.each(objMapData,function(index,location){
+		if(!Object.hasKey(objContinents, location.continent.code)){
+			objContinents[location.continent.code] = location.continent;
+			objContinents[location.continent.code].countries = {};
+		}
+		if(!Object.hasKey(objContinents[location.continent.code].countries, location.country.code)){
+			objContinents[location.continent.code].countries[location.country.code] = location.country;
+			objCountries[location.country.code] = location.country;
+			arrCountries.push(location.country.code);
+			arrCountriesAvailable.push(location.country.code);
+		}
+		objMarkers[location.id]={
+			country: location.country.code,
+			continent: location.continent.code,
+			name: location.name,
+		};
+	});
 });
 
 // ------------------------------------------------------------------------------------------------------------------------------
