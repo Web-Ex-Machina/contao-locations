@@ -21,6 +21,14 @@
 			<source>The location alias is a unique reference to the location item which can be called instead of its numeric ID.</source>
 			<target>Un alias d'emplacement est une référence unique qui remplace l'ID numérique de l'emplacement.</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_location.category.0">
+			<source>Category</source>
+			<target>Catégorie</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.category.1">
+			<source>Select the location category</source>
+			<target>Sélectionnez la catégorie de l'emplacement</target>
+		</trans-unit>
 		<trans-unit id="tl_wem_location.published.0">
 			<source>Publish</source>
 			<target>Publier</target>

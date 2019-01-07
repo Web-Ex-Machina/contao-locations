@@ -105,6 +105,19 @@
 			<target>Saisissez la clef API Google Maps</target>
 		</trans-unit>
 
+		<trans-unit id="tl_wem_map.categories_legend">
+			<source>Categories settings</source>
+			<target>Paramètres des catégories</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_map.categories.0">
+			<source>Categories</source>
+			<target>Catégories</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_map.categories.1">
+			<source>Manage the map categories</source>
+			<target>Gérez les catégories de la map</target>
+		</trans-unit>
+
 		<trans-unit id="tl_wem_map.new.0">
 			<source>New map</source>
 			<target>Nouvelle carte</target>
