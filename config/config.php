@@ -45,6 +45,7 @@ array_insert($GLOBALS['FE_MOD'], 2, array
 	'wem_locations' => array
 	(
 		'wem_display_map' 		=> 'WEM\Location\Module\DisplayMap',
+		'wem_location_reader' 	=> 'WEM\Location\Module\LocationsReader',
 	)
 ));
 
