@@ -27,4 +27,7 @@ TemplateLoader::addFiles(array
 
 	// List Templates
 	'mod_wem_locations_list'	=> 'system/modules/wem-contao-locations/templates/modules',
+
+	// Reader Templates
+	'mod_wem_locations_reader'	=> 'system/modules/wem-contao-locations/templates/modules',
 ));

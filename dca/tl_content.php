@@ -23,6 +23,11 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['wem_location_map'] = array
 	'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
 
+// Dynamically add the permission check and parent table
+if (Input::get('do') == 'wem-maps'){
+	$GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = 'tl_wem_location';
+}
+
 /**
  * Provide functions to tl_content elements related to wem_locations module
  */

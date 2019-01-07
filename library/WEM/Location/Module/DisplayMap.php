@@ -24,7 +24,7 @@ use WEM\Location\Model\Location;
 /**
  * Front end module "locations map".
  */
-class DisplayMap extends \Module
+class DisplayMap extends Core
 {
 	/**
 	 * Map Template
@@ -64,25 +64,19 @@ class DisplayMap extends \Module
 	protected function compile(){
 		try{
 			// Load the map
-			$objMap = Map::findByPk($this->wem_location_map);
+			$this->objMap = Map::findByPk($this->wem_location_map);
 
-			if(!$objMap)
+			if(!$this->objMap)
 				throw new \Exception("No map found.");
 
-			// Load the locations
-			$objLocations = Location::findItems(["published"=>1, "pid"=>$this->wem_location_map]);
-
-			if(!$objLocations)
-				throw new \Exception("No locations found for this map.");
-
 			// Load the libraries
-			ClassLoader::loadLibraries($objMap, 3);
+			ClassLoader::loadLibraries($this->objMap, 3);
 			\System::getCountries();
 
 			// Build the config
 			$arrConfig = [];
-			if($objMap->mapConfig){
-				foreach(deserialize($objMap->mapConfig) as $arrRow){
+			if($this->objMap->mapConfig){
+				foreach(deserialize($this->objMap->mapConfig) as $arrRow){
 					if($arrRow["value"] === 'true')
 						$varValue = true;
 					else if($arrRow["value"] === 'false')
@@ -99,32 +93,11 @@ class DisplayMap extends \Module
 				}
 			}
 
-			$arrLocations = array();
-			while($objLocations->next()){
-				$strCountry = strtoupper($objLocations->country);
-				$strContinent = Util::getCountryContinent($strCountry);
+			// Get the jumpTo page
+			$this->objJumpTo = \PageModel::findByPk($this->objMap->jumpTo);
 
-				$arrLocation = [
-					"id" => $objLocations->id
-					,"name" => $objLocations->title
-					,"address" => $objLocations->street." ".$objLocations->postal." ".$objLocations->city
-					,"phone" => $objLocations->phone
-					,"email" => $objLocations->email
-					,"url" => $objLocations->website
-					,"lat" => $objLocations->lat
-					,"lng" => $objLocations->lng
-					,"country" => [
-						"code" => $strCountry
-						,"name" => $GLOBALS['TL_LANG']['CNT'][$objLocations->country]
-					]
-					,"continent" => [
-						"code" => $strContinent
-						,"name" => $GLOBALS['TL_LANG']['CONTINENT'][$strContinent]
-					]
-				];
-
-				$arrLocations[] = $arrLocation;
-			}
+			// Get locations
+			$arrLocations = $this->getLocations();
 
 			// Send the data to Map template
 			$this->Template->locations = $arrLocations;

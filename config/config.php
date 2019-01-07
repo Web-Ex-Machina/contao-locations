@@ -18,7 +18,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array
 	(
 		'wem-maps' => array
 		(
-			'tables'      => array('tl_wem_map', 'tl_wem_location'),
+			'tables'      => array('tl_wem_map', 'tl_wem_location', 'tl_content'),
 			'import'	  => array('WEM\Location\Backend\Callback', "importLocations"),
 			'export'	  => array('WEM\Location\Backend\Callback', "exportLocations"),
 			'geocode'	  => array('WEM\Location\Backend\Callback', "geocode"),
@@ -45,6 +45,7 @@ array_insert($GLOBALS['FE_MOD'], 2, array
 	'wem_locations' => array
 	(
 		'wem_display_map' 		=> 'WEM\Location\Module\DisplayMap',
+		'wem_location_reader' 	=> 'WEM\Location\Module\LocationsReader',
 	)
 ));
 

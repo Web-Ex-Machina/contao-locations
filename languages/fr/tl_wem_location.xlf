@@ -13,6 +13,14 @@
 			<source>Enter the map title</source>
 			<target>Saisissez le titre de la carte</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_location.alias.0">
+			<source>Location alias</source>
+			<target>Alias d'emplacement</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.alias.1">
+			<source>The location alias is a unique reference to the location item which can be called instead of its numeric ID.</source>
+			<target>Un alias d'emplacement est une référence unique qui remplace l'ID numérique de l'emplacement.</target>
+		</trans-unit>
 		<trans-unit id="tl_wem_location.published.0">
 			<source>Publish</source>
 			<target>Publier</target>
@@ -126,10 +134,18 @@
 			<target>Créer un nouvel emplacement</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_location.edit.0">
+			<source>Edit location contents</source>
+			<target>Editer les contenus de l'emplacement</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.edit.1">
+			<source>Edit location contents ID %s</source>
+			<target>Editer les contenus de l'emplacement ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.editheader.0">
 			<source>Edit location</source>
 			<target>Editer l'emplacement</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_location.edit.1">
+		<trans-unit id="tl_wem_location.editheader.1">
 			<source>Edit location ID %s</source>
 			<target>Editer l'emplacement ID %s</target>
 		</trans-unit>

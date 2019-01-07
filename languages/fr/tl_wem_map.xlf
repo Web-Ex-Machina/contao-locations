@@ -13,6 +13,14 @@
 			<source>Enter the map title</source>
 			<target>Saisissez le titre de la carte</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_map.jumpTo.0">
+			<source>Redirect page</source>
+			<target>Page de redirection</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_map.jumpTo.1">
+			<source>Please choose the map reader page to which visitors will be redirected when clicking a map location.</source>
+			<target>Choisir la page vers laquelle les visiteurs seront réorientés en cliquant sur un emplacement.</target>
+		</trans-unit>
 
 		<trans-unit id="tl_wem_map.import_legend">
 			<source>Import/Export settings</source>

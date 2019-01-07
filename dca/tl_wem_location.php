@@ -19,6 +19,7 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 	(
 		'dataContainer'               => 'Table',
 		'ptable'					  => 'tl_wem_map',
+		'ctable'                      => array('tl_content'),
 		'switchToEdit'                => true,
 		'enableVersioning'            => true,
 		'onload_callback'			  => array
@@ -87,8 +88,14 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 			'edit' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_wem_location']['edit'],
+				'href'                => 'table=tl_content',
+				'icon'                => 'edit.svg'
+			),
+			'editheader' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_wem_location']['editheader'],
 				'href'                => 'act=edit',
-				'icon'                => 'edit.gif'
+				'icon'                => 'header.svg'
 			),
 			'copy' => array
 			(
@@ -129,7 +136,7 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 	'palettes' => array
 	(
 		'default'                     => '
-			{location_legend},title,published;
+			{location_legend},title,alias,published;
 			{coords_legend},lat,lng;
 			{street_legend},street,postal,city,region,country;
 			{contact_legend},phone,email,website
@@ -152,7 +159,7 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 			'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		),
 
-		// {location_legend},title,published;
+		// {location_legend},title,alias,published;
 		'title' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['title'],
@@ -161,6 +168,18 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'alias' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['alias'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('rgxp'=>'alias', 'doNotCopy'=>true, 'unique'=>true, 'maxlength'=>128, 'tl_class'=>'w50'),
+			'save_callback' => array(
+				array('tl_wem_location', 'generateAlias')
+			),
+			'sql'                     => "varchar(128) BINARY NOT NULL default ''"
 		),
 		'published' => array
 		(
@@ -284,17 +303,58 @@ class tl_wem_location extends Backend
 	/**
 	 * Import the back end user object
 	 */
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 	}
 
 	/**
+	 * Auto-generate the news alias if it has not been set yet
+	 *
+	 * @param mixed         $varValue
+	 * @param DataContainer $dc
+	 *
+	 * @return string
+	 *
+	 * @throws Exception
+	 */
+	public function generateAlias($varValue, DataContainer $dc){
+		$autoAlias = false;
+
+		// Generate alias if there is none
+		if($varValue == ''){
+			$autoAlias = true;
+			$slugOptions = array();
+
+			// Read the slug options from the associated page
+			if (($objMap = \WEM\Location\Model\Map::findByPk($dc->activeRecord->pid)) !== null && ($objPage = PageModel::findWithDetails($objMap->jumpTo)) !== null)
+				$slugOptions = $objPage->getSlugOptions();
+
+			$varValue = System::getContainer()->get('contao.slug.generator')->generate(StringUtil::prepareSlug($dc->activeRecord->title), $slugOptions);
+
+			// Prefix numeric aliases (see #1598)
+			if(is_numeric($varValue))
+				$varValue = 'id-' . $varValue;
+		}
+
+		$objAlias = $this->Database->prepare("SELECT id FROM tl_news WHERE alias=? AND id!=?")
+								   ->execute($varValue, $dc->id);
+
+		// Check whether the news alias exists
+		if($objAlias->numRows){
+			if (!$autoAlias)
+				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
+
+			$varValue .= '-' . $dc->id;
+		}
+
+		return $varValue;
+	}
+
+	/**
 	 * Adjust DCA if there is no Geocoder for the map
 	 */
-	public function checkIfGeocodeExists()
-	{
+	public function checkIfGeocodeExists(){
 		$objMap = \WEM\Location\Model\Map::findByPk(\Input::get('id'));
 
 		if('' == $objMap->geocodingProvider){
@@ -308,8 +368,7 @@ class tl_wem_location extends Backend
 	 * @param  Array  $arrRow
 	 * @return String
 	 */
-	public function listItems($arrRow)
-	{
+	public function listItems($arrRow){
 		if(!$arrRow['lat'] || !$arrRow['lng'])
 			$strColor = '#ff0000';
 		else
@@ -332,26 +391,20 @@ class tl_wem_location extends Backend
 	 *
 	 * @return string
 	 */
-	public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
-	{
-		if (strlen(Input::get('tid')))
-		{
+	public function toggleIcon($row, $href, $label, $title, $icon, $attributes){
+		if (strlen(Input::get('tid'))){
 			$this->toggleVisibility(Input::get('tid'), (Input::get('state') == 1), (@func_get_arg(12) ?: null));
 			$this->redirect($this->getReferer());
 		}
 
 		// Check permissions AFTER checking the tid, so hacking attempts are logged
 		if (!$this->User->hasAccess('tl_wem_location::published', 'alexf'))
-		{
 			return '';
-		}
 
 		$href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
 
 		if (!$row['published'])
-		{
 			$icon = 'invisible.gif';
-		}
 
 		return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label).'</a> ';
 	}
@@ -364,15 +417,13 @@ class tl_wem_location extends Backend
 	 * @param boolean       $blnVisible
 	 * @param DataContainer $dc
 	 */
-	public function toggleVisibility($intId, $blnVisible, DataContainer $dc=null)
-	{
+	public function toggleVisibility($intId, $blnVisible, DataContainer $dc=null){
 		// Check permissions to edit
 		Input::setGet('id', $intId);
 		Input::setGet('act', 'toggle');
 
 		// Check permissions to publish
-		if (!$this->User->hasAccess('tl_wem_location::published', 'alexf'))
-		{
+		if (!$this->User->hasAccess('tl_wem_location::published', 'alexf')){
 			$this->log('Not enough permissions to publish/unpublish agence item ID "'.$intId.'"', __METHOD__, TL_ERROR);
 			$this->redirect('contao/main.php?act=error');
 		}
@@ -381,19 +432,14 @@ class tl_wem_location extends Backend
 		$objVersions->initialize();
 
 		// Trigger the save_callback
-		if (is_array($GLOBALS['TL_DCA']['tl_wem_location']['fields']['published']['save_callback']))
-		{
-			foreach ($GLOBALS['TL_DCA']['tl_wem_location']['fields']['published']['save_callback'] as $callback)
-			{
-				if (is_array($callback))
-				{
+		if (is_array($GLOBALS['TL_DCA']['tl_wem_location']['fields']['published']['save_callback'])){
+			foreach ($GLOBALS['TL_DCA']['tl_wem_location']['fields']['published']['save_callback'] as $callback){
+				if (is_array($callback)){
 					$this->import($callback[0]);
 					$blnVisible = $this->$callback[0]->$callback[1]($blnVisible, ($dc ?: $this));
 				}
 				elseif (is_callable($callback))
-				{
 					$blnVisible = $callback($blnVisible, ($dc ?: $this));
-				}
 			}
 		}
 

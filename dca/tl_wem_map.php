@@ -96,7 +96,7 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 	(
 		'__selector__'	=> array('mapProvider', 'geocodingProvider'),
 		'default'		=> '
-			{title_legend},title;
+			{title_legend},title,jumpTo;
 			{import_legend},excelPattern;
 			{map_legend},mapProvider;
 			{geocoding_legend},geocodingProvider
@@ -131,6 +131,16 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'jumpTo' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['jumpTo'],
+			'exclude'                 => true,
+			'inputType'               => 'pageTree',
+			'foreignKey'              => 'tl_page.title',
+			'eval'                    => array('mandatory'=>true, 'fieldType'=>'radio', 'tl_class'=>'clr'),
+			'sql'                     => "int(10) unsigned NOT NULL default '0'",
+			'relation'                => array('type'=>'hasOne', 'load'=>'lazy')
 		),
 		'excelPattern' => array
 		(
