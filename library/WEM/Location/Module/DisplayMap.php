@@ -111,8 +111,10 @@ class DisplayMap extends Core
 			}
 		}
 		catch(\Exception $e){
+			throw $e;
 			$this->Template->error = true;
 			$this->Template->msg = $e->getMessage();
+			$this->Template->trace = $e->getTraceAsString();
 		}
 	}
 }

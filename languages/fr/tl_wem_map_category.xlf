@@ -13,6 +13,11 @@
 			<source>Enter the category title</source>
 			<target>Saisissez le titre de la catégorie</target>
 		</trans-unit>
+
+		<trans-unit id="tl_wem_map_category.marker_legend">
+			<source>Marker settings</source>
+			<target>Paramètres du marqueur</target>
+		</trans-unit>
 		<trans-unit id="tl_wem_map_category.marker.0">
 			<source>Marker</source>
 			<target>Marqueur</target>
@@ -20,6 +25,14 @@
 		<trans-unit id="tl_wem_map_category.marker.1">
 			<source>Select the category marker</source>
 			<target>Sélectionnez le marqueur de la catégorie</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_map_category.markerConfig.0">
+			<source>Settings</source>
+			<target>Paramètres</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_map_category.markerConfig.1">
+			<source>Configure the marker</source>
+			<target>Configurez le marqueur</target>
 		</trans-unit>
 
 		<trans-unit id="tl_wem_map_category.new.0">

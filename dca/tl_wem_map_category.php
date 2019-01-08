@@ -80,7 +80,8 @@ $GLOBALS['TL_DCA']['tl_wem_map_category'] = array
 	'palettes' => array
 	(
 		'default'                     => '
-			{general_legend},title,marker
+			{general_legend},title;
+			{marker_legend},marker,markerConfig
 		'
 	),
 
@@ -106,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_wem_map_category'] = array
 			'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		),
 
-		// {general_legend},title,marker
+		// {general_legend},title
 		'title' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map_category']['title'],
@@ -116,6 +117,8 @@ $GLOBALS['TL_DCA']['tl_wem_map_category'] = array
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
+		
+		// {marker_legend},marker,markerConfig
 		'marker' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map_category']['marker'],
@@ -123,6 +126,17 @@ $GLOBALS['TL_DCA']['tl_wem_map_category'] = array
 			'inputType'               => 'fileTree',
 			'eval'                    => array('filesOnly'=>true, 'fieldType'=>'radio', 'tl_class'=>'clr'),
 			'sql'                     => "binary(16) NULL"
+		),
+		'markerConfig' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map_category']['markerConfig'],
+			'exclude'                 => true,
+			'inputType'               => 'keyValueWizard',
+			'load_callback'			  => array
+			(
+				array('tl_wem_map', 'getDefaultMapConfig'),
+			),
+			'sql'                     => "blob NULL"
 		),
 	)
 );
