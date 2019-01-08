@@ -1,6 +1,8 @@
 ========
 Extension "Locations" for Contao Open Source CMS
 ========
+0.6.0 - 2018-01-09
+- Add categories to markers
 
 0.5.0 - 2018-01-07
 - Add tl_content as child table of tl_wem_location, so we can have a subpage for each item
