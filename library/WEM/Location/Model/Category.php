@@ -78,6 +78,9 @@ class Category extends Model
 		$t = static::$strTable;
 		$arrColumns = array();
 
+		if($arrConfig["pid"])
+			$arrColumns[] = "$t.pid = ". $arrConfig["pid"];
+		
 		if($arrConfig["not"])
 			$arrColumns[] = $arrConfig["not"];
 
