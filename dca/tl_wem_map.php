@@ -18,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ctable'                      => array('tl_wem_location'),
+		'ctable'                      => array('tl_wem_map_category', 'tl_wem_location'),
 		'switchToEdit'                => true,
 		'enableVersioning'            => true,
 		'sql' => array
@@ -99,7 +99,8 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 			{title_legend},title,jumpTo;
 			{import_legend},excelPattern;
 			{map_legend},mapProvider;
-			{geocoding_legend},geocodingProvider
+			{geocoding_legend},geocodingProvider;
+			{categories_legend},categories
 		'
 	),
 
@@ -123,6 +124,12 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 		(
 			'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		),
+		'createdAt' => array
+		(
+			'default'				  => time(),
+			'sql'                     => "int(10) unsigned NOT NULL default '0'"
+		),
+		
 		'title' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_map']['title'],
@@ -202,6 +209,24 @@ $GLOBALS['TL_DCA']['tl_wem_map'] = array
 			'inputType'               => 'textStore',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'encrypt'=>true),
 			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+
+		// {categories_legend},categories
+		'categories' => array
+		(
+			'label'                 => &$GLOBALS['TL_LANG']['tl_wem_map']['categories'],
+			'inputType'             => 'dcaWizard',
+			'foreignTable'          => 'tl_wem_map_category',
+			'foreignField'          => 'pid',
+			'eval'                  => array
+			(
+				'fields' => array('createdAt', 'title'),
+				'headerFields' => array('Créé le', 'Intitulé'),
+				'orderField' => 'createdAt DESC',
+				'hideButton' => false,
+				'showOperations' => true,
+				'operations' => array('edit', 'delete'),
+			),
 		),
 	)
 );

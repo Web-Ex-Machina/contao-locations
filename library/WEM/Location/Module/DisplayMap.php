@@ -99,9 +99,15 @@ class DisplayMap extends Core
 			// Get locations
 			$arrLocations = $this->getLocations();
 
+			// Get categories
+			$arrCategories = $this->getCategories();
+
 			// Send the data to Map template
 			$this->Template->locations = $arrLocations;
+			$this->Template->categories = $arrCategories;
 			$this->Template->config = $arrConfig;
+
+			dump($arrCategories);
 
 			// If the config says so, we will generate a template with a list of the locations
 			if(1 == 1 || $this->addList){
@@ -113,6 +119,7 @@ class DisplayMap extends Core
 		catch(\Exception $e){
 			$this->Template->error = true;
 			$this->Template->msg = $e->getMessage();
+			$this->Template->trace = $e->getTraceAsString();
 		}
 	}
 }

@@ -43,11 +43,7 @@ $(function(){
 			arrCountries.push(location.country.code);
 			arrCountriesAvailable.push(location.country.code);
 		}
-		objMarkers[location.id]={
-			country: location.country.code,
-			continent: location.continent.code,
-			name: location.name,
-		};
+		objMarkers[location.id]=location;
 	});
 });
 

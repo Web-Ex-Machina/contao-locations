@@ -2,6 +2,8 @@
 	<?php if($this->error): ?>
 	<div class="error">
 		<?= $this->msg ?>
+		<br />
+		<?= $this->trace ?>
 	</div>
 	<?php else: ?>
 	<div class="map__container"></div>

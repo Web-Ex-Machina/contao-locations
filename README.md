@@ -8,8 +8,10 @@ Functionnalities
 -------------------
  * Configure maps as many as you want.
  * Configure location attributes, depends on your needs
+ * Configure categories with specific markers
  * Use different maps, as Google Maps, OpenStreetMap, JVector, Leaflet...
  * Import/Export your locations with Excel/CSV files
+ * Use all Contao Contents to build a specific page for each location
  * And as always, more in the future !
 
 System requirements
@@ -22,9 +24,9 @@ System requirements
 Installation
 ------------
 
-Clone the extension from Packagist (Contao Manager)
+Clone the extension from Packagist (Contao 4 - Manager Edition)
 or
-Download and paste the folder in system/modules of your Contao Website.
+Download and paste the folder in system/modules of your Contao Website (Contao 3).
 
 Documentation
 -------------

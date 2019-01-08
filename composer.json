@@ -21,7 +21,8 @@
         "phpoffice/phpspreadsheet": "~1.2",
         "contao/core-bundle": "~3.2 || ~4.1",
         "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
-        "codefog/contao-haste":"^4.14"
+        "codefog/contao-haste":"^4.14",
+        "terminal42/contao-dcawizard":"^2.4"
     },
     "autoload":{
         "psr-0": {

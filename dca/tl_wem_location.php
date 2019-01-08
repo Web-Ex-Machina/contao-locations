@@ -136,7 +136,7 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 	'palettes' => array
 	(
 		'default'                     => '
-			{location_legend},title,alias,published;
+			{location_legend},title,alias,category,published;
 			{coords_legend},lat,lng;
 			{street_legend},street,postal,city,region,country;
 			{contact_legend},phone,email,website
@@ -154,12 +154,17 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 		(
 			'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		),
+		'createdAt' => array
+		(
+			'default'				  => time(),
+			'sql'                     => "int(10) unsigned NOT NULL default '0'"
+		),
 		'pid' => array
 		(
 			'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		),
 
-		// {location_legend},title,alias,published;
+		// {location_legend},title,alias,category,published;
 		'title' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['title'],
@@ -180,6 +185,20 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array
 				array('tl_wem_location', 'generateAlias')
 			),
 			'sql'                     => "varchar(128) BINARY NOT NULL default ''"
+		),
+		'category' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['category'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 11,
+			'inputType'               => 'select',
+			'foreignKey'              => 'tl_wem_map_category.title',
+			'options_callback'		  => array('tl_wem_location', 'getMapCategories'),
+			'eval'                    => array('doNotCopy'=>true, 'chosen'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'sql'                     => "int(10) unsigned NOT NULL default '0'",
+			'relation'                => array('type'=>'hasOne', 'load'=>'lazy')
 		),
 		'published' => array
 		(
@@ -306,6 +325,27 @@ class tl_wem_location extends Backend
 	public function __construct(){
 		parent::__construct();
 		$this->import('BackendUser', 'User');
+	}
+
+	/**
+	 * Get and return all the parent map categories
+	 * @param  [Datacontainer] $dc 	[Datacontainer]
+	 * @return [Array]			    [Categories]
+	 */
+	public function getMapCategories(DataContainer $dc){
+		$arrData = [];
+		
+		if($dc->activeRecord->pid){
+			$objCategories = $this->Database->prepare("SELECT id, title FROM tl_wem_map_category WHERE pid = ? ORDER BY createdAt ASC")->execute($dc->activeRecord->pid);
+
+			if(!$objCategories)
+				return [];
+			
+			while($objCategories->next())
+				$arrData[$objCategories->id] = $objCategories->title;
+		}
+
+		return $arrData;
 	}
 
 	/**
