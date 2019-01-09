@@ -107,8 +107,6 @@ class DisplayMap extends Core
 			$this->Template->categories = $arrCategories;
 			$this->Template->config = $arrConfig;
 
-			dump($arrCategories);
-
 			// If the config says so, we will generate a template with a list of the locations
 			if(1 == 1 || $this->addList){
 				$objTemplate = new \FrontendTemplate($this->strListTemplate);
