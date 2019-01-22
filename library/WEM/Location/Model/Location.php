@@ -43,7 +43,7 @@ class Location extends Model
 			$arrOptions['offset'] = $intOffset;
 
 		if(!isset($arrOptions['order']))
-			$arrOptions['order'] = "$t.tstamp DESC";
+			$arrOptions['order'] = "$t.title ASC";
 
 		if(empty($arrColumns))
 			return static::findAll($arrOptions);
