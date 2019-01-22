@@ -1,3 +1,10 @@
+// Make a custom leaflet marker to add important property
+var LocationMarker = L.Marker.extend({
+	options: {
+		locationID : 1
+	},
+});
+
 $(function(){
 	objMapData.forEach(function(location,index){
 		objMarkers[location.id].latLng = L.latLng({lat: parseFloat(location.lat), lng: parseFloat(location.lng)});
@@ -11,15 +18,19 @@ $(function(){
 		objMapBounds.extend(objMarkers[i].latLng);
 		options = {};
 		options.title = objMarkers[i].title;
-		
+		options.locationID = objMarkers[i].id;
+
 		if(objMarkers[i].category.marker && objMarkers[i].category.marker.icon)
 			options.icon = L.icon(objMarkers[i].category.marker.icon);
 
-		objMarkers[i].marker = L.marker(objMarkers[i].latLng, options).addTo(objMap);
+		objMarkers[i].marker = new LocationMarker(objMarkers[i].latLng, options).addTo(objMap);
 
-		objMarkers[i].marker.on('click', function() {
-		  alert("CLIC");
-		});
+		if(0 < $('.map__list').length){
+			objMarkers[i].marker.on('click', function(e) {
+				$('.map__list .map__list__item').removeClass('active');
+				$('.map__list .map__list__item[data-id="'+this.options.locationID+'"]').addClass('active');
+			});
+		}
 	}
 	
 	objMap.setView(objMapBounds.getCenter(), objMapConfig.map.zoom);

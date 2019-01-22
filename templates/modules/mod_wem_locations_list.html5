@@ -2,7 +2,7 @@
   <div class="h3 map__list__title"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['TITLE']['PANEL'] ?> <span class="location"></span></div>
   <div class="map__list__wrapper">
     <?php foreach ($this->locations as $key => $location): ?>
-      <div class="map__list__item" data-marker="<?= $location['country']['code'].'-'.str_replace(' ', '_', strtolower($location['title'])) ?>" data-country="<?= $location['country']['code'] ?>" data-continent="<?= $location['continent']['code'] ?>">
+      <div class="map__list__item" data-id="<?= $location['id'] ?>" data-marker="<?= $location['country']['code'].'-'.str_replace(' ', '_', strtolower($location['title'])) ?>" data-country="<?= $location['country']['code'] ?>" data-continent="<?= $location['continent']['code'] ?>">
         <p class="ft-b col-xs-12"><?= $location['title'] ?></p>
         
         <?php if($location['address']): ?>
