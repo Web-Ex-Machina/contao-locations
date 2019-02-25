@@ -45,6 +45,10 @@ $(function(){
 		}
 		objMarkers[location.id]=location;
 	});
+
+	// Define a default value for zoom
+	if(!objMapConfig.map.zoom)
+		objMapConfig.map.zoom = 7;
 });
 
 // ------------------------------------------------------------------------------------------------------------------------------
