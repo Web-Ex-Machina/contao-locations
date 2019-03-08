@@ -73,7 +73,7 @@ abstract class Core extends \Module
 				// Get size of the picture
 				$sizes = getimagesize($objFile->path);
 				$arrItem["marker"] = [];
-				$arrItem["marker"]['icon']["iconUrl"] = $objFile->path;
+				$arrItem["marker"]['icon']["iconUrl"] = \Image::get($objFile->path, 20, 0);
 				$arrItem["marker"]['icon']["iconSize"] = [$sizes[0], $sizes[1]];
 
 				// Get the entire config
