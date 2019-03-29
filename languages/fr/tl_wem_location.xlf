@@ -104,6 +104,27 @@
 			<target>Saisissez le pays de l'emplacement</target>
 		</trans-unit>
 
+		<trans-unit id="tl_wem_location.data_legend">
+			<source>Media &amp; Data</source>
+			<target>Fichiers &amp; Données</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.picture.0">
+			<source>Picture</source>
+			<target>Photo</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.picture.1">
+			<source>Select the location picture</source>
+			<target>Sélectionnez la photo de l'emplacement</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.teaser.0">
+			<source>Teaser</source>
+			<target>Accroche</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.teaser.1">
+			<source>Enter a short text about the location</source>
+			<target>Saisissez un court texte sur l'emplacement</target>
+		</trans-unit>
+
 		<trans-unit id="tl_wem_location.contact_legend">
 			<source>Contact Data</source>
 			<target>Informations de contact</target>
@@ -124,6 +145,11 @@
 			<source>Enter the location mail address</source>
 			<target>Saisissez l'adresse email de l'emplacement</target>
 		</trans-unit>
+		
+		<trans-unit id="tl_wem_location.links_legend">
+			<source>Links</source>
+			<target>Liens</target>
+		</trans-unit>
 		<trans-unit id="tl_wem_location.website.0">
 			<source>Website</source>
 			<target>Site internet</target>
@@ -131,6 +157,30 @@
 		<trans-unit id="tl_wem_location.website.1">
 			<source>Enter the location website URL</source>
 			<target>Saisissez l'adresse du site internet de l'emplacement</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.facebook.0">
+			<source>Facebook</source>
+			<target>Facebook</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.facebook.1">
+			<source>Enter the location facebook URL</source>
+			<target>Saisissez l'adresse du facebook de l'emplacement</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.twitter.0">
+			<source>Twitter</source>
+			<target>Twitter</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.twitter.1">
+			<source>Enter the location twitter URL</source>
+			<target>Saisissez l'adresse du twitter de l'emplacement</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.instagram.0">
+			<source>Instagram</source>
+			<target>Instagram</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.instagram.1">
+			<source>Enter the location instagram URL</source>
+			<target>Saisissez l'adresse de l'instagram de l'emplacement</target>
 		</trans-unit>
 
 		<trans-unit id="tl_wem_location.new.0">
