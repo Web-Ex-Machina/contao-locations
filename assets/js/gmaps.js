@@ -45,7 +45,7 @@ $(function(){
 				$('.map__list .map__list__item[data-id="'+this.locationID+'"]').addClass('active');
 	    });
 		} else {
-			objMarkers[i].marker.addListener('click', function() {
+			objMarkers[i].listener_click = objMarkers[i].marker.addListener('click', function() {
 				objMarkers[i].infoWindow.open(objMap,this);
 	    });
 		}
