@@ -9,6 +9,8 @@
  */
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['wem_display_map']    = '{title_legend},name,type;{config_legend},wem_location_map;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['wem_location_reader']    = '{title_legend},name,type;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
+
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['wem_location_map'] = array(
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['wem_location_map'],

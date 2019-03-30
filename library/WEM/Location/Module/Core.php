@@ -149,19 +149,14 @@ abstract class Core extends \Module
             $arrItem["country"] = ["code" => $strCountry, "name" => $GLOBALS['TL_LANG']['CNT'][$arrItem['country']]];
             $arrItem["continent"] = ["code" => $strContinent, "name" => $GLOBALS['TL_LANG']['CONTINENT'][$strContinent]];
 
-            $id = $arrItem['id'];
-            $arrItem["content"] = function () use ($id) {
-                $strText = '';
-                $objElement = \ContentModel::findPublishedByPidAndTable($id, 'tl_wem_location');
-
-                if ($objElement !== null) {
-                    while ($objElement->next()) {
-                        $strText .= $this->getContentElement($objElement->current());
-                    }
+            $strContent = '';
+            $objElement = \ContentModel::findPublishedByPidAndTable($arrItem['id'], 'tl_wem_location');
+            if ($objElement !== null) {
+                while ($objElement->next()) {
+                    $strContent .= $this->getContentElement($objElement->current());
                 }
-
-                return $strText;
-            };
+            }
+            $arrItem["content"] = $strContent;
 
             // Build the item URL
             if ($this->objJumpTo instanceof \PageModel) {
