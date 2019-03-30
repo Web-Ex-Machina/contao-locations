@@ -69,3 +69,8 @@ array_insert(
 $GLOBALS['TL_MODELS'][\WEM\Location\Model\Map::getTable()] = 'WEM\Location\Model\Map';
 $GLOBALS['TL_MODELS'][\WEM\Location\Model\Location::getTable()] = 'WEM\Location\Model\Location';
 $GLOBALS['TL_MODELS'][\WEM\Location\Model\Category::getTable()] = 'WEM\Location\Model\Category';
+
+/**
+ * Hooks
+ */
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('WEM\Location\Controller\Util', 'replaceInsertTags');
