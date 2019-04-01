@@ -32,10 +32,15 @@ $(function(){
 			});
 		}
 	}
-	
+
 	objMap.setView(objMapBounds.getCenter(), objMapConfig.map.zoom);
 	L.tileLayer(objMapConfig.tileLayer.url, objMapConfig.tileLayer).addTo(objMap);
 
 	objMap.fitBounds(objMapBounds);
 	objMap.zoomControl.setPosition('bottomleft');
+
+
+	$toggleList.bind('click', function(){
+		objMap.invalidateSize();
+	});
 });
