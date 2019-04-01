@@ -388,7 +388,7 @@ class tl_wem_location extends Backend
             }
         }
 
-        $objAlias = $this->Database->prepare("SELECT id FROM tl_news WHERE alias=? AND id!=?")
+        $objAlias = $this->Database->prepare("SELECT id FROM tl_wem_location WHERE alias=? AND id!=?")
                                    ->execute($varValue, $dc->id);
 
         // Check whether the news alias exists
