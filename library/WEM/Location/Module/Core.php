@@ -79,7 +79,7 @@ abstract class Core extends \Module
                 // Get size of the picture
                 $sizes = getimagesize($objFile->path);
                 $arrItem["marker"] = [];
-                $arrItem["marker"]['icon']["iconUrl"] = \Image::get($objFile->path, 20, 0);
+                $arrItem["marker"]['icon']["iconUrl"] = $objFile->path;
                 $arrItem["marker"]['icon']["iconSize"] = [$sizes[0], $sizes[1]];
 
                 // Get the entire config
@@ -97,7 +97,7 @@ abstract class Core extends \Module
                             $v['key'] = explode("_", $v['key']);
                             $arrItem["marker"][$v['key'][0]][$v['key'][1]] = $v['value'];
                         } else {
-                            $arrItem["marker"][$k] = $v;
+                            $arrItem["marker"][$v['key']] = $v['value'];
                         }
                     }
                 }
@@ -142,7 +142,7 @@ abstract class Core extends \Module
             } else {
                 unset($arrItem['picture']);
             }
-            
+
             // Get country and continent
             $strCountry = strtoupper($arrItem['country']);
             $strContinent = Util::getCountryContinent($strCountry);
