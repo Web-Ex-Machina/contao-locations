@@ -23,6 +23,8 @@ $(function(){
 			mapHeight -= $('#header').outerHeight();
 		if($('#footer').length)
 			mapHeight -= $('#footer').outerHeight();
+		if($('.topbar').length)
+			mapHeight -= $('.topbar').outerHeight();
 		$map.parent().outerHeight(0).outerHeight(mapHeight);
 	}).trigger('resize');
 
@@ -30,6 +32,9 @@ $(function(){
 		$(this).toggleClass('active');
 		$list.toggleClass('active');
 		$map.toggleClass('full');
+	});
+	$list.find('.map__list__item').on('click', function(e) {
+		selectMapItem($(this).data('id'));
 	});
 
 	$.each(objMapData,function(index,location){
@@ -50,6 +55,16 @@ $(function(){
 	if(!objMapConfig.map.zoom)
 		objMapConfig.map.zoom = 7;
 });
+
+function selectMapItem(itemID){
+	$('.map__list .map__list__item').removeClass('selected');
+	$('.map__list .map__list__item[data-id="'+itemID+'"]').addClass('selected');
+	var offset = ($('.map__list .map__list__item[data-id="'+itemID+'"]').position().top >= 0)?$('.map__list .map__list__item[data-id="'+itemID+'"]').position().top:0;
+	offset -= $('.map__list .map__list__item[data-id="'+itemID+'"]').outerHeight();
+	$('.map__list .map__list__wrapper').stop().animate({
+      scrollTop: offset
+  },400);
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 // UTILITIES

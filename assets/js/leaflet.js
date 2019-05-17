@@ -27,8 +27,7 @@ $(function(){
 
 		if(0 < $('.map__list').length){
 			objMarkers[i].marker.on('click', function(e) {
-				$('.map__list .map__list__item').removeClass('active');
-				$('.map__list .map__list__item[data-id="'+this.options.locationID+'"]').addClass('active');
+				selectMapItem(this.options.locationID);
 			});
 		}
 	}
@@ -44,3 +43,4 @@ $(function(){
 		objMap.invalidateSize();
 	});
 });
+
