@@ -84,6 +84,9 @@ class Location extends Model
 		if($arrConfig["published"])
 			$arrColumns[] = "$t.published = 1";
 
+		if($arrConfig["onlyWithCoords"])
+			$arrColumns[] = "$t.lat != '' AND $t.lng != ''";
+
 		if($arrConfig["not"])
 			$arrColumns[] = $arrConfig["not"];
 

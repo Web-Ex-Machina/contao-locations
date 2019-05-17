@@ -44,7 +44,7 @@ abstract class Core extends \Module
     protected function getLocations()
     {
         try {
-            $objLocations = Location::findItems(["published"=>1, "pid"=>$this->wem_location_map]);
+            $objLocations = Location::findItems(["published"=>1, "onlyWithCoords"=>1, "pid"=>$this->wem_location_map]);
 
             if (!$objLocations) {
                 throw new \Exception("No locations found for this map.");
