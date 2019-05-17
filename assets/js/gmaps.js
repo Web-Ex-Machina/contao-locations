@@ -16,9 +16,17 @@ $(function(){
 		options.title = objMarkers[i].title;
 		options.locationID = objMarkers[i].id;
 
-		if(objMarkers[i].category.marker && objMarkers[i].category.marker.icon)
-			options.icon = objMarkers[i].category.marker.icon.iconUrl;
+		var iconSize = new google.maps.Size(objMarkers[i].category.marker.icon.iconSize[0],objMarkers[i].category.marker.icon.iconSize[1]);
+		if(objMapConfig.map.iconSize)
+			iconSize = new google.maps.Size(objMapConfig.map.iconSize,objMapConfig.map.iconSize);
+		if(objMarkers[i].category.marker.iconSize)
+			iconSize = new google.maps.Size(objMarkers[i].category.marker.iconSize,objMarkers[i].category.marker.iconSize);
 
+		if(objMarkers[i].category.marker && objMarkers[i].category.marker.icon)
+			options.icon = {
+				url : objMarkers[i].category.marker.icon.iconUrl,
+				scaledSize: iconSize,
+			}
 		var contentStr = '<h4>'+objMarkers[i].title+'</h4>';
 		if(objMarkers[i].street || objMarkers[i].postal || objMarkers[i].city){
 			contentStr += '<p>';
