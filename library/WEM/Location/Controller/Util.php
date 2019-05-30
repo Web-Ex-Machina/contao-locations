@@ -17,7 +17,7 @@ use WEM\Location\Model\Location;
 /**
  * Provide utilities function to Locations Extension
  */
-class Util extends Controller
+class Util
 {
     /**
      * Find and replace Location tags
