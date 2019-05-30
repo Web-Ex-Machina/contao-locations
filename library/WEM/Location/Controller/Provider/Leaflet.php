@@ -24,6 +24,7 @@ class Leaflet extends Controller
 	public static function getDefaultConfig(){
 		return [
 			"provider" => 'leaflet'
+			,"zoom" => 13
 			,"tileLayer_url" => 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 			,"tileLayer_attribution" => 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
 			,"tileLayer_minZoom" => 0
