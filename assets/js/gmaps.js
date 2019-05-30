@@ -49,8 +49,7 @@ $(function(){
 
 		if(0 < $('.map__list').length){
 			objMarkers[i].marker.addListener('click', function() {
-				$('.map__list .map__list__item').removeClass('active');
-				$('.map__list .map__list__item[data-id="'+this.locationID+'"]').addClass('active');
+				selectMapItem(this.locationID);
 	    });
 		} else {
 			objMarkers[i].listener_click = objMarkers[i].marker.addListener('click', function() {
