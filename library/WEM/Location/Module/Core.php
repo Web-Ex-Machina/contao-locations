@@ -144,6 +144,7 @@ abstract class Core extends \Module
             }
 
             // Get country and continent
+            \System::getCountries();
             $strCountry = strtoupper($arrItem['country']);
             $strContinent = Util::getCountryContinent($strCountry);
             $arrItem["country"] = ["code" => $strCountry, "name" => $GLOBALS['TL_LANG']['CNT'][$arrItem['country']]];
