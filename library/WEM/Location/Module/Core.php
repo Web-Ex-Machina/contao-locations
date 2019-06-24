@@ -127,6 +127,11 @@ abstract class Core extends \Module
             // Format Address
             $arrItem["address"] = $arrItem["street"]." ".$arrItem["postal"]." ".$arrItem["city"];
 
+            // Format website (we assume that every url is an external one)
+            if ($arrItem["website"] && "http" != substr($arrItem["website"], 4)) {
+                $arrItem["website"] = "http://".$arrItem["website"];
+            }
+
             // Get category
             if ($arrItem["category"]) {
                 $arrItem["category"] = $this->getCategory($arrItem["category"]);
