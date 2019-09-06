@@ -1,10 +1,10 @@
 $(function(){
   objMarkers = {};
   $.each(objMapData,function(index,location){
-    objMarkers[location.country.code+'-'+location.name.toLowerCase().replace(/\s/g,'_')]={
+    objMarkers[location.country.code+'-'+location.title.toLowerCase().replace(/\s/g,'_')]={
       country: location.country.code,
       continent: location.continent.code,
-      name: location.name,
+      title: location.title,
       latLng: [location.lat,location.lng]
     };
   });
