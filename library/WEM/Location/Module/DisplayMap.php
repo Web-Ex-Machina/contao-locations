@@ -111,6 +111,14 @@ class DisplayMap extends Core
             $this->Template->categories = $arrCategories;
             $this->Template->config = $arrConfig;
 
+
+            // Send the fileMap
+            if ("jvector" == $this->objMap->mapProvider
+                && "" != $this->objMap->mapFile
+            ) {
+                $this->Template->mapFile = $this->objMap->mapFile;
+            }
+
             // If the config says so, we will generate a template with a list of the locations
             if ("nolist" != $this->wem_location_map_list) {
                 $objTemplate = new \FrontendTemplate($this->strListTemplate);

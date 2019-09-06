@@ -12,7 +12,7 @@ $(function(){
   // ------------------------------------------------------------------------------------------------------------------------------
   // MAP CONFIG
   mapConfig = {
-    map: 'world_mill',
+    map: $map.data('map')+'_mill',
     container: $map,
     backgroundColor: getMapData('mapBackground','#fff'),
     zoomOnScroll: getMapData('zoomOnScroll',false),
