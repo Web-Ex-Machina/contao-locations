@@ -116,7 +116,7 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array(
         'default'                     => '
 			{location_legend},title,alias,category,published;
 			{coords_legend},lat,lng;
-			{street_legend},street,postal,city,region,country;
+			{street_legend},country,admin_lvl_1,admin_lvl_2,admin_lvl_3,city,postal,street;
 			{data_legend},picture,teaser;
 			{contact_legend},phone,email;
 			{links_legend},website,facebook,twitter,instagram
@@ -222,8 +222,24 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array(
             'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
-        'region' => array(
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['region'],
+        'admin_lvl_1' => array(
+            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['admin_lvl_1'],
+            'exclude'                 => true,
+            'filter'                  => true,
+            'inputType'               => 'text',
+            'eval'                    => array('tl_class'=>'w50'),
+            'sql'                     => "varchar(64) NOT NULL default ''"
+        ),
+        'admin_lvl_2' => array(
+            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['admin_lvl_2'],
+            'exclude'                 => true,
+            'filter'                  => true,
+            'inputType'               => 'text',
+            'eval'                    => array('tl_class'=>'w50'),
+            'sql'                     => "varchar(64) NOT NULL default ''"
+        ),
+        'admin_lvl_3' => array(
+            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_location']['admin_lvl_3'],
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'text',

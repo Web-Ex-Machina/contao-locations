@@ -87,13 +87,29 @@
 			<source>Enter the location city</source>
 			<target>Saisissez la ville de l'emplacement</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_location.region.0">
-			<source>Region</source>
-			<target>Région</target>
+		<trans-unit id="tl_wem_location.admin_lvl_1.0">
+			<source>Administrative Area (Level 1)</source>
+			<target>Zone administrative (Niveau 1)</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_location.region.1">
-			<source>Enter the location region</source>
-			<target>Saisissez la région de l'emplacement</target>
+		<trans-unit id="tl_wem_location.admin_lvl_1.1">
+			<source>Enter the location administrative area (level 1)</source>
+			<target>Saisissez la zone administrative (niveau 1) de l'emplacement</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.admin_lvl_2.0">
+			<source>Administrative Area (Level 2)</source>
+			<target>Zone administrative (Niveau 2)</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.admin_lvl_2.1">
+			<source>Enter the location administrative area (level 2)</source>
+			<target>Saisissez la zone administrative (niveau 2) de l'emplacement</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.admin_lvl_3.0">
+			<source>Administrative Area (Level 3)</source>
+			<target>Zone administrative (Niveau 3)</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_location.admin_lvl_3.1">
+			<source>Enter the location administrative area (level 3)</source>
+			<target>Saisissez la zone administrative (niveau 3) de l'emplacement</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_location.country.0">
 			<source>Country</source>
