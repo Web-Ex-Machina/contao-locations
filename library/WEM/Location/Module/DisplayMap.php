@@ -28,18 +28,28 @@ class DisplayMap extends Core
 {
     /**
      * Map Template
+     *
      * @var string
      */
     protected $strTemplate = 'mod_wem_locations_map';
 
     /**
      * List Template
+     *
      * @var string
      */
     protected $strListTemplate = 'mod_wem_locations_list';
 
     /**
+     * Filters
+     *
+     * @var Array [Available filters]
+     */
+    protected $filters;
+
+    /**
      * Display a wildcard in the back end
+     *
      * @return string
      */
     public function generate()
@@ -61,6 +71,8 @@ class DisplayMap extends Core
 
     /**
      * Generate the module
+     *
+     * @return void
      */
     protected function compile()
     {
@@ -111,6 +123,42 @@ class DisplayMap extends Core
             $this->Template->categories = $arrCategories;
             $this->Template->config = $arrConfig;
 
+            // Gather filters
+            if ("nofilters" != $this->wem_location_map_filters) {
+                \System::loadLanguageFile('tl_wem_location');
+                $arrFilterFields = unserialize($this->wem_location_map_filters_fields);
+                $this->filters = [];
+
+                foreach ($arrFilterFields as $f) {
+                    if ("search" == $f) {
+                        $this->filters[$f] = [
+                            "label" => "Recherche :",
+                            "placeholder" => "Que recherchez-vous ?",
+                            "name" => "search",
+                            "type" => "text",
+                            "value" => ""
+                        ];
+                    } else {
+                        $this->filters[$f] = [
+                            "label" => sprintf('%s :', $GLOBALS['TL_LANG']['tl_wem_location'][$f][0]),
+                            "placeholder" => $GLOBALS['TL_LANG']['tl_wem_location'][$f][1],
+                            "name" => $f,
+                            "type" => "select",
+                            "options" => []
+                        ];
+
+                        foreach ($arrLocations as $l) {
+                            if (!$l[$f]) {
+                                continue;
+                            }
+
+                            $this->filters[$f]['options'][] = $l[$f];
+                        }
+                    }
+                }
+
+                $this->Template->filters = $this->filters;
+            }
 
             // Send the fileMap
             if ("jvector" == $this->objMap->mapProvider
