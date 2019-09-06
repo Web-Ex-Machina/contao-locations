@@ -8,6 +8,7 @@
 	<?php else: ?>
 	<div data-map="<?= ($this->mapFile) ?: '' ?>" class="map__container<?= ("rightpanel" == $this->list_position) ? '' : ' full' ?>"></div>
 	<?php if("rightpanel" == $this->list_position): ?><?= $this->list ?><?php endif; ?>
+	<button class="map__reset"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['BUTTON']['BACK'] ?></button>
 	<script>
 	  var objMapData = <?= json_encode($this->locations) ?>;
 	  var objMapConfig = <?= json_encode($this->config) ?>;

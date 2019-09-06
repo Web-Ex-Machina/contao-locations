@@ -28,5 +28,6 @@
     <?php endforeach ?>
   </div>
 </div>
-<button class="map__reset"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['BUTTON']['BACK'] ?></button>
+<?php if("rightpanel" == $this->list_position): ?>
 <button class="map__toggleList active"><span>&#x2192;</span></button>
+<?php endif; ?>
