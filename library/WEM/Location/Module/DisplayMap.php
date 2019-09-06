@@ -112,10 +112,11 @@ class DisplayMap extends Core
             $this->Template->config = $arrConfig;
 
             // If the config says so, we will generate a template with a list of the locations
-            if (1 == 1 || $this->addList) {
+            if ("nolist" != $this->wem_location_map_list) {
                 $objTemplate = new \FrontendTemplate($this->strListTemplate);
                 $objTemplate->locations = $arrLocations;
                 $this->Template->list = $objTemplate->parse();
+                $this->Template->list_position = $this->wem_location_map_list;
             }
         } catch (\Exception $e) {
             $this->Template->error = true;

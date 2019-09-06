@@ -9,6 +9,26 @@
         <source>Select the map to display.</source>
         <target>Sélectionner la carte à afficher.</target>
       </trans-unit>
+      <trans-unit id="tl_module.wem_location_map_list.0">
+        <source>List</source>
+        <target>Liste</target>
+      </trans-unit>
+      <trans-unit id="tl_module.wem_location_map_list.1">
+        <source>Add a list of items to the map.</source>
+        <target>Ajouter une liste des éléments à la carte.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.wem_location_map_list.nolist">
+        <source>No list</source>
+        <target>Pas de liste</target>
+      </trans-unit>
+      <trans-unit id="tl_module.wem_location_map_list.rightpanel">
+        <source>Right panel</source>
+        <target>Panneau à droite</target>
+      </trans-unit>
+      <trans-unit id="tl_module.wem_location_map_list.below">
+        <source>Below</source>
+        <target>En dessous</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
