@@ -1,4 +1,4 @@
-<div class="map__list active">
+<div class="map__list active <?= $this->list_position ?>">
   <div class="h3 map__list__title"><?= $GLOBALS['TL_LANG']['WEM']['LOCATIONS']['TITLE']['PANEL'] ?> <span class="location"></span></div>
   <div class="map__list__wrapper">
     <?php foreach ($this->locations as $key => $location): ?>

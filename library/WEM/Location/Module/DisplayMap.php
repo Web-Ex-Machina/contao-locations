@@ -115,6 +115,7 @@ class DisplayMap extends Core
             if ("nolist" != $this->wem_location_map_list) {
                 $objTemplate = new \FrontendTemplate($this->strListTemplate);
                 $objTemplate->locations = $arrLocations;
+                $objTemplate->list_position = $this->wem_location_map_list;
                 $this->Template->list = $objTemplate->parse();
                 $this->Template->list_position = $this->wem_location_map_list;
             }
