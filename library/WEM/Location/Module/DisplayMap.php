@@ -152,12 +152,15 @@ class DisplayMap extends Core
                                 continue;
                             }
 
-                            $this->filters[$f]['options'][] = $l[$f];
+                            if (!in_array($l[$f], $this->filters[$f]['options'])) {
+                                $this->filters[$f]['options'][] = $l[$f];
+                            }
                         }
                     }
                 }
 
                 $this->Template->filters = $this->filters;
+                $this->Template->filters_position = $this->wem_location_map_filters;
             }
 
             // Send the fileMap
@@ -172,6 +175,12 @@ class DisplayMap extends Core
                 $objTemplate = new \FrontendTemplate($this->strListTemplate);
                 $objTemplate->locations = $arrLocations;
                 $objTemplate->list_position = $this->wem_location_map_list;
+
+                if ($this->filters) {
+                    $objTemplate->filters = $this->filters;
+                    $objTemplate->filters_position = $this->wem_location_map_filters;
+                }
+
                 $this->Template->list = $objTemplate->parse();
                 $this->Template->list_position = $this->wem_location_map_list;
             }
