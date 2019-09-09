@@ -9,9 +9,9 @@ var objMap;
 var objMapCenter;
 var objMapBounds;
 var $map = $('.map__container');
-var $list = $map.next('.map__list');
-var $reset = $list.next('.map__reset');
-var $toggleList = $reset.next('.map__toggleList');
+var $list = $('.map__list');
+var $reset = $('.map__reset');
+var $toggleList = $('.map__toggleList');
 //var $dropdowns = $list.next('.map__dropdowns');
 
 $(function(){
@@ -54,6 +54,9 @@ $(function(){
 	// Define a default value for zoom
 	if(!objMapConfig.map.zoom)
 		objMapConfig.map.zoom = 7;
+	// Define a default value for lockZoom
+	if(!objMapConfig.map.lockZoom)
+		objMapConfig.map.lockZoom = false;
 });
 
 function selectMapItem(itemID){

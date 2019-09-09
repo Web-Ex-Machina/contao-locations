@@ -77,10 +77,12 @@ $(function(){
     onRegionSelected: function(e, code, selected, selectedRegions){
       if(selected && objMapData.length != 0){
         if(arrCountriesAvailable.indexOf(code) != -1){
-          objMap.setFocus({
-            region: code,
-            animate: true
-          });
+          if(!objMapConfig.map.lockZoom){
+            objMap.setFocus({
+              region: code,
+              animate: true
+            });
+          }
 
           $reset.addClass('active');
           $list.find('.map__list__title .location').html(objCountries[code].name);
@@ -176,10 +178,13 @@ $(function(){
     objMap.series.regions[0].setValues(getMapSeries());
     objMap.updateSize();
     if(zoom){
-      objMap.setFocus({
-        regions: arrCountriesAvailable,
-        animate: animate
-      });
+      var hasOneRegion = arrCountriesAvailable.some(function(key){return Object.keys(objMap.regions).includes(key); });
+      if(!objMapConfig.map.lockZoom){
+        objMap.setFocus({
+          regions: arrCountriesAvailable,
+          animate: animate
+        });
+      }
     }
   };
 
