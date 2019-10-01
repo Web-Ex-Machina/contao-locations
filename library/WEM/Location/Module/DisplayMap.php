@@ -120,7 +120,7 @@ class DisplayMap extends Core
 
             // Now we retrieved all the locations, we will regroup the close ones into one
             $arrMarkers = [];
-            $distToMerge = $this->wem_location_distToMerge ?: 50000; // in m (default to 50km)
+            $distToMerge = $this->wem_location_distToMerge ?: 0; // in m
             foreach ($arrLocations as $l) {
                 // For each markers we will need to check the proximity with the other markers
                 // If it's too close, we will merge them and place the marker on the middle of them
@@ -133,7 +133,7 @@ class DisplayMap extends Core
                     }
 
                     // Calculate the distance between the current location and the markers stored
-                    $d = $this->vincentyGreatCircleDistance(
+                    $d = Util::vincentyGreatCircleDistance(
                         $l['lat'],
                         $l['lng'],
                         $m['lat'],
@@ -161,6 +161,8 @@ class DisplayMap extends Core
                     ]
                 ];
             }
+
+            dump($arrMarkers);
 
             // Send the data to Map template
             $this->Template->markers = $arrMarkers;
