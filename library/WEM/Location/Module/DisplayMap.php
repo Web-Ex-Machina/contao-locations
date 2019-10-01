@@ -118,7 +118,52 @@ class DisplayMap extends Core
             // Get categories
             $arrCategories = $this->getCategories();
 
+            // Now we retrieved all the locations, we will regroup the close ones into one
+            $arrMarkers = [];
+            $distToMerge = $this->wem_location_distToMerge ?: 50000; // in m (default to 50km)
+            foreach ($arrLocations as $l) {
+                // For each markers we will need to check the proximity with the other markers
+                // If it's too close, we will merge them and place the marker on the middle of them
+                // Nota 1 : Maybe we shall regroup them before moving the markers (because we could have more and more unprecise markers ?)
+                foreach ($arrMarkers as $k => $m) {
+                    // First make sure we stay in the same country
+                    // Either way, we will hide items too close from a same border
+                    if ($m['country']['code'] != $l['country']['code']) {
+                        continue;
+                    }
+
+                    // Calculate the distance between the current location and the markers stored
+                    $d = $this->vincentyGreatCircleDistance(
+                        $l['lat'],
+                        $l['lng'],
+                        $m['lat'],
+                        $m['lng']
+                    );
+
+                    // If proximity too close :
+                    // add the location to this marker and continue
+                    // adjust marker pos
+                    if ($d < $distToMerge) {
+                        $arrMarkers[$k]['lat'] = ($l['lat'] + $m['lat']) / 2;
+                        $arrMarkers[$k]['lng'] = ($l['lng'] + $m['lng']) / 2;
+                        $arrMarkers[$k]["items"][] = $l;
+                        continue(2);
+                    }
+                }
+
+                $arrMarkers[] = [
+                    "lat" => $l['lat'],
+                    "lng" => $l['lng'],
+                    "continent" => $l['continent'],
+                    "country" => $l['country'],
+                    "items" => [
+                        0 => $l
+                    ]
+                ];
+            }
+
             // Send the data to Map template
+            $this->Template->markers = $arrMarkers;
             $this->Template->locations = $arrLocations;
             $this->Template->categories = $arrCategories;
             $this->Template->config = $arrConfig;
