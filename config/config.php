@@ -53,17 +53,6 @@ array_insert(
 );
 
 /**
- * Content Elements
- */
-array_insert(
-    $GLOBALS['TL_CTE']['includes'],
-    0,
-    array(
-        'wem_locations' => 'WEM\Location\Elements\DisplayMap',
-    )
-);
-
-/**
  * Models
  */
 $GLOBALS['TL_MODELS'][\WEM\Location\Model\Map::getTable()] = 'WEM\Location\Model\Map';
