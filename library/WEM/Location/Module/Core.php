@@ -129,7 +129,7 @@ abstract class Core extends \Module
 
             // Format website (we assume that every url is an external one)
             if ($arrItem["website"] && "http" != substr($arrItem["website"], 4)) {
-                $arrItem["website"] = "http://".$arrItem["website"];
+                $arrItem["website"] = "https://".$arrItem["website"];
             }
 
             // Get category
