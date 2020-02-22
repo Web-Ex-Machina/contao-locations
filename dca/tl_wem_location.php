@@ -168,7 +168,7 @@ $GLOBALS['TL_DCA']['tl_wem_location'] = array(
             'inputType'               => 'select',
             'foreignKey'              => 'tl_wem_map_category.title',
             'options_callback'        => array('tl_wem_location', 'getMapCategories'),
-            'eval'                    => array('doNotCopy'=>true, 'chosen'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'eval'                    => array('chosen'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
             'relation'                => array('type'=>'hasOne', 'load'=>'lazy')
         ),

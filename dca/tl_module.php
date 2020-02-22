@@ -11,7 +11,7 @@
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'wem_location_map_filters';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['wem_display_map']    = '
 	{title_legend},name,type;
-	{config_legend},wem_location_map,wem_location_map_list,wem_location_map_filters;
+	{config_legend},wem_location_map,wem_location_map_list,wem_location_map_filters,wem_location_distToMerge;
 	{template_legend:hide},customTpl;
 	{protected_legend:hide},protected;
 	{expert_legend:hide},guests,cssID
@@ -60,4 +60,11 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['wem_location_map_filters_fields'] = a
     'reference'               => &$GLOBALS['TL_LANG']['tl_module']['wem_location_map_filters_fields'],
     'eval'                    => array('chosen'=>true, 'mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50'),
     'sql'                     => "blob NULL'"
+);
+$GLOBALS['TL_DCA']['tl_module']['fields']['wem_location_distToMerge'] = array(
+    'label'                   => &$GLOBALS['TL_LANG']['tl_module']['wem_location_distToMerge'],
+    'exclude'                 => true,
+    'inputType'               => 'text',
+    'eval'                    => array('tl_class'=>'w50'),
+    'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );

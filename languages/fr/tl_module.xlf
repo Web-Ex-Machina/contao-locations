@@ -81,6 +81,14 @@
         <source>City</source>
         <target>Ville</target>
       </trans-unit>
+      <trans-unit id="tl_module.wem_location_distToMerge.0">
+        <source>Merge close markers</source>
+        <target>Fusionner les marqueurs proches</target>
+      </trans-unit>
+      <trans-unit id="tl_module.wem_location_distToMerge.1">
+        <source>The marker will be merged if they are within the distance entered (in m)</source>
+        <target>Les marqueurs seront fusionnés s'ils sont dans la distance entrée (en m)</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

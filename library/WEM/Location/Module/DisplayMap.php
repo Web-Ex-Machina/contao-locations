@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Module Locations for Contao Open Source CMS
+ * Module Locations for Contao Open Source CMS.
  *
  * Copyright (c) 2018-2019 Web ex Machina
  *
@@ -9,12 +9,6 @@
  */
 
 namespace WEM\Location\Module;
-
-use Contao\Combiner;
-
-use Haste\Http\Response\HtmlResponse;
-use Haste\Http\Response\JsonResponse;
-use Haste\Input\Input;
 
 use WEM\Location\Controller\ClassLoader;
 use WEM\Location\Controller\Util;
@@ -27,28 +21,28 @@ use WEM\Location\Model\Location;
 class DisplayMap extends Core
 {
     /**
-     * Map Template
+     * Map Template.
      *
      * @var string
      */
     protected $strTemplate = 'mod_wem_locations_map';
 
     /**
-     * List Template
+     * List Template.
      *
      * @var string
      */
     protected $strListTemplate = 'mod_wem_locations_list';
 
     /**
-     * Filters
+     * Filters.
      *
-     * @var Array [Available filters]
+     * @var array [Available filters]
      */
     protected $filters;
 
     /**
-     * Display a wildcard in the back end
+     * Display a wildcard in the back end.
      *
      * @return string
      */
@@ -57,11 +51,11 @@ class DisplayMap extends Core
         if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
-            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['wem_display_map'][0]) . ' ###';
+            $objTemplate->wildcard = '### '.utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['wem_display_map'][0]).' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id='.$this->id;
 
             return $objTemplate->parse();
         }
@@ -70,9 +64,7 @@ class DisplayMap extends Core
     }
 
     /**
-     * Generate the module
-     *
-     * @return void
+     * Generate the module.
      */
     protected function compile()
     {
@@ -81,7 +73,7 @@ class DisplayMap extends Core
             $this->objMap = Map::findByPk($this->wem_location_map);
 
             if (!$this->objMap) {
-                throw new \Exception("No map found.");
+                throw new \Exception('No map found.');
             }
 
             // Load the libraries
@@ -92,19 +84,19 @@ class DisplayMap extends Core
             $arrConfig = [];
             if ($this->objMap->mapConfig) {
                 foreach (deserialize($this->objMap->mapConfig) as $arrRow) {
-                    if ($arrRow["value"] === 'true') {
+                    if ('true' === $arrRow['value']) {
                         $varValue = true;
-                    } elseif ($arrRow["value"] === 'false') {
+                    } elseif ('false' === $arrRow['value']) {
                         $varValue = false;
                     } else {
-                        $varValue = html_entity_decode($arrRow["value"]);
+                        $varValue = html_entity_decode($arrRow['value']);
                     }
 
-                    if (strpos($arrRow["key"], "_") !== false) {
-                        $arrOption = explode("_", $arrRow["key"]);
+                    if (false !== strpos($arrRow['key'], '_')) {
+                        $arrOption = explode('_', $arrRow['key']);
                         $arrConfig[$arrOption[0]][$arrOption[1]] = $varValue;
                     } else {
-                        $arrConfig["map"][$arrRow["key"]] = $varValue;
+                        $arrConfig['map'][$arrRow['key']] = $varValue;
                     }
                 }
             }
@@ -118,33 +110,80 @@ class DisplayMap extends Core
             // Get categories
             $arrCategories = $this->getCategories();
 
+            // Now we retrieved all the locations, we will regroup the close ones into one
+            $arrMarkers = [];
+            $distToMerge = $this->wem_location_distToMerge ?: 0; // in m
+            if ($distToMerge > 0) {
+                foreach ($arrLocations as $l) {
+                    // For each markers we will need to check the proximity with the other markers
+                    // If it's too close, we will merge them and place the marker on the middle of them
+                    // Nota 1 : Maybe we shall regroup them before moving the markers (because we could have more and more unprecise markers ?)
+                    foreach ($arrMarkers as $k => $m) {
+                        // First make sure we stay in the same country
+                        // Either way, we will hide items too close from a same border
+                        if ($m['country']['code'] != $l['country']['code']) {
+                            continue;
+                        }
+
+                        // Calculate the distance between the current location and the markers stored
+                        $d = Util::vincentyGreatCircleDistance(
+                            $l['lat'],
+                            $l['lng'],
+                            $m['lat'],
+                            $m['lng']
+                        );
+
+                        // If proximity too close :
+                        // add the location to this marker and continue
+                        // adjust marker pos
+                        if ($d < $distToMerge) {
+                            $arrMarkers[$k]['lat'] = ($l['lat'] + $m['lat']) / 2;
+                            $arrMarkers[$k]['lng'] = ($l['lng'] + $m['lng']) / 2;
+                            $arrMarkers[$k]['items'][] = $l;
+                            continue 2;
+                        }
+                    }
+
+                    $arrMarkers[] = [
+                        'lat' => $l['lat'],
+                        'lng' => $l['lng'],
+                        'continent' => $l['continent'],
+                        'country' => $l['country'],
+                        'items' => [
+                            0 => $l,
+                        ],
+                    ];
+                }
+            }
+
             // Send the data to Map template
+            $this->Template->markers = $arrMarkers;
             $this->Template->locations = $arrLocations;
             $this->Template->categories = $arrCategories;
             $this->Template->config = $arrConfig;
 
             // Gather filters
-            if ("nofilters" != $this->wem_location_map_filters) {
+            if ('nofilters' != $this->wem_location_map_filters) {
                 \System::loadLanguageFile('tl_wem_location');
                 $arrFilterFields = unserialize($this->wem_location_map_filters_fields);
                 $this->filters = [];
 
                 foreach ($arrFilterFields as $f) {
-                    if ("search" == $f) {
+                    if ('search' == $f) {
                         $this->filters[$f] = [
-                            "label" => "Recherche :",
-                            "placeholder" => "Que recherchez-vous ?",
-                            "name" => "search",
-                            "type" => "text",
-                            "value" => ""
+                            'label' => 'Recherche :',
+                            'placeholder' => 'Que recherchez-vous ?',
+                            'name' => 'search',
+                            'type' => 'text',
+                            'value' => '',
                         ];
                     } else {
                         $this->filters[$f] = [
-                            "label" => sprintf('%s :', $GLOBALS['TL_LANG']['tl_wem_location'][$f][0]),
-                            "placeholder" => $GLOBALS['TL_LANG']['tl_wem_location'][$f][1],
-                            "name" => $f,
-                            "type" => "select",
-                            "options" => []
+                            'label' => sprintf('%s :', $GLOBALS['TL_LANG']['tl_wem_location'][$f][0]),
+                            'placeholder' => $GLOBALS['TL_LANG']['tl_wem_location'][$f][1],
+                            'name' => $f,
+                            'type' => 'select',
+                            'options' => [],
                         ];
 
                         foreach ($arrLocations as $l) {
@@ -164,14 +203,14 @@ class DisplayMap extends Core
             }
 
             // Send the fileMap
-            if ("jvector" == $this->objMap->mapProvider
-                && "" != $this->objMap->mapFile
+            if ('jvector' == $this->objMap->mapProvider
+                && '' != $this->objMap->mapFile
             ) {
                 $this->Template->mapFile = $this->objMap->mapFile;
             }
 
             // If the config says so, we will generate a template with a list of the locations
-            if ("nolist" != $this->wem_location_map_list) {
+            if ('nolist' != $this->wem_location_map_list) {
                 $objTemplate = new \FrontendTemplate($this->strListTemplate);
                 $objTemplate->locations = $arrLocations;
                 $objTemplate->list_position = $this->wem_location_map_list;
