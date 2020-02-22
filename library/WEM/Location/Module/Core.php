@@ -27,7 +27,7 @@ abstract class Core extends \Module
             $objCategories = Category::findItems(["published"=>1, "pid"=>$this->wem_location_map]);
 
             if (!$objCategories) {
-                throw new \Exception("No locations found for this map.");
+                throw new \Exception("No categories found for this map.");
             }
 
             $arrCategories = array();
