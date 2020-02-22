@@ -336,5 +336,6 @@ class Callback extends Backend
 		header('Cache-Control: max-age=0');
 		$writer = IOFactory::createWriter($objSpreadsheet, 'Xlsx');
 		$writer->save('php://output');
+		die;
 	}
 }

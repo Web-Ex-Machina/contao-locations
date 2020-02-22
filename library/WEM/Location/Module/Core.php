@@ -128,8 +128,8 @@ abstract class Core extends \Module
             $arrItem["address"] = $arrItem["street"]." ".$arrItem["postal"]." ".$arrItem["city"];
 
             // Format website (we assume that every url is an external one)
-            if ($arrItem["website"] && "http" != substr($arrItem["website"], 4)) {
-                $arrItem["website"] = "https://".$arrItem["website"];
+            if ($arrItem["website"] && "http" != substr($arrItem["website"], 0, 4)) {
+                $arrItem["website"] = "http://".$arrItem["website"];
             }
 
             // Get category
