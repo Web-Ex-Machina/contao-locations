@@ -1,4 +1,4 @@
-$(function(){
+function initMap() {
   objMarkers = {};
   $.each(objMapData,function(index,location){
     objMarkers[location.country.code+'-'+location.title.toLowerCase().replace(/\s/g,'_')]={
@@ -228,4 +228,4 @@ $(function(){
       bufferWheel = 0;
     },300);
   });
-});
+}
