@@ -30,6 +30,6 @@
         }
     },
     "extra":{
-        "contao-manager-plugin": "WEM\\Location\\ContaoManager\\Plugin"
+        "contao-manager-plugin": "WEM\\LocationsBundle\\ContaoManager\\Plugin"
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace WEM\LocationBundle;
+namespace WEM\LocationsBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -9,6 +9,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-class LocationBundle extends Bundle
+class LocationsBundle extends Bundle
 {
 }

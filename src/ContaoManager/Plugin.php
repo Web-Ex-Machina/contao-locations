@@ -1,8 +1,8 @@
 <?php
 
-namespace WEM\LocationBundle\ContaoManager;
+namespace WEM\LocationsBundle\ContaoManager;
 
-use WEM\LocationBundle\LocationBundle;
+use WEM\LocationsBundle\LocationsBundle;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
@@ -21,7 +21,7 @@ class Plugin implements BundlePluginInterface
     public function getBundles(ParserInterface $parser)
     {
         return [
-            BundleConfig::create(LocationBundle::class)
+            BundleConfig::create(LocationsBundle::class)
                 ->setLoadAfter([ContaoCoreBundle::class])
                 ->setReplace(['wem-locations']),
         ];

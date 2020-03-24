@@ -1,6 +1,6 @@
 <?php
 
-namespace WEM\LocationBundle\DependencyInjection;
+namespace WEM\LocationsBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-class LocationExtension extends Extension
+class LocationsExtension extends Extension
 {
     /**
      * {@inheritdoc}
