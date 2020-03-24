@@ -13,7 +13,7 @@
  */
 array_insert(
     $GLOBALS['BE_MOD'],
-    1,
+    array_search('content', array_keys($GLOBALS['BE_MOD'])) + 1,
     array(
         'wem-locations' => array(
             'wem-maps' => array(

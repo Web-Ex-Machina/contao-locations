@@ -2,7 +2,7 @@
     "name": "webexmachina/contao-locations",
     "description": "Locations for Contao Open Source CMS",
     "keywords": ["locations", "map", "agencies", "shops", "webexmachina", "module", "contao"],
-    "type": "contao-module",
+    "type": "contao-bundle",
     "license": "LGPL-3.0+",
     "authors": [
         {
@@ -17,29 +17,19 @@
         "source":"https://github.com/webexmachina/contao-locations"
     },
     "require": {
-        "php": ">=5.5",
+        "php": "^7.1",
         "phpoffice/phpspreadsheet": "~1.2",
-        "contao/core-bundle": "~3.2 || ~4.1",
-        "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
+        "contao/core-bundle": "~4.4",
+        "contao-community-alliance/composer-plugin": "*",
         "codefog/contao-haste":"^4.14",
         "terminal42/dcawizard":"^2.4"
     },
     "autoload":{
-        "psr-0": {
-            "WEM\\": [
-                "library/"
-            ]
-        },
-        "classmap": [""]
-    },
-    "extra": {
-        "contao": {
-            "sources": {
-                "": "system/modules/wem-contao-locations"
-            },
-            "runonce": [
-                "system/modules/wem-contao-locations/config/runonce.php"
-            ]
+        "psr-4": {
+            "WEM\\Location\\": "src/"
         }
+    },
+    "extra":{
+        "contao-manager-plugin": "WEM\\Location\\ContaoManager\\Plugin"
     }
 }
