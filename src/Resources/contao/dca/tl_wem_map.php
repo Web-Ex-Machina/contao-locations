@@ -236,11 +236,11 @@ class tl_wem_map extends Backend
         if (!$varValue) {
             switch ($objDc->activeRecord->mapProvider) {
                 case 'jvector':
-                    $arrConfig = \WEM\Location\Controller\Provider\JVector::getDefaultConfig();
+                    $arrConfig = \WEM\LocationsBundle\Controller\Provider\JVector::getDefaultConfig();
                     break;
 
                 case 'leaflet':
-                    $arrConfig = \WEM\Location\Controller\Provider\Leaflet::getDefaultConfig();
+                    $arrConfig = \WEM\LocationsBundle\Controller\Provider\Leaflet::getDefaultConfig();
                     break;
 
                 default:

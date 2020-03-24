@@ -18,9 +18,9 @@ array_insert(
         'wem-locations' => array(
             'wem-maps' => array(
                 'tables'      => array('tl_wem_map', 'tl_wem_map_category', 'tl_wem_location', 'tl_content'),
-                'import'      => array('WEM\Location\Backend\Callback', "importLocations"),
-                'export'      => array('WEM\Location\Backend\Callback', "exportLocations"),
-                'geocode'     => array('WEM\Location\Backend\Callback', "geocode"),
+                'import'      => array('WEM\LocationsBundle\Backend\Callback', "importLocations"),
+                'export'      => array('WEM\LocationsBundle\Backend\Callback', "exportLocations"),
+                'geocode'     => array('WEM\LocationsBundle\Backend\Callback', "geocode"),
                 'icon'        => 'system/modules/wem-contao-locations/assets/icon_map_16_c3.png',
             )
         )
@@ -46,8 +46,8 @@ array_insert(
     2,
     array(
         'wem_locations' => array(
-            'wem_display_map'       => 'WEM\Location\Module\DisplayMap',
-            'wem_location_reader'   => 'WEM\Location\Module\LocationsReader',
+            'wem_display_map'       => 'WEM\LocationsBundle\Module\DisplayMap',
+            'wem_location_reader'   => 'WEM\LocationsBundle\Module\LocationsReader',
         )
     )
 );
@@ -55,11 +55,11 @@ array_insert(
 /**
  * Models
  */
-$GLOBALS['TL_MODELS'][\WEM\Location\Model\Map::getTable()] = 'WEM\Location\Model\Map';
-$GLOBALS['TL_MODELS'][\WEM\Location\Model\Location::getTable()] = 'WEM\Location\Model\Location';
-$GLOBALS['TL_MODELS'][\WEM\Location\Model\Category::getTable()] = 'WEM\Location\Model\Category';
+$GLOBALS['TL_MODELS'][\WEM\LocationsBundle\Model\Map::getTable()] = 'WEM\LocationsBundle\Model\Map';
+$GLOBALS['TL_MODELS'][\WEM\LocationsBundle\Model\Location::getTable()] = 'WEM\LocationsBundle\Model\Location';
+$GLOBALS['TL_MODELS'][\WEM\LocationsBundle\Model\Category::getTable()] = 'WEM\LocationsBundle\Model\Category';
 
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('WEM\Location\Controller\Util', 'replaceInsertTags');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('WEM\LocationsBundle\Controller\Util', 'replaceInsertTags');

@@ -392,7 +392,7 @@ class tl_wem_location extends Backend
             $slugOptions = array();
 
             // Read the slug options from the associated page
-            if (($objMap = \WEM\Location\Model\Map::findByPk($dc->activeRecord->pid)) !== null && ($objPage = PageModel::findWithDetails($objMap->jumpTo)) !== null) {
+            if (($objMap = \WEM\LocationsBundle\Model\Map::findByPk($dc->activeRecord->pid)) !== null && ($objPage = PageModel::findWithDetails($objMap->jumpTo)) !== null) {
                 $slugOptions = $objPage->getSlugOptions();
             }
 
@@ -424,7 +424,7 @@ class tl_wem_location extends Backend
      */
     public function checkIfGeocodeExists()
     {
-        $objMap = \WEM\Location\Model\Map::findByPk(\Input::get('id'));
+        $objMap = \WEM\LocationsBundle\Model\Map::findByPk(\Input::get('id'));
 
         if ('' == $objMap->geocodingProvider) {
             unset($GLOBALS['TL_DCA']['tl_wem_location']['list']['global_operations']['geocodeAll']);
