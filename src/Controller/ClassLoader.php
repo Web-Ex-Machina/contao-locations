@@ -62,6 +62,9 @@ class ClassLoader extends Controller
         $objCssCombiner = new Combiner();
         $objJsCombiner = new Combiner();
 
+        // Load jQuery
+        $GLOBALS['TL_JAVASCRIPT'][] = "https://code.jquery.com/jquery-3.4.1.min.js";
+
         // Load generic files
         $objCssCombiner->add('bundles/wemlocations/css/default.css', $strVersion);
         $objJsCombiner->add('bundles/wemlocations/js/default.js', $strVersion);
@@ -83,7 +86,7 @@ class ClassLoader extends Controller
 
                 $objCssCombiner->add('bundles/wemlocations/css/gmaps.css', $strVersion);
                 $objJsCombiner->add('bundles/wemlocations/js/gmaps.js', $strVersion);
-                $GLOBALS['TL_JQUERY'][] = sprintf('<script src="https://maps.googleapis.com/maps/api/js?key=%s"></script>', $objMap->mapProviderGmapKey);
+                $GLOBALS['TL_JAVASCRIPT'][] = sprintf('<script src="https://maps.googleapis.com/maps/api/js?key=%s"></script>', $objMap->mapProviderGmapKey);
                 break;
             case 'leaflet':
                 $objCssCombiner->addMultiple([
@@ -99,6 +102,6 @@ class ClassLoader extends Controller
 
         // And add them to pages
         $GLOBALS['TL_HEAD'][] = sprintf('<link rel="stylesheet" href="%s">', $objCssCombiner->getCombinedFile());
-        $GLOBALS['TL_JQUERY'][] = sprintf('<script src="%s"></script>', $objJsCombiner->getCombinedFile());
+        $GLOBALS['TL_JAVASCRIPT'][] = sprintf($objJsCombiner->getCombinedFile());
     }
 }

@@ -81,7 +81,7 @@ class DisplayMap extends Core
             }
 
             // Load the libraries
-            ClassLoader::loadLibraries($this->objMap, 8);
+            ClassLoader::loadLibraries($this->objMap, 1);
             \System::getCountries();
 
             // Build the config

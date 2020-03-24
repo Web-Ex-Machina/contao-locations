@@ -5,7 +5,7 @@ var LocationMarker = L.Marker.extend({
 	},
 });
 
-$(function(){
+function initMap() {
 	objMapData.forEach(function(location,index){
 		objMarkers[location.id].latLng = L.latLng({lat: parseFloat(location.lat), lng: parseFloat(location.lng)});
 	});
@@ -19,6 +19,8 @@ $(function(){
 		options = {};
 		options.title = objMarkers[i].title;
 		options.locationID = objMarkers[i].id;
+
+		console.log(objMarkers[i]);
 
 		if(objMarkers[i].category.marker && objMarkers[i].category.marker.icon)
 			options.icon = L.icon(objMarkers[i].category.marker.icon);
@@ -42,5 +44,4 @@ $(function(){
 	$toggleList.bind('click', function(){
 		objMap.invalidateSize();
 	});
-});
-
+}

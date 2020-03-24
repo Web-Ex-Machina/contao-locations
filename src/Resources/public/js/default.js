@@ -14,7 +14,12 @@ var $reset = $('.map__reset');
 var $toggleList = $('.map__toggleList');
 //var $dropdowns = $list.next('.map__dropdowns');
 
-$(function(){
+window.addEventListener('load', (event) => {
+	$map = $('.map__container');
+	$list = $('.map__list');
+	$reset = $('.map__reset');
+	$toggleList = $('.map__toggleList');
+
 	// ------------------------------------------------------------------------------------------------------------------------------
 	// RESIZE EVENT
 	$(window).resize(function(){
@@ -57,6 +62,8 @@ $(function(){
 	// Define a default value for lockZoom
 	if(!objMapConfig.map.lockZoom)
 		objMapConfig.map.lockZoom = false;
+
+	initMap();
 });
 
 function selectMapItem(itemID){
