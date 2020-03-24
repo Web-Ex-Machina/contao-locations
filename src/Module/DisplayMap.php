@@ -119,8 +119,9 @@ class DisplayMap extends Core
             // Now we retrieved all the locations, we will regroup the close ones into one
             $arrMarkers = [];
             $distToMerge = $this->wem_location_distToMerge ?: 0; // in m
-            if ($distToMerge > 0) {
-                foreach ($arrLocations as $l) {
+
+            foreach ($arrLocations as $l) {
+                if ($distToMerge > 0) {
                     // For each markers we will need to check the proximity with the other markers
                     // If it's too close, we will merge them and place the marker on the middle of them
                     // Nota 1 : Maybe we shall regroup them before moving the markers (because we could have more and more unprecise markers ?)
@@ -149,17 +150,17 @@ class DisplayMap extends Core
                             continue 2;
                         }
                     }
-
-                    $arrMarkers[] = [
-                        'lat' => $l['lat'],
-                        'lng' => $l['lng'],
-                        'continent' => $l['continent'],
-                        'country' => $l['country'],
-                        'items' => [
-                            0 => $l,
-                        ],
-                    ];
                 }
+
+                $arrMarkers[] = [
+                    'lat' => $l['lat'],
+                    'lng' => $l['lng'],
+                    'continent' => $l['continent'],
+                    'country' => $l['country'],
+                    'items' => [
+                        0 => $l,
+                    ],
+                ];
             }
 
             // Send the data to Map template
