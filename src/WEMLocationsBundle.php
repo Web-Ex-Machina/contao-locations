@@ -9,6 +9,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-class LocationsBundle extends Bundle
+class WEMLocationsBundle extends Bundle
 {
 }

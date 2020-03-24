@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-class LocationsExtension extends Extension
+class WEMLocationsExtension extends Extension
 {
     /**
      * {@inheritdoc}
