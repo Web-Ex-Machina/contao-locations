@@ -92,8 +92,10 @@ class DisplayMap extends Core
                         $varValue = true;
                     } elseif ('false' === $arrRow['value']) {
                         $varValue = false;
-                    } else {
+                    } elseif (\is_string($arrRow['value'])) {
                         $varValue = html_entity_decode($arrRow['value']);
+                    } else {
+                        $varValue = $arrRow['value'];
                     }
 
                     if (false !== strpos($arrRow['key'], '_')) {
