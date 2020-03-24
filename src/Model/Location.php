@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * Module Locations for Contao Open Source CMS
+ * Contao Locations for Contao Open Source CMS
+ * Copyright (c) 2015-2020 Web ex Machina
  *
- * Copyright (c) 2018 Web ex Machina
- *
- * @author Web ex Machina <https://www.webexmachina.fr>
+ * @category ContaoBundle
+ * @package  Web-Ex-Machina/contao-locations
+ * @author   Web ex Machina <contact@webexmachina.fr>
+ * @link     https://github.com/Web-Ex-Machina/contao-locations/
  */
 
 namespace WEM\LocationsBundle\Model;
@@ -13,83 +17,99 @@ namespace WEM\LocationsBundle\Model;
 use Contao\Model;
 
 /**
- * Reads and writes items
+ * Reads and writes items.
  */
 class Location extends Model
 {
-	/**
-	 * Table name
-	 * @var string
-	 */
-	protected static $strTable = 'tl_wem_location';
+    /**
+     * Table name.
+     *
+     * @var string
+     */
+    protected static $strTable = 'tl_wem_location';
 
-	/**
-	 * Find items, depends on the arguments
-	 * @param Array
-	 * @param Int
-	 * @param Int
-	 * @param Array
-	 * @return Collection
-	 */
-	public static function findItems($arrConfig = array(), $intLimit = 0, $intOffset = 0, $arrOptions = array())
-	{
-		$t = static::$strTable;
-		$arrColumns = static::formatColumns($arrConfig);
-			
-		if($intLimit > 0)
-			$arrOptions['limit'] = $intLimit;
+    /**
+     * Find items, depends on the arguments.
+     *
+     * @param array
+     * @param int
+     * @param int
+     * @param array
+     *
+     * @return Collection
+     */
+    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = [])
+    {
+        $t = static::$strTable;
+        $arrColumns = static::formatColumns($arrConfig);
 
-		if($intOffset > 0)
-			$arrOptions['offset'] = $intOffset;
+        if ($intLimit > 0) {
+            $arrOptions['limit'] = $intLimit;
+        }
 
-		if(!isset($arrOptions['order']))
-			$arrOptions['order'] = "$t.title ASC";
+        if ($intOffset > 0) {
+            $arrOptions['offset'] = $intOffset;
+        }
 
-		if(empty($arrColumns))
-			return static::findAll($arrOptions);
-		else
-			return static::findBy($arrColumns, null, $arrOptions);
-	}
+        if (!isset($arrOptions['order'])) {
+            $arrOptions['order'] = "$t.title ASC";
+        }
 
-	/**
-	 * Count items, depends on the arguments
-	 * @param Array
-	 * @param Array
-	 * @return Integer
-	 */
-	public static function countItems($arrConfig = array(), $arrOptions = array())
-	{
-		$t = static::$strTable;
-		$arrColumns = static::formatColumns($arrConfig);
+        if (empty($arrColumns)) {
+            return static::findAll($arrOptions);
+        }
 
-		if(empty($arrColumns))
-			return static::countAll($arrOptions);
-		else
-			return static::countBy($arrColumns, null, $arrOptions);
-	}
+        return static::findBy($arrColumns, null, $arrOptions);
+    }
 
-	/**
-	 * Format ItemModel columns
-	 * @param  [Array] $arrConfig [Configuration to format]
-	 * @return [Array]            [The Model columns]
-	 */
-	public static function formatColumns($arrConfig)
-	{
-		$t = static::$strTable;
-		$arrColumns = array();
+    /**
+     * Count items, depends on the arguments.
+     *
+     * @param array
+     * @param array
+     *
+     * @return int
+     */
+    public static function countItems($arrConfig = [], $arrOptions = [])
+    {
+        $t = static::$strTable;
+        $arrColumns = static::formatColumns($arrConfig);
 
-		if($arrConfig["pid"])
-			$arrColumns[] = "$t.pid = ". $arrConfig["pid"];
+        if (empty($arrColumns)) {
+            return static::countAll($arrOptions);
+        }
 
-		if($arrConfig["published"])
-			$arrColumns[] = "$t.published = 1";
+        return static::countBy($arrColumns, null, $arrOptions);
+    }
 
-		if($arrConfig["onlyWithCoords"])
-			$arrColumns[] = "$t.lat != '' AND $t.lng != ''";
+    /**
+     * Format ItemModel columns.
+     *
+     * @param [Array] $arrConfig [Configuration to format]
+     *
+     * @return [Array] [The Model columns]
+     */
+    public static function formatColumns($arrConfig)
+    {
+        $t = static::$strTable;
+        $arrColumns = [];
 
-		if($arrConfig["not"])
-			$arrColumns[] = $arrConfig["not"];
+        if ($arrConfig['pid']) {
+            $arrColumns[] = "$t.pid = ".$arrConfig['pid'];
+        }
 
-		return $arrColumns;
-	}
+        if ($arrConfig['published']) {
+            $arrColumns[] = "$t.published = 1";
+        }
+
+        if ($arrConfig['onlyWithCoords']) {
+            $arrColumns[] = "$t.lat != '' AND $t.lng != ''";
+        }
+
+        if ($arrConfig['not']) {
+            $arrColumns[] = $arrConfig['not'];
+        }
+
+        return $arrColumns;
+    }
 }

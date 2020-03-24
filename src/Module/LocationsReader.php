@@ -1,23 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * Module Locations for Contao Open Source CMS
+ * Contao Locations for Contao Open Source CMS
+ * Copyright (c) 2015-2020 Web ex Machina
  *
- * Copyright (c) 2018-2019 Web ex Machina
- *
- * @author Web ex Machina <https://www.webexmachina.fr>
+ * @category ContaoBundle
+ * @package  Web-Ex-Machina/contao-locations
+ * @author   Web ex Machina <contact@webexmachina.fr>
+ * @link     https://github.com/Web-Ex-Machina/contao-locations/
  */
 
 namespace WEM\LocationsBundle\Module;
 
-use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\CoreBundle\Exception\PageNotFoundException;
-use Patchwork\Utf8;
-
-use Contao\Combiner;
-
-use Haste\Input\Input;
-
 use WEM\LocationsBundle\Model\Location;
 
 /**
@@ -26,25 +23,27 @@ use WEM\LocationsBundle\Model\Location;
 class LocationsReader extends Core
 {
     /**
-     * Map Template
+     * Map Template.
+     *
      * @var string
      */
     protected $strTemplate = 'mod_wem_locations_reader';
 
     /**
-     * Display a wildcard in the back end
+     * Display a wildcard in the back end.
+     *
      * @return string
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if (TL_MODE === 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
-            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['wem_display_map'][0]) . ' ###';
+            $objTemplate->wildcard = '### '.utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['wem_display_map'][0]).' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id='.$this->id;
 
             return $objTemplate->parse();
         }
@@ -53,22 +52,22 @@ class LocationsReader extends Core
         if (!isset($_GET['items']) && \Config::get('useAutoItem') && isset($_GET['auto_item'])) {
             \Input::setGet('items', \Input::get('auto_item'));
         }
-        
+
         // Return an empty string if "items" is not set (to combine list and reader on same page)
         if (!\Input::get('items')) {
             return '';
         }
-        
+
         return parent::generate();
     }
 
     /**
-     * Generate the module
+     * Generate the module.
      */
-    protected function compile()
+    protected function compile(): void
     {
         try {
-            /** @var PageModel $objPage */
+            /* @var PageModel $objPage */
             global $objPage;
 
             $this->Template->articles = '';
@@ -80,7 +79,7 @@ class LocationsReader extends Core
 
             // The location item does not exist or has an external target (see #33)
             if (null === $objItem) {
-                throw new PageNotFoundException('Page not found: ' . \Environment::get('uri'));
+                throw new PageNotFoundException('Page not found: '.\Environment::get('uri'));
             }
 
             $arrItem = $this->getLocation($objItem);

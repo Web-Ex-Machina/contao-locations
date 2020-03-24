@@ -1,228 +1,240 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * Module Locations for Contao Open Source CMS
+ * Contao Locations for Contao Open Source CMS
+ * Copyright (c) 2015-2020 Web ex Machina
  *
- * Copyright (c) 2018 Web ex Machina
- *
- * @author Web ex Machina <https://www.webexmachina.fr>
+ * @category ContaoBundle
+ * @package  Web-Ex-Machina/contao-locations
+ * @author   Web ex Machina <contact@webexmachina.fr>
+ * @link     https://github.com/Web-Ex-Machina/contao-locations/
  */
 
 namespace WEM\LocationsBundle\Backend;
 
 use Contao\Backend;
-
 use Haste\Http\Response\JsonResponse;
-
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-
-use WEM\LocationsBundle\Controller\Util;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use WEM\LocationsBundle\Controller\Provider\GoogleMaps;
 use WEM\LocationsBundle\Controller\Provider\Nominatim;
-use WEM\LocationsBundle\Model\Map;
+use WEM\LocationsBundle\Controller\Util;
 use WEM\LocationsBundle\Model\Location;
+use WEM\LocationsBundle\Model\Map;
 
 /**
- * Provide backend functions to Locations Extension
+ * Provide backend functions to Locations Extension.
  */
 class Callback extends Backend
 {
-	/**
-	 * Geocode a given location
-	 * @param  \DataContainer $objDc [Datacontainer to geocode]
-	 * @return JSON through AJAX request or Message with redirection
-	 */
-	public function geocode(\DataContainer $objDc){
-		if (\Input::get('key') != 'geocode')
-			return '';
+    /**
+     * Geocode a given location.
+     *
+     * @param \DataContainer $objDc [Datacontainer to geocode]
+     *
+     * @return JSON through AJAX request or Message with redirection
+     */
+    public function geocode(\DataContainer $objDc)
+    {
+        if ('geocode' !== \Input::get('key')) {
+            return '';
+        }
 
-		try{
-			$objLocation = Location::findByPk($objDc->id);
-			$objMap = Map::findByPk($objLocation->pid);
+        try {
+            $objLocation = Location::findByPk($objDc->id);
+            $objMap = Map::findByPk($objLocation->pid);
 
-			if(!$objMap->geocodingProvider)
-				throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['missingConfigForGeocoding']);
+            if (!$objMap->geocodingProvider) {
+                throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['missingConfigForGeocoding']);
+            }
+            switch ($objMap->geocodingProvider) {
+                case 'gmaps':
+                    $arrCoords = GoogleMaps::geocoder($objLocation, $objMap);
+                break;
+                case 'nominatim':
+                    $arrCoords = Nominatim::geocoder($objLocation, $objMap);
+                break;
+                default:
+                    throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['missingConfigForGeocoding']);
+            }
 
-			switch($objMap->geocodingProvider){
-				case 'gmaps':
-					$arrCoords = GoogleMaps::geocoder($objLocation, $objMap);
-				break;
-				case 'nominatim':
-					$arrCoords = Nominatim::geocoder($objLocation, $objMap);
-				break;
-				default:
-					throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['missingConfigForGeocoding']);
-			}
+            $objLocation->lat = $arrCoords['lat'];
+            $objLocation->lng = $arrCoords['lng'];
 
-			$objLocation->lat = $arrCoords['lat'];
-			$objLocation->lng = $arrCoords['lng'];
+            if (!$objLocation->save()) {
+                throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['errorWhenSavingTheLocation']);
+            }
+            if ('ajax' === \Input::get('src')) {
+                $arrResponse = ['status' => 'success', 'response' => sprintf($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['CONFIRM']['locationSaved'], $objLocation->title), 'data' => $arrCoords];
+            } else {
+                \Message::addConfirmation(sprintf($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['CONFIRM']['locationSaved'], $objLocation->title));
+            }
+        } catch (\Exception $e) {
+            if ('ajax' === \Input::get('src')) {
+                $arrResponse = ['status' => 'error', 'response' => $e->getMessage()];
+            } else {
+                \Message::addError($e->getMessage());
+            }
+        }
 
-			if(!$objLocation->save())
-				throw new \Exception($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['errorWhenSavingTheLocation']);
+        if ('ajax' === \Input::get('src')) {
+            $objResponse = new JsonResponse($arrResponse);
+            $objResponse->send();
+        }
 
-			if('ajax' == \Input::get('src'))
-				$arrResponse = ["status"=>"success", "response"=>sprintf($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['CONFIRM']['locationSaved'], $objLocation->title), "data"=>$arrCoords];
-			else
-				\Message::addConfirmation(sprintf($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['CONFIRM']['locationSaved'], $objLocation->title));
-			
-		}
-		catch(\Exception $e){
-			if('ajax' == \Input::get('src'))
-				$arrResponse = ["status"=>"error", "response"=>$e->getMessage()];
-			else
-				\Message::addError($e->getMessage());
-		}
+        $strRedirect = str_replace(['&key=geocode', 'id='.$objLocation->id, '&src=ajax'], ['', 'id='.$objMap->id, ''], \Environment::get('request'));
+        $this->redirect(ampersand($strRedirect));
+    }
 
-		if('ajax' == \Input::get('src')){
-			$objResponse = new JsonResponse($arrResponse);
-			$objResponse->send();
-		}
-		
-		$strRedirect = str_replace(["&key=geocode", "id=".$objLocation->id, "&src=ajax"], ["", "id=".$objMap->id, ""], \Environment::get('request'));
-		$this->redirect(ampersand($strRedirect));
-	}
+    /**
+     * Return a form to choose a CSV file and import it.
+     *
+     * @return string
+     */
+    public function importLocations()
+    {
+        if ('import' !== \Input::get('key')) {
+            return '';
+        }
 
-	/**
-	 * Return a form to choose a CSV file and import it
-	 * @return string
-	 */
-	public function importLocations(){
-		if (\Input::get('key') != 'import')
-			return '';
+        if (!\Input::get('id')) {
+            return '';
+        }
 
-		if(!\Input::get('id'))
-			return '';
+        $objMap = Map::findByPk(\Input::get('id'));
 
-		$objMap = Map::findByPk(\Input::get('id'));
+        $this->import('BackendUser', 'User');
+        $class = $this->User->uploader;
 
-		$this->import('BackendUser', 'User');
-		$class = $this->User->uploader;
+        // See #4086 and #7046
+        if (!class_exists($class) || 'DropZone' === $class) {
+            $class = 'FileUpload';
+        }
 
-		// See #4086 and #7046
-		if (!class_exists($class) || $class == 'DropZone')
-			$class = 'FileUpload';
+        /** @var \FileUpload $objUploader */
+        $objUploader = new $class();
 
-		/** @var \FileUpload $objUploader */
-		$objUploader = new $class();
+        $arrExcelPattern = [];
+        // Preformat Excel Pattern (key = Excel column, value = DB Column)
+        foreach (deserialize($objMap->excelPattern) as $arrColumn) {
+            $arrExcelPattern[$arrColumn['value']] = $arrColumn['key'];
+        }
 
-		$arrExcelPattern = [];
-		// Preformat Excel Pattern (key = Excel column, value = DB Column)
-		foreach(deserialize($objMap->excelPattern) as $arrColumn)
-			$arrExcelPattern[$arrColumn["value"]] = $arrColumn["key"];
+        // Import CSS
+        if ('tl_wem_locations_import' === \Input::post('FORM_SUBMIT')) {
+            $arrUploaded = $objUploader->uploadTo('system/tmp');
+            if (empty($arrUploaded)) {
+                \Message::addError($GLOBALS['TL_LANG']['ERR']['all_fields']);
+                $this->reload();
+            }
 
-		// Import CSS
-		if (\Input::post('FORM_SUBMIT') == 'tl_wem_locations_import'){
-			$arrUploaded = $objUploader->uploadTo('system/tmp');
-			if (empty($arrUploaded)){
-				\Message::addError($GLOBALS['TL_LANG']['ERR']['all_fields']);
-				$this->reload();
-			}
+            $time = time();
+            $intTotal = 0;
+            $intInvalid = 0;
 
-			$time = time();
-			$intTotal = 0;
-			$intInvalid = 0;			
+            foreach ($arrUploaded as $strFile) {
+                $objFile = new \File($strFile, true);
+                $spreadsheet = IOFactory::load(TL_ROOT.'/'.$objFile->path);
+                $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+                $arrLocations = [];
 
-			foreach ($arrUploaded as $strFile){
-				$objFile = new \File($strFile, true);
-				$spreadsheet = IOFactory::load(TL_ROOT.'/'.$objFile->path);
-				$sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-				$arrLocations = array();
-			
-				foreach($sheetData as $arrRow){
-					foreach($arrRow as $strColumn => $strValue){
-						// strColumn = Excel Column
-						// strValue = Value in the current arrRow, at the column strColumn
-						switch($arrExcelPattern[$strColumn]){
-							case 'country':
-								$arrLocation['country'] = Util::getCountryISOCodeFromFullname($strValue);
-							break;
-							default:
-								$arrLocation[$arrExcelPattern[$strColumn]] = $strValue;
-						}
-					}
+                foreach ($sheetData as $arrRow) {
+                    foreach ($arrRow as $strColumn => $strValue) {
+                        // strColumn = Excel Column
+                        // strValue = Value in the current arrRow, at the column strColumn
+                        switch ($arrExcelPattern[$strColumn]) {
+                            case 'country':
+                                $arrLocation['country'] = Util::getCountryISOCodeFromFullname($strValue);
+                            break;
+                            default:
+                                $arrLocation[$arrExcelPattern[$strColumn]] = $strValue;
+                        }
+                    }
 
-					$arrLocation['continent'] = Util::getCountryContinent($arrLocation['country']);
-					$arrLocations[] = $arrLocation;
-				}
+                    $arrLocation['continent'] = Util::getCountryContinent($arrLocation['country']);
+                    $arrLocations[] = $arrLocation;
+                }
 
-				$intCreated = 0;
-				$intUpdated = 0;
-				$intDeleted = 0;
-				$arrNewLocations = array();
+                $intCreated = 0;
+                $intUpdated = 0;
+                $intDeleted = 0;
+                $arrNewLocations = [];
 
-				foreach($arrLocations as $arrLocation){
-					$objLocation = Location::findOneBy('title', $arrLocation['title']);
+                foreach ($arrLocations as $arrLocation) {
+                    $objLocation = Location::findOneBy('title', $arrLocation['title']);
 
-					// Create if don't exists
-					if(!$objLocation){
-						$objLocation = new Location();
-						$objLocation->pid = $objMap->id;
-						$objLocation->published = 1;
-						$intCreated++;
-					}
-					else
-						$intUpdated++;
+                    // Create if don't exists
+                    if (!$objLocation) {
+                        $objLocation = new Location();
+                        $objLocation->pid = $objMap->id;
+                        $objLocation->published = 1;
+                        ++$intCreated;
+                    } else {
+                        $intUpdated++;
+                    }
 
-					$objLocation->tstamp = time();
+                    $objLocation->tstamp = time();
 
-					foreach($arrLocation as $strColumn => $varValue)
-						$objLocation->$strColumn = $varValue;
+                    foreach ($arrLocation as $strColumn => $varValue) {
+                        $objLocation->$strColumn = $varValue;
+                    }
 
-					$objLocation->save();
-					$arrNewLocations[] = $objLocation->id;
-				}
+                    $objLocation->save();
+                    $arrNewLocations[] = $objLocation->id;
+                }
 
-				$objLocations = Location::findItems(['pid'=>$objMap->id, 'published'=>1]);
-				while($objLocations->next()){
-					if(!in_array($objLocations->id, $arrNewLocations)){
-						$objLocations->delete();
-						$intDeleted++;
-					}
-				}
-			}
+                $objLocations = Location::findItems(['pid' => $objMap->id, 'published' => 1]);
+                while ($objLocations->next()) {
+                    if (!\in_array($objLocations->id, $arrNewLocations, true)) {
+                        $objLocations->delete();
+                        ++$intDeleted;
+                    }
+                }
+            }
 
-			\Message::addConfirmation(sprintf($GLOBALS['TL_LANG']['tl_wem_location']['createdConfirmation'], $intCreated));
-			\Message::addInfo(sprintf($GLOBALS['TL_LANG']['tl_wem_location']['updatedConfirmation'], $intUpdated));
-			\Message::addInfo(sprintf($GLOBALS['TL_LANG']['tl_wem_location']['deletedConfirmation'], $intDeleted));
+            \Message::addConfirmation(sprintf($GLOBALS['TL_LANG']['tl_wem_location']['createdConfirmation'], $intCreated));
+            \Message::addInfo(sprintf($GLOBALS['TL_LANG']['tl_wem_location']['updatedConfirmation'], $intUpdated));
+            \Message::addInfo(sprintf($GLOBALS['TL_LANG']['tl_wem_location']['deletedConfirmation'], $intDeleted));
 
-			\System::setCookie('BE_PAGE_OFFSET', 0, 0);
-			$this->reload();
-		}
+            \System::setCookie('BE_PAGE_OFFSET', 0, 0);
+            $this->reload();
+        }
 
-		// Build an Excel pattern to show
-		$arrTh = array();
-		$arrTd = array();
-		foreach($arrExcelPattern as $strExcelColumn => $strDbColumn){
-			$arrTh[] = '<th>'.$strExcelColumn.'</th>';
-			$arrTd[] = '<td>'.$GLOBALS['TL_LANG']['tl_wem_location'][$strDbColumn][0].'</td>';
-		}
+        // Build an Excel pattern to show
+        $arrTh = [];
+        $arrTd = [];
+        foreach ($arrExcelPattern as $strExcelColumn => $strDbColumn) {
+            $arrTh[] = '<th>'.$strExcelColumn.'</th>';
+            $arrTd[] = '<td>'.$GLOBALS['TL_LANG']['tl_wem_location'][$strDbColumn][0].'</td>';
+        }
 
-		// Build the country array, to give the correct syntax to users
-		$arrCountries = array();
-		\System::loadLanguageFile('countries');
-		foreach($GLOBALS['TL_LANG']['CNT'] as $strIsoCode => $strName){
-			$arrCountries[$strIsoCode]["current"] = $strName;
-		}
+        // Build the country array, to give the correct syntax to users
+        $arrCountries = [];
+        \System::loadLanguageFile('countries');
+        foreach ($GLOBALS['TL_LANG']['CNT'] as $strIsoCode => $strName) {
+            $arrCountries[$strIsoCode]['current'] = $strName;
+        }
 
-		\System::loadLanguageFile('countries', 'en');
-		foreach($GLOBALS['TL_LANG']['CNT'] as $strIsoCode => $strName){
-			$arrCountries[$strIsoCode]["en"] = $strName;
-		}
+        \System::loadLanguageFile('countries', 'en');
+        foreach ($GLOBALS['TL_LANG']['CNT'] as $strIsoCode => $strName) {
+            $arrCountries[$strIsoCode]['en'] = $strName;
+        }
 
-		$strCountries = '';
-		foreach($arrCountries as $strIsoCode => $arrNames){
-			$strCountries .= '<tr>';
-			$strCountries .= '<td>'.$strIsoCode.'</td>';
-			$strCountries .= '<td>'.$arrNames["current"].'</td>';
-			$strCountries .= '<td>'.$arrNames["en"].'</td>';
-			$strCountries .= '</tr>';
-		}
+        $strCountries = '';
+        foreach ($arrCountries as $strIsoCode => $arrNames) {
+            $strCountries .= '<tr>';
+            $strCountries .= '<td>'.$strIsoCode.'</td>';
+            $strCountries .= '<td>'.$arrNames['current'].'</td>';
+            $strCountries .= '<td>'.$arrNames['en'].'</td>';
+            $strCountries .= '</tr>';
+        }
 
-		$arrLanguages = \System::getLanguages();
+        $arrLanguages = \System::getLanguages();
 
-		// Return form
-		return '
+        // Return form
+        return '
 		<div id="tl_buttons">
 		<a href="'.ampersand(str_replace('&key=import', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 		</div>
@@ -267,7 +279,7 @@ class Callback extends Backend
 			<h3>'.$GLOBALS['TL_LANG']['tl_wem_location']['importListCountriesTitle'].'</h3>
 			<table class="wem_locations_import_table">
 				<thead>
-					<tr><th>ISOCode</th><th>'.$arrLanguages[$GLOBALS['TL_LANGUAGE']].'</th><th>'.$arrLanguages["en"].'</th></tr>
+					<tr><th>ISOCode</th><th>'.$arrLanguages[$GLOBALS['TL_LANGUAGE']].'</th><th>'.$arrLanguages['en'].'</th></tr>
 				</thead>
 				<tbody>
 					'.$strCountries.'
@@ -277,65 +289,71 @@ class Callback extends Backend
 		</fieldset>
 
 		</form>';
-	}
+    }
 
-	/**
-	 * Export the Locations of the current map, according to the pattern set
-	 */
-	public function exportLocations(){
-		if (\Input::get('key') != 'export')
-			return '';
+    /**
+     * Export the Locations of the current map, according to the pattern set.
+     */
+    public function exportLocations()
+    {
+        if ('export' !== \Input::get('key')) {
+            return '';
+        }
 
-		if(!\Input::get('id'))
-			return '';
+        if (!\Input::get('id')) {
+            return '';
+        }
 
-		$objMap = Map::findByPk(\Input::get('id'));
-		$arrExcelPattern = [];
-		// Preformat Excel Pattern (key = DB Column, value = Excel column)
-		foreach(deserialize($objMap->excelPattern) as $arrColumn)
-			$arrExcelPattern[$arrColumn["key"]] = $arrColumn["value"];
+        $objMap = Map::findByPk(\Input::get('id'));
+        $arrExcelPattern = [];
+        // Preformat Excel Pattern (key = DB Column, value = Excel column)
+        foreach (deserialize($objMap->excelPattern) as $arrColumn) {
+            $arrExcelPattern[$arrColumn['key']] = $arrColumn['value'];
+        }
 
-		// Fetch all the locations
-		$arrCountries = \System::getCountries();
-		$objLocations = Location::findItems(['pid'=>$objMap->id]);
+        // Fetch all the locations
+        $arrCountries = \System::getCountries();
+        $objLocations = Location::findItems(['pid' => $objMap->id]);
 
-		// Break if no locations
-		if(!$objLocations){
-			\Message::addError($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['noLocationsFound']);
-			$this->reload();
-		}
+        // Break if no locations
+        if (!$objLocations) {
+            \Message::addError($GLOBALS['TL_LANG']['WEM']['LOCATIONS']['ERROR']['noLocationsFound']);
+            $this->reload();
+        }
 
-		// Format for the Excel
-		$arrRows = array();
-		while($objLocations->next()){
-			foreach($arrExcelPattern as $strDbColumn => $strExcelColumn){
-				switch($strDbColumn){
-					case 'country':
-						$arrRow[$strExcelColumn] = $arrCountries[$objLocations->$strDbColumn];
-					break;
-					default:
-						$arrRow[$strExcelColumn] = $objLocations->$strDbColumn;
-				}
-			}
-			$arrRows[] = $arrRow;
-		}
+        // Format for the Excel
+        $arrRows = [];
+        while ($objLocations->next()) {
+            foreach ($arrExcelPattern as $strDbColumn => $strExcelColumn) {
+                switch ($strDbColumn) {
+                    case 'country':
+                        $arrRow[$strExcelColumn] = $arrCountries[$objLocations->$strDbColumn];
+                    break;
+                    default:
+                        $arrRow[$strExcelColumn] = $objLocations->$strDbColumn;
+                }
+            }
+            $arrRows[] = $arrRow;
+        }
 
-		// Generate the spreadsheet
-		$objSpreadsheet = new Spreadsheet();
-		$objSheet = $objSpreadsheet->getActiveSheet();
+        // Generate the spreadsheet
+        $objSpreadsheet = new Spreadsheet();
+        $objSheet = $objSpreadsheet->getActiveSheet();
 
-		// Fill the cells of the Excel
-		foreach($arrRows as $intRow => $arrRow)
-			foreach($arrRow as $strColumn => $strValue)
-				$objSheet->setCellValue($strColumn.($intRow+1), $strValue);
+        // Fill the cells of the Excel
+        foreach ($arrRows as $intRow => $arrRow) {
+            foreach ($arrRow as $strColumn => $strValue) {
+                $objSheet->setCellValue($strColumn.($intRow + 1), $strValue);
+            }
+        }
 
-		// And send to browser
-		$strFilename = date('Y-m-d_H-i').'_export-locations';
-		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="'.$strFilename.'.xlsx"');
-		header('Cache-Control: max-age=0');
-		$writer = IOFactory::createWriter($objSpreadsheet, 'Xlsx');
-		$writer->save('php://output');
-		die;
-	}
+        // And send to browser
+        $strFilename = date('Y-m-d_H-i').'_export-locations';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$strFilename.'.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer = IOFactory::createWriter($objSpreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        die;
+    }
 }

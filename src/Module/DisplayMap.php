@@ -1,19 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * Module Locations for Contao Open Source CMS.
+ * Contao Locations for Contao Open Source CMS
+ * Copyright (c) 2015-2020 Web ex Machina
  *
- * Copyright (c) 2018-2019 Web ex Machina
- *
- * @author Web ex Machina <https://www.webexmachina.fr>
+ * @category ContaoBundle
+ * @package  Web-Ex-Machina/contao-locations
+ * @author   Web ex Machina <contact@webexmachina.fr>
+ * @link     https://github.com/Web-Ex-Machina/contao-locations/
  */
 
 namespace WEM\LocationsBundle\Module;
 
 use WEM\LocationsBundle\Controller\ClassLoader;
 use WEM\LocationsBundle\Controller\Util;
-use WEM\LocationsBundle\Model\Map;
 use WEM\LocationsBundle\Model\Location;
+use WEM\LocationsBundle\Model\Map;
 
 /**
  * Front end module "locations map".
@@ -48,7 +52,7 @@ class DisplayMap extends Core
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if (TL_MODE === 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### '.utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['wem_display_map'][0]).' ###';
@@ -66,7 +70,7 @@ class DisplayMap extends Core
     /**
      * Generate the module.
      */
-    protected function compile()
+    protected function compile(): void
     {
         try {
             // Load the map
@@ -121,7 +125,7 @@ class DisplayMap extends Core
                     foreach ($arrMarkers as $k => $m) {
                         // First make sure we stay in the same country
                         // Either way, we will hide items too close from a same border
-                        if ($m['country']['code'] != $l['country']['code']) {
+                        if ($m['country']['code'] !== $l['country']['code']) {
                             continue;
                         }
 
@@ -163,13 +167,13 @@ class DisplayMap extends Core
             $this->Template->config = $arrConfig;
 
             // Gather filters
-            if ('nofilters' != $this->wem_location_map_filters) {
+            if ('nofilters' !== $this->wem_location_map_filters) {
                 \System::loadLanguageFile('tl_wem_location');
                 $arrFilterFields = unserialize($this->wem_location_map_filters_fields);
                 $this->filters = [];
 
                 foreach ($arrFilterFields as $f) {
-                    if ('search' == $f) {
+                    if ('search' === $f) {
                         $this->filters[$f] = [
                             'label' => 'Recherche :',
                             'placeholder' => 'Que recherchez-vous ?',
@@ -191,7 +195,7 @@ class DisplayMap extends Core
                                 continue;
                             }
 
-                            if (!in_array($l[$f], $this->filters[$f]['options'])) {
+                            if (!\in_array($l[$f], $this->filters[$f]['options'], true)) {
                                 $this->filters[$f]['options'][] = $l[$f];
                             }
                         }
@@ -203,14 +207,14 @@ class DisplayMap extends Core
             }
 
             // Send the fileMap
-            if ('jvector' == $this->objMap->mapProvider
-                && '' != $this->objMap->mapFile
+            if ('jvector' === $this->objMap->mapProvider
+                && '' !== $this->objMap->mapFile
             ) {
                 $this->Template->mapFile = $this->objMap->mapFile;
             }
 
             // If the config says so, we will generate a template with a list of the locations
-            if ('nolist' != $this->wem_location_map_list) {
+            if ('nolist' !== $this->wem_location_map_list) {
                 $objTemplate = new \FrontendTemplate($this->strListTemplate);
                 $objTemplate->locations = $arrLocations;
                 $objTemplate->list_position = $this->wem_location_map_list;
