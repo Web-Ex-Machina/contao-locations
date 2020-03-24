@@ -8,11 +8,11 @@
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
 
-namespace WEM\Location\Module;
+namespace WEM\LocationsBundle\Module;
 
-use WEM\Location\Controller\Util;
-use WEM\Location\Model\Location;
-use WEM\Location\Model\Category;
+use WEM\LocationsBundle\Controller\Util;
+use WEM\LocationsBundle\Model\Location;
+use WEM\LocationsBundle\Model\Category;
 
 /**
  * Parent class for locations modules.

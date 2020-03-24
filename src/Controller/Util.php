@@ -8,11 +8,11 @@
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
 
-namespace WEM\Location\Controller;
+namespace WEM\LocationsBundle\Controller;
 
 use Contao\Controller;
 
-use WEM\Location\Model\Location;
+use WEM\LocationsBundle\Model\Location;
 
 /**
  * Provide utilities function to Locations Extension

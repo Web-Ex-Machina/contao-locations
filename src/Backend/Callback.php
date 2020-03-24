@@ -8,7 +8,7 @@
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
 
-namespace WEM\Location\Backend;
+namespace WEM\LocationsBundle\Backend;
 
 use Contao\Backend;
 
@@ -17,11 +17,11 @@ use Haste\Http\Response\JsonResponse;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-use WEM\Location\Controller\Util;
-use WEM\Location\Controller\Provider\GoogleMaps;
-use WEM\Location\Controller\Provider\Nominatim;
-use WEM\Location\Model\Map;
-use WEM\Location\Model\Location;
+use WEM\LocationsBundle\Controller\Util;
+use WEM\LocationsBundle\Controller\Provider\GoogleMaps;
+use WEM\LocationsBundle\Controller\Provider\Nominatim;
+use WEM\LocationsBundle\Model\Map;
+use WEM\LocationsBundle\Model\Location;
 
 /**
  * Provide backend functions to Locations Extension

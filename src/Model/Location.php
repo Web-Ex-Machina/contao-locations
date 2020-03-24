@@ -8,7 +8,7 @@
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
 
-namespace WEM\Location\Model;
+namespace WEM\LocationsBundle\Model;
 
 use Contao\Model;
 

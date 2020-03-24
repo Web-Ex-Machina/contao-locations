@@ -8,12 +8,12 @@
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
 
-namespace WEM\Location\Module;
+namespace WEM\LocationsBundle\Module;
 
-use WEM\Location\Controller\ClassLoader;
-use WEM\Location\Controller\Util;
-use WEM\Location\Model\Map;
-use WEM\Location\Model\Location;
+use WEM\LocationsBundle\Controller\ClassLoader;
+use WEM\LocationsBundle\Controller\Util;
+use WEM\LocationsBundle\Model\Map;
+use WEM\LocationsBundle\Model\Location;
 
 /**
  * Front end module "locations map".

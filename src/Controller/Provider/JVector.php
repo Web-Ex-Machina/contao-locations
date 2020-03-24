@@ -8,7 +8,7 @@
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
 
-namespace WEM\Location\Controller\Provider;
+namespace WEM\LocationsBundle\Controller\Provider;
 
 use Contao\Controller;
 

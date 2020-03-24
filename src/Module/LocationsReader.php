@@ -8,7 +8,7 @@
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
 
-namespace WEM\Location\Module;
+namespace WEM\LocationsBundle\Module;
 
 use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\CoreBundle\Exception\PageNotFoundException;
@@ -18,7 +18,7 @@ use Contao\Combiner;
 
 use Haste\Input\Input;
 
-use WEM\Location\Model\Location;
+use WEM\LocationsBundle\Model\Location;
 
 /**
  * Front end module "locations reader".
