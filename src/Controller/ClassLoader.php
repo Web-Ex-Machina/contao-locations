@@ -34,7 +34,7 @@ class ClassLoader extends Controller
     {
         try {
             // Parse the classname
-            $strClass = sprintf("WEM\Location\Controller\Provider\%s", ucfirst($strProvider));
+            $strClass = sprintf("WEM\LocationsBundle\Controller\Provider\%s", ucfirst($strProvider));
 
             // Throw error if class doesn't exists
             if (!class_exists($strClass)) {
@@ -63,17 +63,17 @@ class ClassLoader extends Controller
         $objJsCombiner = new Combiner();
 
         // Load generic files
-        $objCssCombiner->add('system/modules/wem-contao-locations/assets/css/default.css', $strVersion);
-        $objJsCombiner->add('system/modules/wem-contao-locations/assets/js/default.js', $strVersion);
+        $objCssCombiner->add('bundles/wemlocations/css/default.css', $strVersion);
+        $objJsCombiner->add('bundles/wemlocations/js/default.js', $strVersion);
 
         // Depending on the provider, we will need more stuff
         switch ($objMap->mapProvider) {
             case 'jvector':
                 $objCssCombiner->addMultiple([
-                    'system/modules/wem-contao-locations/assets/vendor/jquery-jvectormap/jquery-jvectormap-2.0.3.css', 'system/modules/wem-contao-locations/assets/css/jvector.css',
+                    'bundles/wemlocations/vendor/jquery-jvectormap/jquery-jvectormap-2.0.3.css', 'bundles/wemlocations/css/jvector.css',
                 ], $strVersion);
                 $objJsCombiner->addMultiple([
-                    'system/modules/wem-contao-locations/assets/vendor/jquery-jvectormap/jquery-jvectormap-2.0.3.min.js', 'system/modules/wem-contao-locations/assets/vendor/jquery-jvectormap/maps/jquery-jvectormap-'.$objMap->mapFile.'-mill.js', 'system/modules/wem-contao-locations/assets/js/jvector.js',
+                    'bundles/wemlocations/vendor/jquery-jvectormap/jquery-jvectormap-2.0.3.min.js', 'bundles/wemlocations/vendor/jquery-jvectormap/maps/jquery-jvectormap-'.$objMap->mapFile.'-mill.js', 'bundles/wemlocations/js/jvector.js',
                 ], $strVersion);
                 break;
             case 'gmaps':
@@ -81,16 +81,16 @@ class ClassLoader extends Controller
                     throw new \Exception('Google Maps needs an API Key !');
                 }
 
-                $objCssCombiner->add('system/modules/wem-contao-locations/assets/css/gmaps.css', $strVersion);
-                $objJsCombiner->add('system/modules/wem-contao-locations/assets/js/gmaps.js', $strVersion);
+                $objCssCombiner->add('bundles/wemlocations/css/gmaps.css', $strVersion);
+                $objJsCombiner->add('bundles/wemlocations/js/gmaps.js', $strVersion);
                 $GLOBALS['TL_JQUERY'][] = sprintf('<script src="https://maps.googleapis.com/maps/api/js?key=%s"></script>', $objMap->mapProviderGmapKey);
                 break;
             case 'leaflet':
                 $objCssCombiner->addMultiple([
-                    'system/modules/wem-contao-locations/assets/vendor/leaflet/leaflet.css', 'system/modules/wem-contao-locations/assets/css/leaflet.css',
+                    'bundles/wemlocations/vendor/leaflet/leaflet.css', 'bundles/wemlocations/css/leaflet.css',
                 ], $strVersion);
                 $objJsCombiner->addMultiple([
-                    'system/modules/wem-contao-locations/assets/vendor/leaflet/leaflet.js', 'system/modules/wem-contao-locations/assets/js/leaflet.js',
+                    'bundles/wemlocations/vendor/leaflet/leaflet.js', 'bundles/wemlocations/js/leaflet.js',
                 ], $strVersion);
                 break;
             default:
